@@ -1,5 +1,6 @@
 package com.alvaroff.rpgalvaroff;
 
+import com.alvaroff.rpgalvaroff.common.blocks.BlockInit;
 import com.alvaroff.rpgalvaroff.common.items.custom.ItemInit;
 import com.mojang.logging.LogUtils;
 import net.minecraft.world.level.block.Block;
@@ -34,6 +35,7 @@ public class RPGalvaroff
         // Register the setup method for modloading
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
         ItemInit.register(eventBus);
+        BlockInit.register(eventBus);
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
     }
