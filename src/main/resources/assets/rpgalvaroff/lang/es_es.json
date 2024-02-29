@@ -1,4 +1,6 @@
 {
   "item.rpgalvaroff.key": "Llave",
+  "item.rpgalvaroff.escape_stone": "Piedra de escape",
+
   "block.rpgalvaroff.lock": "Bloque Cerradura"
 }

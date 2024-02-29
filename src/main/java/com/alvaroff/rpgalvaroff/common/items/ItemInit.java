@@ -1,6 +1,7 @@
 package com.alvaroff.rpgalvaroff.common.items;
 
 import com.alvaroff.rpgalvaroff.RPGalvaroff;
+import com.alvaroff.rpgalvaroff.common.items.custom.keys.Escape_stone;
 import com.alvaroff.rpgalvaroff.common.items.custom.keys.Key;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
@@ -18,6 +19,13 @@ public class ItemInit {
                     .tab(CreativeModeTab.TAB_MISC)
                     .rarity(Rarity.COMMON)
                     .stacksTo(1)
+    ));
+
+    public static final RegistryObject<Item> ESCAPE_STONE = ITEMS.register("escape_stone", () -> new Escape_stone(
+            new Item.Properties()
+                    .tab(CreativeModeTab.TAB_MISC)
+                    .rarity(Rarity.UNCOMMON)
+                    .stacksTo(16)
     ));
     public static void register(IEventBus eventBus){
         ITEMS.register((eventBus));
