@@ -1,12 +1,10 @@
 package com.alvaroff.rpgalvaroff.common.blocks;
 
 import com.alvaroff.rpgalvaroff.RPGalvaroff;
-import com.alvaroff.rpgalvaroff.common.items.custom.ItemInit;
-import com.alvaroff.rpgalvaroff.common.items.custom.keys.Key;
+import com.alvaroff.rpgalvaroff.common.items.ItemInit;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.Material;
@@ -15,7 +13,6 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
-import java.util.Properties;
 import java.util.function.Supplier;
 
 public class BlockInit {

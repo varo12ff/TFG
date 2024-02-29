@@ -1,4 +1,4 @@
-package com.alvaroff.rpgalvaroff.common.items.custom;
+package com.alvaroff.rpgalvaroff.common.items;
 
 import com.alvaroff.rpgalvaroff.RPGalvaroff;
 import com.alvaroff.rpgalvaroff.common.items.custom.keys.Key;
