@@ -1,0 +1,17 @@
+{
+  "type": "rpgalvaroff:rpgdim",
+  "generator": {
+    "type": "minecraft:flat",
+    "settings": {
+      "biome": "minecraft:desert",
+      "lakes": true,
+      "features": true,
+      "layers": [
+        {
+          "block": "minecraft:stone",
+          "height": 1
+        }
+      ]
+    }
+  }
+}
