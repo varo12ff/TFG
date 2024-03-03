@@ -4,6 +4,10 @@
 
   "block.rpgalvaroff.lock": "Bloque Cerradura",
 
+  "item.rpgalvaroff.escape_stone.info": "Esta piedra te permite salir de la dimensión mazmorra.",
+  "item.rpgalvaroff.escape_stone.noInfo": "Pulsa Shift para más información.",
+  "msg.notuse": "No puedes usar esto aquí.",
+
   "itemGroup.keys": "Llaves",
   "itemGroup.block": "Bloques"
 }
