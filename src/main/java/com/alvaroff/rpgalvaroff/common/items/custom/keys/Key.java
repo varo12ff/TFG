@@ -1,5 +1,6 @@
 package com.alvaroff.rpgalvaroff.common.items.custom.keys;
 
+import com.alvaroff.rpgalvaroff.common.utils.DimensionUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.network.chat.Component;
@@ -47,20 +48,13 @@ public class Key extends Item {
 
             if (blockState.getBlock() == LOCK.get()){
                 BlockPos playerPos = player.blockPosition();
-                teleportToDimension((ServerPlayer) player, RPGDIM_KEY, playerPos);
+                DimensionUtils.teleportToDimension((ServerPlayer) player, RPGDIM_KEY, playerPos);
             }
         }
 
         return InteractionResult.PASS;
     }
 
-    private void teleportToDimension(ServerPlayer player, ResourceKey<Level> dimension, BlockPos dest){
-        ServerLevel destlevel = player.server.getLevel(dimension);
 
-        if(destlevel != null){
-            player.teleportTo(destlevel, dest.getX() + 0.5, -63.0, dest.getZ() + 0.5,
-                    player.yRotO, player.xRotO);
-        }
-    }
 
 }

@@ -4,6 +4,10 @@
 
   "block.rpgalvaroff.lock": "Lock",
 
+  "item.rpgalvaroff.escape_stone.info": "This stone allows you to exit the dungeon dimension",
+  "item.rpgalvaroff.escape_stone.noInfo": "Press Shift for more information.",
+  "msg.notuse": "You cannot use this here.",
+
   "itemGroup.keys": "Keys",
   "itemGroup.block": "Blocks"
 }
