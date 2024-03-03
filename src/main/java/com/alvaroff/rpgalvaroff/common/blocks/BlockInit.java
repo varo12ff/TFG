@@ -2,6 +2,7 @@ package com.alvaroff.rpgalvaroff.common.blocks;
 
 import com.alvaroff.rpgalvaroff.RPGalvaroff;
 import com.alvaroff.rpgalvaroff.common.items.ItemInit;
+import com.alvaroff.rpgalvaroff.common.items.ModCreativeTab;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
@@ -21,7 +22,7 @@ public class BlockInit {
     public static final RegistryObject<Block> LOCK = registerBlock("lock",
             () -> new Block(BlockBehaviour.Properties.of(Material.METAL)
                     .strength(9f)
-            ), CreativeModeTab.TAB_MISC);
+            ), ModCreativeTab.MDD_BLOCK_TAB);
     private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block, CreativeModeTab tab){
         RegistryObject<T> toReturn = BLOCKS.register(name,block);
         registerBlockItem(name, toReturn,tab);

@@ -16,14 +16,14 @@ public class ItemInit {
 
     public static final RegistryObject<Item> KEY = ITEMS.register("key", () -> new Key(
             new Item.Properties()
-                    .tab(CreativeModeTab.TAB_MISC)
+                    .tab(ModCreativeTab.MDD_KEY_TAB)
                     .rarity(Rarity.COMMON)
                     .stacksTo(1)
     ));
 
     public static final RegistryObject<Item> ESCAPE_STONE = ITEMS.register("escape_stone", () -> new Escape_stone(
             new Item.Properties()
-                    .tab(CreativeModeTab.TAB_MISC)
+                    .tab(ModCreativeTab.MDD_MISC_TAB)
                     .rarity(Rarity.UNCOMMON)
                     .stacksTo(16)
     ));
