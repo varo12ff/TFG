@@ -1,4 +1,4 @@
-package com.alvaroff.rpgalvaroff.common.items.custom.keys;
+package com.alvaroff.rpgalvaroff.common.items.custom;
 
 import com.alvaroff.rpgalvaroff.RPGalvaroff;
 import com.alvaroff.rpgalvaroff.common.utils.DimensionUtils;
@@ -77,26 +77,5 @@ public class Escape_stone extends Item {
             }
         }
     }
-
-    /*@Override
-    public void appendHoverText(ItemStack stack, net.minecraft.world.level.Level world, List<Component> tooltip, TooltipFlag flag) {
-
-        // Actualizar el estado de la tecla Shift
-        shiftPressed = Minecraft.getInstance().options.keyShift.isDown();
-
-        // Limpiar descripciones anteriores si la tecla Shift está presionada
-        tooltip.removeIf(component -> component.getString().startsWith(this.getName(stack).getString()));
-
-        // Añadir el nombre del objeto como la primera línea del tooltip, en verde
-        tooltip.add(this.getName(stack));
-
-        if (shiftPressed) {
-            // Agregar la descripción detallada solo cuando se mantiene presionada la tecla Mayúsculas
-            String translationKey = "Pulsa Mayus para más info";
-            tooltip.add(new TranslatableComponent(translationKey).withStyle(ChatFormatting.YELLOW));
-        }
-
-        super.appendHoverText(stack, world, tooltip, flag);
-    }*/
 
 }

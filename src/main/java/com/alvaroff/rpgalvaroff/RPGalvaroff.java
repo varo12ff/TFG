@@ -1,5 +1,7 @@
 package com.alvaroff.rpgalvaroff;
 
+import com.alvaroff.rpgalvaroff.client.KeyBinding;
+import com.alvaroff.rpgalvaroff.client.gui.RpgGUI;
 import com.alvaroff.rpgalvaroff.common.blocks.BlockInit;
 import com.alvaroff.rpgalvaroff.common.items.ItemInit;
 import com.alvaroff.rpgalvaroff.common.world.dimension.DimensionInit;
@@ -8,6 +10,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.slf4j.Logger;
@@ -30,6 +33,7 @@ public class RPGalvaroff
         ItemInit.register(eventBus);
         BlockInit.register(eventBus);
         DimensionInit.register();
+        KeyBinding.registerKeyBindings();
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
     }
@@ -39,5 +43,9 @@ public class RPGalvaroff
         // some preinit code
         LOGGER.info("HELLO FROM PREINIT");
         LOGGER.info("DIRT BLOCK >> {}", Blocks.DIRT.getRegistryName());
+        //event.getMinecraftSupplier().get().setScreen(new RpgGUI(new TextComponent("Mi interfaz")));
     }
+
+
+
 }

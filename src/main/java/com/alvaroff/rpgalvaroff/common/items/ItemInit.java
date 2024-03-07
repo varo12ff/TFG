@@ -1,9 +1,8 @@
 package com.alvaroff.rpgalvaroff.common.items;
 
 import com.alvaroff.rpgalvaroff.RPGalvaroff;
-import com.alvaroff.rpgalvaroff.common.items.custom.keys.Escape_stone;
+import com.alvaroff.rpgalvaroff.common.items.custom.Escape_stone;
 import com.alvaroff.rpgalvaroff.common.items.custom.keys.Key;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
 import net.minecraftforge.eventbus.api.IEventBus;
