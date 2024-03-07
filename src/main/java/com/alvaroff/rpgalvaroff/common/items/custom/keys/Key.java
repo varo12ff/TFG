@@ -1,9 +1,12 @@
 package com.alvaroff.rpgalvaroff.common.items.custom.keys;
 
+import com.alvaroff.rpgalvaroff.client.gui.RpgGUI;
 import com.alvaroff.rpgalvaroff.common.utils.DimensionUtils;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
