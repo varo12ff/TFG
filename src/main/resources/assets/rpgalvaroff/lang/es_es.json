@@ -1,17 +1,23 @@
 {
   "item.rpgalvaroff.key": "Llave",
   "item.rpgalvaroff.escape_stone": "Piedra de escape",
+  "item.rpgalvaroff.end_dungeon_orb_d": "Eliminador de Dimension Tier D",
 
   "block.rpgalvaroff.lock": "Bloque Cerradura",
 
   "item.rpgalvaroff.escape_stone.info": "Esta piedra te permite salir de la dimensión mazmorra.",
-  "item.rpgalvaroff.escape_stone.noInfo": "Pulsa Shift para más información.",
-  "msg.notuse": "No puedes usar esto aquí.",
+  "item.rpgalvaroff.end_dungeon_orb_d.info": "Esta piedra te permite salir de la dimensión mazmorra y darla por finalizada.",
+
+  "item.noInfo": "Pulsa Shift para más información.",
+
   "gui.statsName": "Estado",
+
+  "msg.notuse": "No puedes usar esto aquí.",
+  "msg.deleteDungeon": "Se va a eliminar la Mazmorra.",
 
   "itemGroup.keys": "Llaves",
   "itemGroup.block": "Bloques",
 
   "key.category.rpgalvaroff.rpgkey": "RPG MOD",
-  "key.rpgalvaroff.open_initial_gui": "Interfaz"
+  "key.rpgalvaroff.open_initial_gui": "Interfaz",
 }
