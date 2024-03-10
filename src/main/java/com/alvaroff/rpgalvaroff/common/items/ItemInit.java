@@ -1,6 +1,7 @@
 package com.alvaroff.rpgalvaroff.common.items;
 
 import com.alvaroff.rpgalvaroff.RPGalvaroff;
+import com.alvaroff.rpgalvaroff.common.items.custom.EndDungeonOrbD;
 import com.alvaroff.rpgalvaroff.common.items.custom.Escape_stone;
 import com.alvaroff.rpgalvaroff.common.items.custom.keys.Key;
 import net.minecraft.world.item.Item;
@@ -25,6 +26,13 @@ public class ItemInit {
                     .tab(ModCreativeTab.MDD_MISC_TAB)
                     .rarity(Rarity.UNCOMMON)
                     .stacksTo(16)
+    ));
+
+    public static final RegistryObject<Item> END_DUNGEON_ORB_D = ITEMS.register("end_dungeon_orb_d", () -> new EndDungeonOrbD(
+            new Item.Properties()
+                    .tab(ModCreativeTab.MDD_MISC_TAB)
+                    .rarity(Rarity.UNCOMMON)
+                    .stacksTo(1)
     ));
     public static void register(IEventBus eventBus){
         ITEMS.register((eventBus));
