@@ -29,11 +29,12 @@ public class RPGalvaroff
         IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
         // Register the setup method for modloading
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::clientSetup);
 
         ItemInit.register(eventBus);
         BlockInit.register(eventBus);
         DimensionInit.register();
-        KeyBinding.registerKeyBindings();
+        //KeyBinding.registerKeyBindings();
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
     }
@@ -43,6 +44,17 @@ public class RPGalvaroff
         // some preinit code
         LOGGER.info("HELLO FROM PREINIT");
         LOGGER.info("DIRT BLOCK >> {}", Blocks.DIRT.getRegistryName());
+
+        //event.getMinecraftSupplier().get().setScreen(new RpgGUI(new TextComponent("Mi interfaz")));
+    }
+
+    private void clientSetup(final FMLClientSetupEvent event)
+    {
+        // some preinit code
+        LOGGER.info("HELLO FROM PREINIT CLIENT");
+        //LOGGER.info("DIRT BLOCK >> {}", Blocks.DIRT.getRegistryName());
+        KeyBinding.registerKeyBindings();
+
         //event.getMinecraftSupplier().get().setScreen(new RpgGUI(new TextComponent("Mi interfaz")));
     }
 
