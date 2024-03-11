@@ -2,7 +2,7 @@ package com.alvaroff.rpgalvaroff.common.items.custom;
 
 import com.alvaroff.rpgalvaroff.common.utils.DimensionUtils;
 import com.alvaroff.rpgalvaroff.common.world.dimension.DimensionInit;
-import com.alvaroff.rpgalvaroff.dungeonState.DungeonStateProvider;
+import com.alvaroff.rpgalvaroff.capabilities.dungeonState.DungeonStateProvider;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;

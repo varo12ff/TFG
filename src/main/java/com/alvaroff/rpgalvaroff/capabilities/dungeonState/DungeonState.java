@@ -1,4 +1,4 @@
-package com.alvaroff.rpgalvaroff.dungeonState;
+package com.alvaroff.rpgalvaroff.capabilities.dungeonState;
 
 import net.minecraft.nbt.CompoundTag;
 

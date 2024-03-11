@@ -16,4 +16,5 @@ public class KeyBinding {
     public static void registerKeyBindings(){
         ClientRegistry.registerKeyBinding(OPEN_INITIAL_GUI);
     }
+
 }

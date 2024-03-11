@@ -3,39 +3,15 @@ package com.alvaroff.rpgalvaroff.event;
 import com.alvaroff.rpgalvaroff.RPGalvaroff;
 import com.alvaroff.rpgalvaroff.common.utils.DimensionUtils;
 import com.alvaroff.rpgalvaroff.common.world.dimension.DimensionInit;
-import com.alvaroff.rpgalvaroff.dungeonState.DungeonState;
-import com.alvaroff.rpgalvaroff.dungeonState.DungeonStateProvider;
-import net.minecraft.core.BlockPos;
-import net.minecraft.network.chat.TextComponent;
+import com.alvaroff.rpgalvaroff.capabilities.dungeonState.DungeonState;
+import com.alvaroff.rpgalvaroff.capabilities.dungeonState.DungeonStateProvider;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.storage.DimensionDataStorage;
-import net.minecraft.world.level.storage.LevelResource;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
-import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.server.ServerLifecycleHooks;
-
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.FileVisitResult;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.SimpleFileVisitor;
-import java.nio.file.attribute.BasicFileAttributes;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
 
 @Mod.EventBusSubscriber(modid = RPGalvaroff.MOD_ID)
 public class ServerEvents {
