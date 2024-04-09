@@ -1,6 +1,7 @@
 package com.alvaroff.rpgalvaroff.common.items;
 
 import com.alvaroff.rpgalvaroff.RPGalvaroff;
+import com.alvaroff.rpgalvaroff.common.items.custom.Debugger;
 import com.alvaroff.rpgalvaroff.common.items.custom.EndDungeonOrbD;
 import com.alvaroff.rpgalvaroff.common.items.custom.Escape_stone;
 import com.alvaroff.rpgalvaroff.common.items.custom.keys.Key;
@@ -32,6 +33,13 @@ public class ItemInit {
             new Item.Properties()
                     .tab(ModCreativeTab.MDD_MISC_TAB)
                     .rarity(Rarity.UNCOMMON)
+                    .stacksTo(1)
+    ));
+
+    public static final RegistryObject<Item> DEBUGGER = ITEMS.register("debugger", () -> new Debugger(
+            new Item.Properties()
+                    .tab(ModCreativeTab.MDD_MISC_TAB)
+                    .rarity(Rarity.EPIC)
                     .stacksTo(1)
     ));
     public static void register(IEventBus eventBus){

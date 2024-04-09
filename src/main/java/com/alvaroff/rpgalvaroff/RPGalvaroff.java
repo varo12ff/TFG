@@ -5,6 +5,7 @@ import com.alvaroff.rpgalvaroff.client.gui.RpgGUI;
 import com.alvaroff.rpgalvaroff.common.blocks.BlockInit;
 import com.alvaroff.rpgalvaroff.common.items.ItemInit;
 import com.alvaroff.rpgalvaroff.common.world.dimension.DimensionInit;
+import com.alvaroff.rpgalvaroff.networking.ModMessages;
 import com.mojang.logging.LogUtils;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.common.MinecraftForge;
@@ -44,6 +45,8 @@ public class RPGalvaroff
         // some preinit code
         LOGGER.info("HELLO FROM PREINIT");
         LOGGER.info("DIRT BLOCK >> {}", Blocks.DIRT.getRegistryName());
+
+        ModMessages.register();
 
         //event.getMinecraftSupplier().get().setScreen(new RpgGUI(new TextComponent("Mi interfaz")));
     }
