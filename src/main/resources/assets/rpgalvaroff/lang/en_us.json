@@ -2,18 +2,33 @@
   "item.rpgalvaroff.key": "Key",
   "item.rpgalvaroff.escape_stone": "Escape Stone",
   "item.rpgalvaroff.end_dungeon_orb_d": "Dimension Tier D Eliminator",
+  "item.rpgalvaroff.debugger": "Debugger",
 
   "block.rpgalvaroff.lock": "Lock",
 
   "item.rpgalvaroff.escape_stone.info": "This stone allows you to exit the dungeon dimension",
   "item.rpgalvaroff.end_dungeon_orb_d.info": "This stone allows you to exit the dungeon dimension and conclude it.",
+  "item.rpgalvaroff.debbuger.reset_notify": "Stats have been reset.",
 
   "item.noInfo": "Press Shift for more information.",
 
+  "gui.statsName": "Status",
+  "gui.warriorClass": "Warrior",
+  "gui.magicianClass": "Magician",
+  "gui.ninjaClass": "Ninja",
+  "gui.priestClass": "Priest",
+  "gui.class": "Class",
+  "gui.health": "Health",
+  "gui.strenght": "Strenght",
+  "gui.ability": "Ability",
+  "gui.resistance": "Resistance",
+  "gui.mana": "Mana",
+  "gui.magicPower": "Magic Power",
+  "gui.agility": "Agility",
+  "gui.sanation": "Sanation",
+
   "msg.notuse": "You cannot use this here.",
   "msg.deleteDungeon": "The Dungeon is going to be removed.",
-
-  "gui.statsName": "Status",
 
   "itemGroup.keys": "Keys",
   "itemGroup.block": "Blocks",

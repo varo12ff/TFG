@@ -2,15 +2,30 @@
   "item.rpgalvaroff.key": "Llave",
   "item.rpgalvaroff.escape_stone": "Piedra de escape",
   "item.rpgalvaroff.end_dungeon_orb_d": "Eliminador de Dimension Tier D",
+  "item.rpgalvaroff.debugger": "Debugger",
 
   "block.rpgalvaroff.lock": "Bloque Cerradura",
 
   "item.rpgalvaroff.escape_stone.info": "Esta piedra te permite salir de la dimensión mazmorra.",
   "item.rpgalvaroff.end_dungeon_orb_d.info": "Esta piedra te permite salir de la dimensión mazmorra y darla por finalizada.",
+  "item.rpgalvaroff.debbuger.reset_notify": "Las stats se han reestablecido.",
 
   "item.noInfo": "Pulsa Shift para más información.",
 
   "gui.statsName": "Estado",
+  "gui.warriorClass": "Guerrero",
+  "gui.magicianClass": "Mago",
+  "gui.ninjaClass": "Ninja",
+  "gui.priestClass": "Clérigo",
+  "gui.class": "Clase",
+  "gui.health": "Vitalidad",
+  "gui.strenght": "Fuerza",
+  "gui.ability": "Abilidad",
+  "gui.resistance": "Resistencia",
+  "gui.mana": "Maná",
+  "gui.magicPower": "Poder Mágico",
+  "gui.agility": "Agilidad",
+  "gui.sanation": "Sanacion",
 
   "msg.notuse": "No puedes usar esto aquí.",
   "msg.deleteDungeon": "Se va a eliminar la Mazmorra.",

@@ -4,33 +4,40 @@ import net.minecraft.nbt.CompoundTag;
 public class PlayerStats {
     private int lvl;
     private float health;
-    private float strength;
-    private float resistance;
-    private float mana;
-    private float magicPower;
-    private float agility;
-    private float sanation;
+    private int strength;
+    private int ability;
+    private int resistance;
+    private int mana;
+    private final float MAX_MANA = 100.0f;
+    private float currentMana;
+    private int magicPower;
+    private int agility;
+    private int sanation;
     private PlayerClass playerClass;
 
     public PlayerStats(){
 
         this.lvl = 0;
-        this.health = 0;
+        this.health = 6.0f;
         this.strength = 0;
+        this.ability = 0;
         this.resistance = 0;
         this.mana = 0;
+        this.currentMana = mana;
         this.magicPower = 0;
         this.agility = 0;
         this.sanation = 0;
         this.playerClass = PlayerClass.NONE;
     }
 
-    public PlayerStats(int lvl, float health, float strength, float resistance, float mana, float magicPower, float agility, float sanation, PlayerClass playerClass) {
+    public PlayerStats(int lvl, float health, int strength, int ability, int resistance, int mana, int magicPower, int agility, int sanation, PlayerClass playerClass) {
         this.lvl = lvl;
         this.health = health;
         this.strength = strength;
+        this.ability = ability;
         this.resistance = resistance;
         this.mana = mana;
+        this.currentMana = mana;
         this.magicPower = magicPower;
         this.agility = agility;
         this.sanation = sanation;
@@ -45,27 +52,37 @@ public class PlayerStats {
         return health;
     }
 
-    public float getStrength() {
+    public int getStrength() {
         return strength;
     }
 
-    public float getResistance() {
+    public int getAbility() {
+        return ability;
+    }
+
+    public int getResistance() {
         return resistance;
     }
 
-    public float getMana() {
+    public int getMana() {
         return mana;
     }
+    public float getCurrentMana() {
+        return currentMana;
+    }
+    public float getMaxMana() {
+        return MAX_MANA;
+    }
 
-    public float getMagicPower() {
+    public int getMagicPower() {
         return magicPower;
     }
 
-    public float getAgility() {
+    public int getAgility() {
         return agility;
     }
 
-    public float getSanation() {
+    public int getSanation() {
         return sanation;
     }
 
@@ -73,36 +90,39 @@ public class PlayerStats {
         return playerClass;
     }
 
-    public void setLevel(int level){
+    public void setLevel(int lvl){ this.lvl = lvl; }
 
-        lvl = level;
-    }
-
-    public void setHealth(float health) {
+    public void setHealth(int health) {
         this.health = health;
     }
 
-    public void setStrength(float strength) {
+    public void setStrength(int strength) {
         this.strength = strength;
     }
+    public void setAbility(int ability) {
+        this.ability = ability;
+    }
 
-    public void setResistance(float resistance) {
+    public void setResistance(int resistance) {
         this.resistance = resistance;
     }
 
-    public void setMana(float mana) {
+    public void setMana(int mana) {
         this.mana = mana;
     }
+    public void setCurrentMana(float mana) {
+        this.currentMana = currentMana;
+    }
 
-    public void setMagicPower(float magicPower) {
+    public void setMagicPower(int magicPower) {
         this.magicPower = magicPower;
     }
 
-    public void setAgility(float agility) {
+    public void setAgility(int agility) {
         this.agility = agility;
     }
 
-    public void setSanation(float sanation) {
+    public void setSanation(int sanation) {
         this.sanation = sanation;
     }
 
@@ -115,6 +135,7 @@ public class PlayerStats {
         this.lvl = source.lvl;
         this.health = source.health;
         this.strength = source.strength;
+        this.ability = source.ability;
         this.resistance = source.resistance;
         this.mana = source.mana;
         this.magicPower = source.magicPower;
@@ -127,12 +148,14 @@ public class PlayerStats {
 
         nbt.putInt("level", lvl);
         nbt.putFloat("health", health);
-        nbt.putFloat("strength", strength);
-        nbt.putFloat("resistance", resistance);
-        nbt.putFloat("mana", mana);
-        nbt.putFloat("magicPower", magicPower);
-        nbt.putFloat("agility", agility);
-        nbt.putFloat("sanation", sanation);
+        nbt.putInt("strength", strength);
+        nbt.putInt("ability", ability);
+        nbt.putInt("resistance", resistance);
+        nbt.putInt("mana", mana);
+        nbt.putFloat("currentMana", currentMana);
+        nbt.putInt("magicPower", magicPower);
+        nbt.putInt("agility", agility);
+        nbt.putInt("sanation", sanation);
         nbt.putString("playerClass", playerClass.toString());
     }
 
@@ -140,12 +163,33 @@ public class PlayerStats {
 
         lvl = nbt.getInt("level");
         health = nbt.getFloat("health");
-        strength = nbt.getFloat("strength");
-        resistance = nbt.getFloat("resistance");
-        mana = nbt.getFloat("mana");
-        magicPower = nbt.getFloat("magicPower");
-        agility = nbt.getFloat("agility");
-        sanation = nbt.getFloat("sanation");
+        strength = nbt.getInt("strength");
+        ability = nbt.getInt("ability");
+        resistance = nbt.getInt("resistance");
+        mana = nbt.getInt("mana");
+        currentMana = nbt.getFloat("currentMana");
+        magicPower = nbt.getInt("magicPower");
+        agility = nbt.getInt("agility");
+        sanation = nbt.getInt("sanation");
         playerClass = PlayerClass.valueOf(nbt.getString("playerClass"));
+    }
+
+    public CompoundTag getNBT(){
+
+        CompoundTag nbt = new CompoundTag();
+
+        nbt.putInt("level", lvl);
+        nbt.putFloat("health", health);
+        nbt.putInt("strength", strength);
+        nbt.putInt("ability", ability);
+        nbt.putInt("resistance", resistance);
+        nbt.putInt("mana", mana);
+        nbt.putFloat("currentMana", currentMana);
+        nbt.putInt("magicPower", magicPower);
+        nbt.putInt("agility", agility);
+        nbt.putInt("sanation", sanation);
+        nbt.putString("playerClass", playerClass.toString());
+
+        return nbt;
     }
 }

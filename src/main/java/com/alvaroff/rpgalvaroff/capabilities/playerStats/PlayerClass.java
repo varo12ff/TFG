@@ -1,7 +1,7 @@
 package com.alvaroff.rpgalvaroff.capabilities.playerStats;
 
 public enum PlayerClass {
-    GERRERO,
+    GUERRERO,
     MAGO,
     NINJA,
     CLERIGO,

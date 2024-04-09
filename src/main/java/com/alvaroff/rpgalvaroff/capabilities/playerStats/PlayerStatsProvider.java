@@ -16,6 +16,7 @@ public class PlayerStatsProvider implements ICapabilityProvider, INBTSerializabl
     public PlayerStatsProvider(){
         createPlayerStats();
     }
+
     public static Capability<PlayerStats> PLAYER_STATS = CapabilityManager.get(new CapabilityToken<PlayerStats>() {});
     private PlayerStats lvl = null;
     private final LazyOptional<PlayerStats> optional = LazyOptional.of(this::createPlayerStats);

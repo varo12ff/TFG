@@ -34,7 +34,6 @@ public class EndDungeonOrbD extends Item {
     public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand){
         if(!world.isClientSide()){
             if(world.dimension().equals(DimensionInit.RPGDIM_KEY)) {
-                //player.sendMessage(Component.nullToEmpty("estas en la dimension"), player.getUUID());
                 BlockPos playerPos = player.blockPosition();
                 DimensionUtils.teleportToDimension((ServerPlayer) player, Level.OVERWORLD, playerPos);
                 player.displayClientMessage(new TranslatableComponent("msg.deleteDungeon"), true);
