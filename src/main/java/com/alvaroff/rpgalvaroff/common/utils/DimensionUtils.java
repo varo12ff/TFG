@@ -6,6 +6,8 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockState;
+import java.util.Random;
 
 public class DimensionUtils {
     public static void teleportToDimension(ServerPlayer player, ResourceKey<Level> dimension, BlockPos dest){
@@ -34,15 +36,39 @@ public class DimensionUtils {
         }
     }
 
-    public static void generateFlat(Level world, int centerX, int centerY, int centerZ) {
-        int halfSize = 2; // Ajusta el tamaño del cuadrado según sea necesario
+    public static void generateStartRoom(Level world, int centerX, int centerY, int centerZ, int halfSize) {
+        BlockState stone = Blocks.STONE.defaultBlockState();
+        BlockState glowstone = Blocks.GLOWSTONE.defaultBlockState();
+        BlockState obsidian = Blocks.OBSIDIAN.defaultBlockState();
+        BlockState air = Blocks.AIR.defaultBlockState();
+        Random random = new Random();
+
         int startX = centerX - halfSize;
-        int startY = centerY;
+        int startY = centerY - halfSize;
         int startZ = centerZ - halfSize;
 
-        for (int i = startX; i < startX + 5; i++) {
-            for (int j = startZ; j < startZ + 5; j++) {
-                world.setBlockAndUpdate(new BlockPos(i, startY, j), Blocks.STONE.defaultBlockState());
+        int obsidianFace = random.nextInt(4);
+
+        int centerFaceX = centerX + (obsidianFace == 1 ? halfSize : obsidianFace == 3 ? -halfSize : 0);
+        int centerFaceZ = centerZ + (obsidianFace == 0 ? -halfSize : obsidianFace == 2 ? halfSize : 0);
+
+        for (int x = 0; x <= 2 * halfSize; x++) {
+            for (int y = 0; y <= 2 * halfSize; y++) {
+                for (int z = 0; z <= 2 * halfSize; z++) {
+                    BlockPos pos = new BlockPos(startX + x, startY + y, startZ + z);
+
+                    if (y == 0 && (x == z || x + z == 2 * halfSize)) {
+                        world.setBlock(pos, glowstone, 3);
+                    } else if (x == 0 || x == 2 * halfSize || y == 0 || y == 2 * halfSize || z == 0 || z == 2 * halfSize) {
+                        if (y == 2 && (x + startX == centerFaceX && z + startZ == centerFaceZ)) {
+                            world.setBlock(pos, obsidian, 3);
+                        } else {
+                            world.setBlock(pos, stone, 3);
+                        }
+                    } else {
+                        world.setBlock(pos, air, 3);
+                    }
+                }
             }
         }
     }

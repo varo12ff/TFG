@@ -43,20 +43,6 @@ public class Key extends Item {
         super(p);
     }
 
-    /*@Override
-    public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand){
-
-        if(world.isClientSide()){
-            ItemStack heldItem = player.getItemInHand(hand);
-
-            if(heldItem.getItem() == this){
-                player.displayClientMessage(new TextComponent("hola"), true);
-            }
-        }
-
-        return InteractionResultHolder.pass(player.getItemInHand(hand));
-    }*/
-
     @Override
     public InteractionResult useOn(UseOnContext context) {
         Level world = context.getLevel();
