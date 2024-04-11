@@ -68,7 +68,7 @@ public class ServerEvents {
 
                 DimensionUtils.clearBlocksInCubeCentered(world, 0, 0, 0, 20);
 
-                DimensionUtils.generateFlat(world, 0, 0, 0);
+                DimensionUtils.generateStartRoom(world, 0, 0, 0, 5);
 
                 world.getCapability(DungeonStateProvider.DUNGEON_STATUS).ifPresent(active -> {
                     active.setStatus(true);
