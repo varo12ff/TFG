@@ -36,6 +36,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import static com.alvaroff.rpgalvaroff.common.blocks.BlockInit.LOCK;
+import static com.alvaroff.rpgalvaroff.common.utils.DimensionUtils.handleDimensionEntry;
 import static com.alvaroff.rpgalvaroff.common.world.dimension.DimensionInit.RPGDIM_KEY;
 
 public class Key extends Item {
@@ -53,8 +54,7 @@ public class Key extends Item {
             BlockState blockState = world.getBlockState(pos);
 
             if (blockState.getBlock() == LOCK.get()){
-                BlockPos playerPos = player.blockPosition();
-                DimensionUtils.teleportToDimension((ServerPlayer) player, RPGDIM_KEY, playerPos);
+                handleDimensionEntry((ServerPlayer) player);
             }
         }
 
