@@ -1,21 +1,40 @@
 package com.alvaroff.rpgalvaroff.common.utils;
 
+import com.alvaroff.rpgalvaroff.common.world.dimension.DimensionInit;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.dimension.DimensionType;
+
 import java.util.Random;
 
-public class DimensionUtils {
-    public static void teleportToDimension(ServerPlayer player, ResourceKey<Level> dimension, BlockPos dest){
-        ServerLevel destlevel = player.server.getLevel(dimension);
+import static com.alvaroff.rpgalvaroff.common.world.dimension.DimensionInit.RPGDIM_KEY;
 
-        if(destlevel != null){
-            player.teleportTo(destlevel, 0, 2, 0,
-                    player.yRotO, player.xRotO);
+public class DimensionUtils {
+
+    public static void handleDimensionEntry(ServerPlayer player) {
+
+        CompoundTag playerData = player.getPersistentData();
+        CompoundTag data = playerData.getCompound("PlayerData");
+        data.putLong("LastOverworldPosition", player.getOnPos().asLong());
+        playerData.put("PlayerData", data);
+        player.teleportTo(player.server.getLevel(RPGDIM_KEY), 0, 2, 0, player.yRotO, player.xRotO);
+    }
+
+    public static void handleDimensionExit(ServerPlayer player) {
+        CompoundTag playerData = player.getPersistentData();
+        if (playerData.contains("PlayerData", 10)) {
+            CompoundTag data = playerData.getCompound("PlayerData");
+            if (data.contains("LastOverworldPosition")) {
+                long posLong = data.getLong("LastOverworldPosition");
+                BlockPos pos = BlockPos.of(posLong);
+                player.teleportTo(player.server.getLevel(Level.OVERWORLD), pos.getX(), pos.getY() + 1, pos.getZ(), player.yRotO, player.xRotO);
+            }
         }
     }
 

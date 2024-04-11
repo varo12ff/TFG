@@ -11,6 +11,7 @@ import com.alvaroff.rpgalvaroff.capabilities.dungeonState.DungeonStateProvider;
 import com.sun.jna.platform.unix.X11;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -63,7 +64,6 @@ public class ServerEvents {
 
 
         if (world.dimension().equals(DimensionInit.RPGDIM_KEY)) {
-            System.out.println(dungeonState);
             if(!dungeonState) {
 
                 DimensionUtils.clearBlocksInCubeCentered(world, 0, 0, 0, 20);

@@ -41,13 +41,10 @@ public class Escape_stone extends Item {
     public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand){
         if(!world.isClientSide()){
             if(world.dimension().equals(DimensionInit.RPGDIM_KEY)) {
-                //player.sendMessage(Component.nullToEmpty("estas en la dimension"), player.getUUID());
-                BlockPos playerPos = player.blockPosition();
-                DimensionUtils.teleportToDimension((ServerPlayer) player, Level.OVERWORLD, playerPos);
+                DimensionUtils.handleDimensionExit((ServerPlayer) player);
             }
             else {
                 player.displayClientMessage(new TranslatableComponent("msg.notuse"), true);
-                //player.sendMessage(Component.nullToEmpty("No puedes usar esto aquí."), player.getUUID());
             }
         }
         return InteractionResultHolder.pass(player.getItemInHand(hand));

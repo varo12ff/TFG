@@ -35,7 +35,7 @@ public class EndDungeonOrbD extends Item {
         if(!world.isClientSide()){
             if(world.dimension().equals(DimensionInit.RPGDIM_KEY)) {
                 BlockPos playerPos = player.blockPosition();
-                DimensionUtils.teleportToDimension((ServerPlayer) player, Level.OVERWORLD, playerPos);
+                DimensionUtils.handleDimensionExit((ServerPlayer) player);
                 player.displayClientMessage(new TranslatableComponent("msg.deleteDungeon"), true);
                 world.getCapability(DungeonStateProvider.DUNGEON_STATUS).ifPresent(active -> {
                     active.setStatus(false);
