@@ -32,16 +32,11 @@ public class ClientGUIS2CPacket {
     public boolean handle(Supplier<NetworkEvent.Context> supplier){
         NetworkEvent.Context context = supplier.get();
 
-            PlayerStats playerStats1 = new PlayerStats(playerStats.getInt("lvl"),
-                    playerStats.getFloat("health"),
-                    playerStats.getInt("strength"),
-                    playerStats.getInt("ability"),
-                    playerStats.getInt("resistance"),
-                    playerStats.getInt("mana"),
-                    playerStats.getInt("magicPower"),
-                    playerStats.getInt("agility"),
-                    playerStats.getInt("sanation"),
-                    PlayerClass.valueOf(playerStats.getString("playerClass")));
+            PlayerStats playerStats1 = new PlayerStats();
+            playerStats1.loadNBTData(playerStats);
+
+            //playerStats1.setXp(playerStats.getInt("xp"));
+            //layerStats1.setNextLvl(playerStats.getInt("nextLvl"));
 
             TranslatableComponent translationKey = new TranslatableComponent("gui.statsName");
             Minecraft.getInstance().setScreen(new RpgGUI(new TextComponent(translationKey.getString()), playerStats1));

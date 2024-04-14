@@ -129,8 +129,9 @@ public class RpgGUI extends Screen {
             this.drawCenteredString(poseStack, this.font, new TranslatableComponent("gui.magicPower").getString() + ": " + playerStats.getMagicPower(), this.width / 2, 170, 0xFFFFFF);
             this.drawCenteredString(poseStack, this.font, new TranslatableComponent("gui.agility").getString() + ": " + playerStats.getAgility(), this.width / 2, 190, 0xFFFFFF);
             this.drawCenteredString(poseStack, this.font, new TranslatableComponent("gui.sanation").getString() + ": " + playerStats.getSanation(), this.width / 2, 210, 0xFFFFFF);
-
-
+            this.drawCenteredString(poseStack, this.font, "Lvl: " + playerStats.getLevel(), this.width / 2, 230, 0xFFFFFF);
+            this.drawCenteredString(poseStack, this.font, "AP: " + playerStats.getAbilityPoints(), this.width / 2, 250, 0xFFFFFF);
+            this.drawCenteredString(poseStack, this.font, "XP: " + playerStats.getXp() + "/" + playerStats.getNextLvl(), this.width - 50, this.height - 20, 0xFFFFFF);
         }
         super.render(poseStack, mouseX, mouseY, partialTicks);
     }

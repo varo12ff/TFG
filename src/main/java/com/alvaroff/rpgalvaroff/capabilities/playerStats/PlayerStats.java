@@ -3,6 +3,18 @@ import net.minecraft.nbt.CompoundTag;
 
 public class PlayerStats {
     private int lvl;
+    private int xp;
+    private int nextLvl;
+
+    public int getAbilityPoints() {
+        return abilityPoints;
+    }
+
+    public void setAbilityPoints(int abilityPoints) {
+        this.abilityPoints = abilityPoints;
+    }
+
+    private int abilityPoints;
     private float health;
     private int strength;
     private int ability;
@@ -18,6 +30,9 @@ public class PlayerStats {
     public PlayerStats(){
 
         this.lvl = 0;
+        this.xp = 0;
+        this.nextLvl = 0;
+        this.abilityPoints = 0;
         this.health = 6.0f;
         this.strength = 0;
         this.ability = 0;
@@ -32,6 +47,9 @@ public class PlayerStats {
 
     public PlayerStats(int lvl, float health, int strength, int ability, int resistance, int mana, int magicPower, int agility, int sanation, PlayerClass playerClass) {
         this.lvl = lvl;
+        this.xp = 0;
+        this.nextLvl = lvl * 10;
+        this.abilityPoints = 0;
         this.health = health;
         this.strength = strength;
         this.ability = ability;
@@ -46,6 +64,30 @@ public class PlayerStats {
 
     public int getLevel(){
         return lvl;
+    }
+    public int getXp() {
+        return xp;
+    }
+
+    public void setXp(int xp) {
+        this.xp = xp;
+    }
+    public void addXp(int xp) {
+        this.xp += xp;
+        if(this.xp >= this.nextLvl){
+            this.lvl++;
+            this.xp = this.xp % this.nextLvl;
+            this.nextLvl *= 2;
+            this.abilityPoints++;
+        }
+    }
+
+    public int getNextLvl() {
+        return nextLvl;
+    }
+
+    public void setNextLvl(int nextLvl) {
+        this.nextLvl = nextLvl;
     }
 
     public float getHealth() {
@@ -133,6 +175,9 @@ public class PlayerStats {
     public void copyFrom(PlayerStats source){
 
         this.lvl = source.lvl;
+        this.xp = source.xp;
+        this.nextLvl = source.nextLvl;
+        this.abilityPoints = source.abilityPoints;
         this.health = source.health;
         this.strength = source.strength;
         this.ability = source.ability;
@@ -147,6 +192,9 @@ public class PlayerStats {
     public void saveNBTData(CompoundTag nbt){
 
         nbt.putInt("level", lvl);
+        nbt.putInt("xp", xp);
+        nbt.putInt("nextLvl", nextLvl);
+        nbt.putInt("abilityPoints", abilityPoints);
         nbt.putFloat("health", health);
         nbt.putInt("strength", strength);
         nbt.putInt("ability", ability);
@@ -162,6 +210,9 @@ public class PlayerStats {
     public void loadNBTData(CompoundTag nbt){
 
         lvl = nbt.getInt("level");
+        xp = nbt.getInt("xp");
+        nextLvl = nbt.getInt("nextLvl");
+        abilityPoints = nbt.getInt("abilityPoints");
         health = nbt.getFloat("health");
         strength = nbt.getInt("strength");
         ability = nbt.getInt("ability");
@@ -179,6 +230,9 @@ public class PlayerStats {
         CompoundTag nbt = new CompoundTag();
 
         nbt.putInt("level", lvl);
+        nbt.putInt("xp", xp);
+        nbt.putInt("nextLvl", nextLvl);
+        nbt.putInt("abilityPoints", abilityPoints);
         nbt.putFloat("health", health);
         nbt.putInt("strength", strength);
         nbt.putInt("ability", ability);
