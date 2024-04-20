@@ -9,6 +9,7 @@ import com.alvaroff.rpgalvaroff.common.world.dimension.DimensionInit;
 import com.alvaroff.rpgalvaroff.capabilities.dungeonState.DungeonState;
 import com.alvaroff.rpgalvaroff.capabilities.dungeonState.DungeonStateProvider;
 import com.sun.jna.platform.unix.X11;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
@@ -27,7 +28,10 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
+import java.util.Random;
 import java.util.UUID;
+
+import static com.alvaroff.rpgalvaroff.common.utils.DimensionUtils.generateProceduralRoom;
 
 @Mod.EventBusSubscriber(modid = RPGalvaroff.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class ServerEvents {
@@ -84,9 +88,11 @@ public class ServerEvents {
         if (world.dimension().equals(DimensionInit.RPGDIM_KEY)) {
             if(!dungeonState) {
 
-                DimensionUtils.clearBlocksInCubeCentered(world, 0, 0, 0, 20);
+                DimensionUtils.clearBlocksInCubeCentered(world, 0, 0, 0, 100);
 
                 DimensionUtils.generateStartRoom(world, 0, 0, 0, 5);
+                Random random = new Random();
+                generateProceduralRoom(world, new BlockPos(20, 0, 20), random);
 
                 world.getCapability(DungeonStateProvider.DUNGEON_STATUS).ifPresent(active -> {
                     active.setStatus(true);
