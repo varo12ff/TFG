@@ -23,6 +23,11 @@ public class BlockInit {
             () -> new Block(BlockBehaviour.Properties.of(Material.METAL)
                     .strength(9f)
             ), ModCreativeTab.MDD_BLOCK_TAB);
+
+    public static final RegistryObject<Block> UNLOCK_NEW_ROOM_BLOCK = registerBlock("unlock_new_room",
+            () -> new Block(BlockBehaviour.Properties.of(Material.METAL)
+                    .strength(9f)
+            ), ModCreativeTab.MDD_BLOCK_TAB);
     private static <T extends Block> RegistryObject<T> registerBlock(String name, Supplier<T> block, CreativeModeTab tab){
         RegistryObject<T> toReturn = BLOCKS.register(name,block);
         registerBlockItem(name, toReturn,tab);

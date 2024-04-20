@@ -1,5 +1,6 @@
 package com.alvaroff.rpgalvaroff.common.utils;
 
+import com.alvaroff.rpgalvaroff.common.blocks.BlockInit;
 import com.alvaroff.rpgalvaroff.common.world.dimension.DimensionInit;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -58,7 +59,7 @@ public class DimensionUtils {
     public static void generateStartRoom(Level world, int centerX, int centerY, int centerZ, int halfSize) {
         BlockState stone = Blocks.STONE.defaultBlockState();
         BlockState glowstone = Blocks.GLOWSTONE.defaultBlockState();
-        BlockState obsidian = Blocks.OBSIDIAN.defaultBlockState();
+        BlockState obsidian = BlockInit.UNLOCK_NEW_ROOM_BLOCK.get().defaultBlockState();
         BlockState air = Blocks.AIR.defaultBlockState();
         Random random = new Random();
 
