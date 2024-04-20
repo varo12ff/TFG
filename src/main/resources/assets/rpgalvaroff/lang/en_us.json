@@ -1,10 +1,12 @@
 {
   "item.rpgalvaroff.key": "Key",
+  "item.rpgalvaroff.key_d": "Key Tier D",
   "item.rpgalvaroff.escape_stone": "Escape Stone",
   "item.rpgalvaroff.end_dungeon_orb_d": "Dimension Tier D Eliminator",
   "item.rpgalvaroff.debugger": "Debugger",
 
   "block.rpgalvaroff.lock": "Lock",
+  "block.rpgalvaroff.unlock_new_room": "New room block",
 
   "item.rpgalvaroff.escape_stone.info": "This stone allows you to exit the dungeon dimension",
   "item.rpgalvaroff.end_dungeon_orb_d.info": "This stone allows you to exit the dungeon dimension and conclude it.",

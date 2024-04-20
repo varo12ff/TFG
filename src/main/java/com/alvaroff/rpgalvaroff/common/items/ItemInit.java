@@ -5,6 +5,7 @@ import com.alvaroff.rpgalvaroff.common.items.custom.Debugger;
 import com.alvaroff.rpgalvaroff.common.items.custom.EndDungeonOrbD;
 import com.alvaroff.rpgalvaroff.common.items.custom.Escape_stone;
 import com.alvaroff.rpgalvaroff.common.items.custom.keys.Key;
+import com.alvaroff.rpgalvaroff.common.items.custom.keys.Key_D;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -16,6 +17,13 @@ public class ItemInit {
     public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, RPGalvaroff.MOD_ID);
 
     public static final RegistryObject<Item> KEY = ITEMS.register("key", () -> new Key(
+            new Item.Properties()
+                    .tab(ModCreativeTab.MDD_KEY_TAB)
+                    .rarity(Rarity.COMMON)
+                    .stacksTo(1)
+    ));
+
+    public static final RegistryObject<Item> KEY_D = ITEMS.register("key_d", () -> new Key_D(
             new Item.Properties()
                     .tab(ModCreativeTab.MDD_KEY_TAB)
                     .rarity(Rarity.COMMON)
