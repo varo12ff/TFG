@@ -31,7 +31,6 @@ public class Key_D extends Item {
 
         if(!world.isClientSide && player != null){
             BlockState blockState = world.getBlockState(pos);
-            System.out.println("si");
             if (blockState.getBlock() == UNLOCK_NEW_ROOM_BLOCK.get()){
                 Random random = new Random();
                 generateProceduralRoom(world, pos, random, faceClicked);

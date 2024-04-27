@@ -3,6 +3,8 @@ package com.alvaroff.rpgalvaroff.common.utils;
 import com.alvaroff.rpgalvaroff.common.blocks.BlockInit;
 import com.alvaroff.rpgalvaroff.common.world.dimension.DimensionInit;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
@@ -95,12 +97,13 @@ public class DimensionUtils {
         }
     }
 
-    public static void generateProceduralRoom(Level world, BlockPos basePos, Random random) {
+    /*public static void generateProceduralRoom(Level world, BlockPos basePos, Random random) {
         int width = 5 + random.nextInt(6); // Ancho de la sala entre 5 y 10
         int height = 4 + random.nextInt(3); // Altura de la sala entre 4 y 6
         int depth = 5 + random.nextInt(6); // Profundidad de la sala entre 5 y 10
         int passageWidth = 3; // Ancho del pasillo fijo
         int passageDepth = 3; // Longitud del pasillo
+
 
         // Generar sala hueca con patrón procedural
         for (int x = 0; x < width; x++) {
@@ -137,5 +140,126 @@ public class DimensionUtils {
                 }
             }
         }
+    }*/
+    //segunda version
+    /*public static void generateProceduralRoom(Level world, BlockPos clickedPos, Random random, Direction facing) {
+        int width = 5 + random.nextInt(6); // Ancho de la sala entre 5 y 10
+        int height = 4 + random.nextInt(3); // Altura de la sala entre 4 y 6
+        int depth = 5 + random.nextInt(6); // Profundidad de la sala entre 5 y 10
+        int passageWidth = 3; // Ancho del pasillo fijo
+        int passageDepth = 3; // Profundidad del pasillo
+
+        // Determina la posición base ajustada para que el bloque clickeado esté centrado en la cara de la sala
+        BlockPos basePos = clickedPos.relative(facing.getOpposite(), depth);
+
+        // Ajustar basePos horizontalmente para centrar el bloque clickeado
+        if (facing.getAxis() == Direction.Axis.Z) {
+            basePos = basePos.west(width / 2);
+        } else if (facing.getAxis() == Direction.Axis.X) {
+            basePos = basePos.north(width / 2);
+        }
+
+        // Generar sala hueca con patrón procedural
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                for (int z = 0; z < depth; z++) {
+                    boolean isEdge = x == 0 || x == width - 1 || y == 0 || y == height - 1 || z == 0 || z == depth - 1;
+                    if (isEdge) {
+                        Block block = random.nextFloat() > 0.7 ? Blocks.COBBLESTONE : Blocks.STONE;
+                        BlockPos pos = basePos.offset(x, y, z);
+                        world.setBlock(pos, block.defaultBlockState(), 3);
+                    }
+                }
+            }
+        }
+
+        // Calcula la posición de inicio del pasillo directamente desde el bloque clickeado
+        BlockPos passageStart = clickedPos.relative(facing.getOpposite());
+
+        // Generar pasillo
+        for (int x = 0; x < passageWidth; x++) {
+            for (int y = 0; y < height; y++) {
+                for (int z = 0; z < passageDepth; z++) {
+                    boolean isEdge = x == 0 || x == passageWidth - 1 || y == 0 || y == height - 1 || z == 0 || z == passageDepth - 1;
+                    if (isEdge) {
+                        Block block = random.nextFloat() > 0.7 ? Blocks.COBBLESTONE : Blocks.STONE_BRICKS;
+                        BlockPos pos = passageStart.offset(x - passageWidth / 2 + 1, y, z);
+                        world.setBlock(pos, block.defaultBlockState(), 3);
+                    }
+                }
+            }
+        }
+    }*/
+
+    public static void generateProceduralRoom(Level world, BlockPos clickedPos, Random random, Direction facing) {
+        int width = 5 + random.nextInt(6); // Ancho de la sala entre 5 y 10
+        int height = 5 + random.nextInt(3); // Altura de la sala entre 5 y 6
+        int depth = 5 + random.nextInt(6); // Profundidad de la sala entre 5 y 10
+        int passageWidth = 3; // Ancho del pasillo fijo
+        int passageDepth = 3; // Profundidad del pasillo
+
+        // Ajusta la posición base de la sala para que comience justo al final del pasillo
+        /*BlockPos basePos = clickedPos.relative(facing.getOpposite(), passageDepth + 1);
+
+        // Ajustar basePos horizontalmente para centrar el bloque clickeado en la entrada de la sala
+        if (facing.getAxis() == Direction.Axis.Z) {
+            basePos = basePos.west((width - 1) / 2);
+        } else if (facing.getAxis() == Direction.Axis.X) {
+            basePos = basePos.north((width - 1) / 2);
+        }
+
+        // Generar sala hueca con patrón procedural
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                for (int z = 0; z < depth; z++) {
+                    boolean isEdge = x == 0 || x == width - 1 || y == 0 || y == height - 1 || z == 0 || z == depth - 1;
+                    if (isEdge) {
+                        Block block = random.nextFloat() > 0.7 ? Blocks.COBBLESTONE : Blocks.STONE;
+                        BlockPos pos = basePos.offset(x, y, z);
+                        world.setBlock(pos, block.defaultBlockState(), 3);
+                    }
+                }
+            }
+        }*/
+
+
+
+        // Posición inicial del pasillo centrada con el bloque clickeado
+        BlockPos passageStart = clickedPos.relative(facing.getOpposite(), 2).below(2);
+        passageStart = passageStart.relative(facing.getClockWise(), -(passageWidth / 2));
+
+        // Generar el pasillo
+        for (int x = 0; x < passageWidth; x++) {
+            for (int y = 0; y < height; y++) {
+                for (int z = 0; z < passageDepth; z++) {
+                    boolean isEdge = x == 0 || x == passageWidth - 1 || y == 0 || y == height - 1;
+                    BlockPos pos = passageStart.relative(facing.getClockWise(), x).above(y).relative(facing, z);
+
+                    if (isEdge) {
+                        Block block = random.nextFloat() > 0.7 ? Blocks.COBBLESTONE : Blocks.STONE_BRICKS;
+                        world.setBlock(pos, block.defaultBlockState(), 3);
+                    }
+                    else {
+                        world.removeBlock(pos, false);
+                    }
+                }
+            }
+        }
+    }
+
+    private static boolean isEdge(int x, int y, int z, int passageWidth, int height, int passageDepth, Direction facing) {
+        // General edge conditions
+        boolean isVerticalEdge = y == 0 || y == height - 1;
+        boolean isHorizontalEdge = false;
+
+        if (facing == Direction.NORTH || facing == Direction.SOUTH) {
+            // For north and south, the depth is along z-axis
+            isHorizontalEdge = x == 0 || x == passageWidth - 1;
+        } else if (facing == Direction.EAST || facing == Direction.WEST) {
+            // For east and west, the depth is along x-axis
+            isHorizontalEdge = x == 0 || x == passageWidth - 1;
+        }
+
+        return isVerticalEdge || isHorizontalEdge;
     }
 }

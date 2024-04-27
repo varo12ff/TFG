@@ -92,7 +92,7 @@ public class ServerEvents {
 
                 DimensionUtils.generateStartRoom(world, 0, 0, 0, 5);
                 Random random = new Random();
-                generateProceduralRoom(world, new BlockPos(20, 0, 20), random);
+                //generateProceduralRoom(world, new BlockPos(20, 0, 20), random);
 
                 world.getCapability(DungeonStateProvider.DUNGEON_STATUS).ifPresent(active -> {
                     active.setStatus(true);
