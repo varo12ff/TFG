@@ -97,60 +97,15 @@ public class DimensionUtils {
         }
     }
 
-    /*public static void generateProceduralRoom(Level world, BlockPos basePos, Random random) {
+    public static void generateProceduralRoom(Level world, BlockPos clickedPos, Random random, Direction facing) {
         int width = 5 + random.nextInt(6); // Ancho de la sala entre 5 y 10
-        int height = 4 + random.nextInt(3); // Altura de la sala entre 4 y 6
-        int depth = 5 + random.nextInt(6); // Profundidad de la sala entre 5 y 10
-        int passageWidth = 3; // Ancho del pasillo fijo
-        int passageDepth = 3; // Longitud del pasillo
-
-
-        // Generar sala hueca con patrón procedural
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
-                for (int z = 0; z < depth; z++) {
-                    // Comprobar si el bloque actual está en el borde
-                    boolean isEdge = x == 0 || x == width - 1 || y == 0 || y == height - 1 || z == 0 || z == depth - 1;
-                    // Comprobar si el bloque actual está en la posición del hueco para el pasillo
-                    boolean isPassageOpening = (z == depth - 1 && x >= (width - passageWidth + 2) / 2 && x < (width + passageWidth - 2) / 2) && y > 0 && y < height - 1;
-                    if (isEdge && !isPassageOpening) {
-                        Block block = random.nextFloat() > 0.7 ? Blocks.COBBLESTONE : Blocks.STONE; // 30% de posibilidad de cobblestone, 70% piedra
-                        BlockPos pos = basePos.offset(x, y, z);
-                        world.setBlock(pos, block.defaultBlockState(), 3);
-                    }
-                }
-            }
-        }
-
-        // Generar pasillo hueco centrado en la cara norte con patrón procedural
-
-        // Calcula el inicio del pasillo para que esté centrado en la cara norte de la sala
-        BlockPos passageStart = basePos.offset((width - passageWidth) / 2, 0, depth);
-
-        for (int x = 0; x < passageWidth; x++) {
-            for (int y = 0; y < height; y++) {
-                for (int z = 0; z < passageDepth; z++) {
-                    // Colocar bloques solo en los bordes del pasillo
-                    boolean isEdge = x != passageWidth / 2 || y == 0 || y == height - 1;
-                    if (isEdge) {
-                        Block block = random.nextFloat() > 0.7 ? Blocks.COBBLESTONE : Blocks.STONE_BRICKS; // 30% de posibilidad de cobblestone, 70% piedra
-                        BlockPos pos = passageStart.offset(x, y, z);
-                        world.setBlock(pos, block.defaultBlockState(), 3); // Material del pasillo
-                    }
-                }
-            }
-        }
-    }*/
-    //segunda version
-    /*public static void generateProceduralRoom(Level world, BlockPos clickedPos, Random random, Direction facing) {
-        int width = 5 + random.nextInt(6); // Ancho de la sala entre 5 y 10
-        int height = 4 + random.nextInt(3); // Altura de la sala entre 4 y 6
+        int height = 5 + random.nextInt(3); // Altura de la sala entre 5 y 6
         int depth = 5 + random.nextInt(6); // Profundidad de la sala entre 5 y 10
         int passageWidth = 3; // Ancho del pasillo fijo
         int passageDepth = 3; // Profundidad del pasillo
 
         // Determina la posición base ajustada para que el bloque clickeado esté centrado en la cara de la sala
-        BlockPos basePos = clickedPos.relative(facing.getOpposite(), depth);
+        BlockPos basePos = clickedPos.relative(facing.getOpposite(), passageDepth - 1).below(2);
 
         // Ajustar basePos horizontalmente para centrar el bloque clickeado
         if (facing.getAxis() == Direction.Axis.Z) {
@@ -159,53 +114,11 @@ public class DimensionUtils {
             basePos = basePos.north(width / 2);
         }
 
-        // Generar sala hueca con patrón procedural
-        for (int x = 0; x < width; x++) {
-            for (int y = 0; y < height; y++) {
-                for (int z = 0; z < depth; z++) {
-                    boolean isEdge = x == 0 || x == width - 1 || y == 0 || y == height - 1 || z == 0 || z == depth - 1;
-                    if (isEdge) {
-                        Block block = random.nextFloat() > 0.7 ? Blocks.COBBLESTONE : Blocks.STONE;
-                        BlockPos pos = basePos.offset(x, y, z);
-                        world.setBlock(pos, block.defaultBlockState(), 3);
-                    }
-                }
-            }
+        if (facing.getOpposite() == Direction.NORTH){
+            basePos = basePos.north(depth - 1);
         }
-
-        // Calcula la posición de inicio del pasillo directamente desde el bloque clickeado
-        BlockPos passageStart = clickedPos.relative(facing.getOpposite());
-
-        // Generar pasillo
-        for (int x = 0; x < passageWidth; x++) {
-            for (int y = 0; y < height; y++) {
-                for (int z = 0; z < passageDepth; z++) {
-                    boolean isEdge = x == 0 || x == passageWidth - 1 || y == 0 || y == height - 1 || z == 0 || z == passageDepth - 1;
-                    if (isEdge) {
-                        Block block = random.nextFloat() > 0.7 ? Blocks.COBBLESTONE : Blocks.STONE_BRICKS;
-                        BlockPos pos = passageStart.offset(x - passageWidth / 2 + 1, y, z);
-                        world.setBlock(pos, block.defaultBlockState(), 3);
-                    }
-                }
-            }
-        }
-    }*/
-
-    public static void generateProceduralRoom(Level world, BlockPos clickedPos, Random random, Direction facing) {
-        int width = 5 + random.nextInt(6); // Ancho de la sala entre 5 y 10
-        int height = 5 + random.nextInt(3); // Altura de la sala entre 5 y 6
-        int depth = 5 + random.nextInt(6); // Profundidad de la sala entre 5 y 10
-        int passageWidth = 3; // Ancho del pasillo fijo
-        int passageDepth = 3; // Profundidad del pasillo
-
-        // Ajusta la posición base de la sala para que comience justo al final del pasillo
-        /*BlockPos basePos = clickedPos.relative(facing.getOpposite(), passageDepth + 1);
-
-        // Ajustar basePos horizontalmente para centrar el bloque clickeado en la entrada de la sala
-        if (facing.getAxis() == Direction.Axis.Z) {
-            basePos = basePos.west((width - 1) / 2);
-        } else if (facing.getAxis() == Direction.Axis.X) {
-            basePos = basePos.north((width - 1) / 2);
+        else if (facing.getOpposite() == Direction.WEST) {
+            basePos = basePos.west(width - 1); // Mover al máximo hacia atrás en el eje Oeste
         }
 
         // Generar sala hueca con patrón procedural
@@ -220,9 +133,9 @@ public class DimensionUtils {
                     }
                 }
             }
-        }*/
+        }
 
-
+//////////////////////////////////////////////////////////////////////////////////////////////////////
 
         // Posición inicial del pasillo centrada con el bloque clickeado
         BlockPos passageStart = clickedPos.relative(facing.getOpposite(), 2).below(2);
@@ -245,21 +158,5 @@ public class DimensionUtils {
                 }
             }
         }
-    }
-
-    private static boolean isEdge(int x, int y, int z, int passageWidth, int height, int passageDepth, Direction facing) {
-        // General edge conditions
-        boolean isVerticalEdge = y == 0 || y == height - 1;
-        boolean isHorizontalEdge = false;
-
-        if (facing == Direction.NORTH || facing == Direction.SOUTH) {
-            // For north and south, the depth is along z-axis
-            isHorizontalEdge = x == 0 || x == passageWidth - 1;
-        } else if (facing == Direction.EAST || facing == Direction.WEST) {
-            // For east and west, the depth is along x-axis
-            isHorizontalEdge = x == 0 || x == passageWidth - 1;
-        }
-
-        return isVerticalEdge || isHorizontalEdge;
     }
 }
