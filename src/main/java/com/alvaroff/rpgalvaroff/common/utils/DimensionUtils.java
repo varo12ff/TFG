@@ -82,7 +82,8 @@ public class DimensionUtils {
 
                     if (y == 0 && (x == z || x + z == 2 * halfSize)) {
                         world.setBlock(pos, glowstone, 3);
-                    } else if (x == 0 || x == 2 * halfSize || y == 0 || y == 2 * halfSize || z == 0 || z == 2 * halfSize) {
+                    }
+                    else if (x == 0 || x == 2 * halfSize || y == 0 || y == 2 * halfSize || z == 0 || z == 2 * halfSize) {
                         if (y == 2 && (x + startX == centerFaceX && z + startZ == centerFaceZ)) {
                             world.setBlock(pos, lock, 3);
                         } else {
@@ -98,9 +99,9 @@ public class DimensionUtils {
     }
 
     public static void generateProceduralRoom(Level world, BlockPos clickedPos, Random random, Direction facing) {
-        int width = 5 + random.nextInt(6); // Ancho de la sala entre 5 y 10
-        int height = 5 + random.nextInt(3); // Altura de la sala entre 5 y 6
-        int depth = 5 + random.nextInt(6); // Profundidad de la sala entre 5 y 10
+        int width = 8 + random.nextInt(12); // Ancho de la sala entre 8 y 20
+        int height = 5 + random.nextInt(3); // Altura de la sala entre 5 y 8
+        int depth = 8 + random.nextInt(12); // Profundidad de la sala entre 8 y 20
         int passageWidth = 3; // Ancho del pasillo fijo
         int passageDepth = 3; // Profundidad del pasillo
 
@@ -127,15 +128,21 @@ public class DimensionUtils {
                 for (int z = 0; z < depth; z++) {
                     boolean isEdge = x == 0 || x == width - 1 || y == 0 || y == height - 1 || z == 0 || z == depth - 1;
                     if (isEdge) {
-                        Block block = random.nextFloat() > 0.7 ? Blocks.COBBLESTONE : Blocks.STONE;
                         BlockPos pos = basePos.offset(x, y, z);
-                        world.setBlock(pos, block.defaultBlockState(), 3);
+                        if (y == 0) {
+                            Block block = random.nextFloat() > 0.7 ? Blocks.GLOWSTONE : Blocks.STONE;
+
+                            world.setBlock(pos, block.defaultBlockState(), 3);
+                        }
+                        else {
+                            Block block = random.nextFloat() > 0.7 ? Blocks.COBBLESTONE : Blocks.STONE;
+
+                            world.setBlock(pos, block.defaultBlockState(), 3);
+                        }
                     }
                 }
             }
         }
-
-//////////////////////////////////////////////////////////////////////////////////////////////////////
 
         // Posición inicial del pasillo centrada con el bloque clickeado
         BlockPos passageStart = clickedPos.relative(facing.getOpposite(), 2).below(2);
