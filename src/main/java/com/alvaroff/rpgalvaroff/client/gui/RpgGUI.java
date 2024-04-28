@@ -110,6 +110,35 @@ public class RpgGUI extends Screen {
         }));
     }
 
+    private void drawAddButton(String stat){
+        if(stat.equals("health")) {
+            this.addRenderableWidget(new Button(this.width / 2 + 50, 70 - 5, 15, 15, new TextComponent("+"), button -> {
+                if (playerStats.getAbilityPoints() > 0) {
+                    playerStats.addHealth();
+                    CompoundTag newPlayerStats = new CompoundTag();
+
+                    playerStats.saveNBTData(newPlayerStats);
+                    ModMessages.sendToServer(new PlayerStatsC2SPacket(newPlayerStats));
+                } else {
+                    Minecraft.getInstance().player.sendMessage(new TextComponent("No tienes suficientes puntos de abilidad."), Minecraft.getInstance().player.getUUID());
+                }
+            }));
+        }
+        else if(stat.equals("strenght")){
+            this.addRenderableWidget(new Button(this.width / 2 + 50, 90 - 5, 15, 15, new TextComponent("+"), button -> {
+                if (playerStats.getAbilityPoints() > 0) {
+                    playerStats.addStrength();
+                    CompoundTag newPlayerStats = new CompoundTag();
+
+                    playerStats.saveNBTData(newPlayerStats);
+                    ModMessages.sendToServer(new PlayerStatsC2SPacket(newPlayerStats));
+                } else {
+                    Minecraft.getInstance().player.sendMessage(new TextComponent("No tienes suficientes puntos de abilidad."), Minecraft.getInstance().player.getUUID());
+                }
+            }));
+        }
+    }
+
     @Override
     public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
         this.renderBackground(poseStack);
@@ -121,17 +150,115 @@ public class RpgGUI extends Screen {
 
         } else {
             this.drawCenteredString(poseStack, this.font, new TranslatableComponent("gui.class").getString() + ": " + playerStats.getPlayerClass().toString(), this.width / 2, 50, 0xFFFFFF);
-            this.drawCenteredString(poseStack, this.font, new TranslatableComponent("gui.health").getString() + ": " + playerStats.getHealth(), this.width / 2, 70, 0xFFFFFF);
+            this.drawCenteredString(poseStack, this.font, new TranslatableComponent("gui.health").getString() + ": " + ((int)playerStats.getHealth() / 2), this.width / 2, 70, 0xFFFFFF);
+            this.addRenderableWidget(new Button(this.width / 2 + 50, 70 - 5, 15, 15, new TextComponent("+"), button -> {
+                if (playerStats.getAbilityPoints() > 0) {
+                    playerStats.addHealth();
+                    CompoundTag newPlayerStats = new CompoundTag();
+
+                    playerStats.saveNBTData(newPlayerStats);
+                    ModMessages.sendToServer(new PlayerStatsC2SPacket(newPlayerStats));
+                } else {
+                    Minecraft.getInstance().player.sendMessage(new TextComponent("No tienes suficientes puntos de abilidad."), Minecraft.getInstance().player.getUUID());
+                }
+            }));
+
             this.drawCenteredString(poseStack, this.font, new TranslatableComponent("gui.strenght").getString() + ": " + playerStats.getStrength(), this.width / 2, 90, 0xFFFFFF);
+            this.addRenderableWidget(new Button(this.width / 2 + 50, 90 - 5, 15, 15, new TextComponent("+"), button -> {
+                if (playerStats.getAbilityPoints() > 0) {
+                    playerStats.addStrength();
+                    CompoundTag newPlayerStats = new CompoundTag();
+
+                    playerStats.saveNBTData(newPlayerStats);
+                    ModMessages.sendToServer(new PlayerStatsC2SPacket(newPlayerStats));
+                } else {
+                    Minecraft.getInstance().player.sendMessage(new TextComponent("No tienes suficientes puntos de abilidad."), Minecraft.getInstance().player.getUUID());
+                }
+            }));
+
             this.drawCenteredString(poseStack, this.font, new TranslatableComponent("gui.ability").getString() + ": " + playerStats.getAbility(), this.width / 2, 110, 0xFFFFFF);
+            this.addRenderableWidget(new Button(this.width / 2 + 50, 110 - 5, 15, 15, new TextComponent("+"), button -> {
+                if (playerStats.getAbilityPoints() > 0) {
+                    playerStats.addAbility();
+                    CompoundTag newPlayerStats = new CompoundTag();
+
+                    playerStats.saveNBTData(newPlayerStats);
+                    ModMessages.sendToServer(new PlayerStatsC2SPacket(newPlayerStats));
+                } else {
+                    Minecraft.getInstance().player.sendMessage(new TextComponent("No tienes suficientes puntos de abilidad."), Minecraft.getInstance().player.getUUID());
+                }
+            }));
+
             this.drawCenteredString(poseStack, this.font, new TranslatableComponent("gui.resistance").getString() + ": " + playerStats.getResistance(), this.width / 2, 130, 0xFFFFFF);
+            this.addRenderableWidget(new Button(this.width / 2 + 50, 130 - 5, 15, 15, new TextComponent("+"), button -> {
+                if (playerStats.getAbilityPoints() > 0) {
+                    playerStats.addResistance();
+                    CompoundTag newPlayerStats = new CompoundTag();
+
+                    playerStats.saveNBTData(newPlayerStats);
+                    ModMessages.sendToServer(new PlayerStatsC2SPacket(newPlayerStats));
+                } else {
+                    Minecraft.getInstance().player.sendMessage(new TextComponent("No tienes suficientes puntos de abilidad."), Minecraft.getInstance().player.getUUID());
+                }
+            }));
+
             this.drawCenteredString(poseStack, this.font, new TranslatableComponent("gui.mana").getString() + ": " + playerStats.getMana(), this.width / 2, 150, 0xFFFFFF);
+            this.addRenderableWidget(new Button(this.width / 2 + 50, 150 - 5, 15, 15, new TextComponent("+"), button -> {
+                if (playerStats.getAbilityPoints() > 0) {
+                    playerStats.addMana();
+                    CompoundTag newPlayerStats = new CompoundTag();
+
+                    playerStats.saveNBTData(newPlayerStats);
+                    ModMessages.sendToServer(new PlayerStatsC2SPacket(newPlayerStats));
+                } else {
+                    Minecraft.getInstance().player.sendMessage(new TextComponent("No tienes suficientes puntos de abilidad."), Minecraft.getInstance().player.getUUID());
+                }
+            }));
+
             this.drawCenteredString(poseStack, this.font, new TranslatableComponent("gui.magicPower").getString() + ": " + playerStats.getMagicPower(), this.width / 2, 170, 0xFFFFFF);
+            this.addRenderableWidget(new Button(this.width / 2 + 50, 170 - 5, 15, 15, new TextComponent("+"), button -> {
+                if (playerStats.getAbilityPoints() > 0) {
+                    playerStats.addMagicPower();
+                    CompoundTag newPlayerStats = new CompoundTag();
+
+                    playerStats.saveNBTData(newPlayerStats);
+                    ModMessages.sendToServer(new PlayerStatsC2SPacket(newPlayerStats));
+                } else {
+                    Minecraft.getInstance().player.sendMessage(new TextComponent("No tienes suficientes puntos de abilidad."), Minecraft.getInstance().player.getUUID());
+                }
+            }));
+
             this.drawCenteredString(poseStack, this.font, new TranslatableComponent("gui.agility").getString() + ": " + playerStats.getAgility(), this.width / 2, 190, 0xFFFFFF);
+            this.addRenderableWidget(new Button(this.width / 2 + 50, 190 - 5, 15, 15, new TextComponent("+"), button -> {
+                if (playerStats.getAbilityPoints() > 0) {
+                    playerStats.addAgility();
+                    CompoundTag newPlayerStats = new CompoundTag();
+
+                    playerStats.saveNBTData(newPlayerStats);
+                    ModMessages.sendToServer(new PlayerStatsC2SPacket(newPlayerStats));
+                } else {
+                    Minecraft.getInstance().player.sendMessage(new TextComponent("No tienes suficientes puntos de abilidad."), Minecraft.getInstance().player.getUUID());
+                }
+            }));
+
             this.drawCenteredString(poseStack, this.font, new TranslatableComponent("gui.sanation").getString() + ": " + playerStats.getSanation(), this.width / 2, 210, 0xFFFFFF);
+            this.addRenderableWidget(new Button(this.width / 2 + 50, 210 - 5, 15, 15, new TextComponent("+"), button -> {
+                if (playerStats.getAbilityPoints() > 0) {
+                    playerStats.addSanation();
+                    CompoundTag newPlayerStats = new CompoundTag();
+
+                    playerStats.saveNBTData(newPlayerStats);
+                    ModMessages.sendToServer(new PlayerStatsC2SPacket(newPlayerStats));
+                } else {
+                    Minecraft.getInstance().player.sendMessage(new TextComponent("No tienes suficientes puntos de abilidad."), Minecraft.getInstance().player.getUUID());
+                }
+            }));
+
             this.drawCenteredString(poseStack, this.font, "Lvl: " + playerStats.getLevel(), this.width / 2, 230, 0xFFFFFF);
             this.drawCenteredString(poseStack, this.font, "AP: " + playerStats.getAbilityPoints(), this.width / 2, 250, 0xFFFFFF);
             this.drawCenteredString(poseStack, this.font, "XP: " + playerStats.getXp() + "/" + playerStats.getNextLvl(), this.width - 50, this.height - 20, 0xFFFFFF);
+
+
         }
         super.render(poseStack, mouseX, mouseY, partialTicks);
     }

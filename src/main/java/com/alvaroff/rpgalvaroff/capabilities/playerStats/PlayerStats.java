@@ -94,6 +94,7 @@ public class PlayerStats {
         return health;
     }
 
+
     public int getStrength() {
         return strength;
     }
@@ -138,19 +139,44 @@ public class PlayerStats {
         this.health = health;
     }
 
+    public void addHealth(){
+        this.health++;
+        this.abilityPoints--;
+    }
+
     public void setStrength(int strength) {
         this.strength = strength;
     }
+
+    public void addStrength(){
+        this.strength++;
+        this.abilityPoints--;
+    }
     public void setAbility(int ability) {
         this.ability = ability;
+    }
+
+    public void addAbility(){
+        this.ability++;
+        this.abilityPoints--;
     }
 
     public void setResistance(int resistance) {
         this.resistance = resistance;
     }
 
+    public void addResistance() {
+        this.resistance++;
+        this.abilityPoints--;
+    }
+
     public void setMana(int mana) {
         this.mana = mana;
+    }
+
+    public void addMana() {
+        this.mana++;
+        this.abilityPoints--;
     }
     public void setCurrentMana(float mana) {
         this.currentMana = currentMana;
@@ -160,12 +186,27 @@ public class PlayerStats {
         this.magicPower = magicPower;
     }
 
+    public void addMagicPower() {
+        this.magicPower++;
+        this.abilityPoints--;
+    }
+
     public void setAgility(int agility) {
         this.agility = agility;
     }
 
+    public void addAgility() {
+        this.agility++;
+        this.abilityPoints--;
+    }
+
     public void setSanation(int sanation) {
         this.sanation = sanation;
+    }
+
+    public void addSanation() {
+        this.sanation++;
+        this.abilityPoints--;
     }
 
     public void setPlayerClass(PlayerClass playerClass) {
