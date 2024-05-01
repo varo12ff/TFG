@@ -1,5 +1,7 @@
 package com.alvaroff.rpgalvaroff.capabilities.playerStats;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.player.Player;
 
 public class PlayerStats {
     private int lvl;
@@ -73,12 +75,14 @@ public class PlayerStats {
         this.xp = xp;
     }
     public void addXp(int xp) {
-        this.xp += xp;
-        if(this.xp >= this.nextLvl){
-            this.lvl++;
-            this.xp = this.xp % this.nextLvl;
-            this.nextLvl *= 2;
-            this.abilityPoints++;
+        if(playerClass != PlayerClass.NONE) {
+            this.xp += xp;
+            if (this.xp >= this.nextLvl) {
+                this.lvl++;
+                this.xp = this.xp % this.nextLvl;
+                this.nextLvl *= 2;
+                this.abilityPoints++;
+            }
         }
     }
 
@@ -228,6 +232,16 @@ public class PlayerStats {
         this.agility = source.agility;
         this.sanation = source.sanation;
         this.playerClass = source.playerClass;
+    }
+
+    public void syncPlayer(Player player){
+        float agilityBase = 0.1f;
+        float cooldownBase = 4.0f;
+        player.getAttribute(Attributes.MAX_HEALTH).setBaseValue(health);
+        player.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(((float)strength) / 3);
+        player.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(agilityBase + ((float)agility) / 200);
+        player.getAttribute(Attributes.ATTACK_SPEED).setBaseValue(cooldownBase + ((float)ability) / 100);
+        player.getAttribute(Attributes.ARMOR).setBaseValue(player.getAttribute(Attributes.ARMOR).getBaseValue() + resistance * 0.5f);
     }
 
     public void saveNBTData(CompoundTag nbt){

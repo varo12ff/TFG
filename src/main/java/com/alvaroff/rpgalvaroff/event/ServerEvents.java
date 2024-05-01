@@ -55,14 +55,14 @@ public class ServerEvents {
     @SubscribeEvent
     public static void onPlayerJoinWorld(PlayerEvent.PlayerLoggedInEvent event) {
         Player player = event.getPlayer();
-        player.getAttribute(Attributes.MAX_HEALTH).setBaseValue(player.getCapability(PlayerStatsProvider.PLAYER_STATS).orElse(new PlayerStats()).getHealth());
+        player.getCapability(PlayerStatsProvider.PLAYER_STATS).orElse(new PlayerStats()).syncPlayer(player);
     }
 
     @SubscribeEvent
     public static void onPlayerRespawn(PlayerEvent.PlayerRespawnEvent event) {
         Player player = event.getPlayer();
         if(!player.getLevel().isClientSide()) {
-            player.getAttribute(Attributes.MAX_HEALTH).setBaseValue(player.getCapability(PlayerStatsProvider.PLAYER_STATS).orElse(new PlayerStats()).getHealth());
+            player.getCapability(PlayerStatsProvider.PLAYER_STATS).orElse(new PlayerStats()).syncPlayer(player);
             PlayerUtils.changeAttributes(player);
         }
     }
@@ -91,8 +91,6 @@ public class ServerEvents {
                 DimensionUtils.clearBlocksInCubeCentered(world, 0, 0, 0, 100);
 
                 DimensionUtils.generateStartRoom(world, 0, 0, 0, 5);
-                Random random = new Random();
-                //generateProceduralRoom(world, new BlockPos(20, 0, 20), random);
 
                 world.getCapability(DungeonStateProvider.DUNGEON_STATUS).ifPresent(active -> {
                     active.setStatus(true);
