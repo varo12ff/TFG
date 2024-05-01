@@ -31,7 +31,7 @@ public class PlayerStatsC2SPacket {
             ServerPlayer player = context.getSender();
 
             player.getCapability(PlayerStatsProvider.PLAYER_STATS).orElse(new PlayerStats()).loadNBTData(playerStats);
-            player.getAttribute(Attributes.MAX_HEALTH).setBaseValue(playerStats.getFloat("health"));
+            player.getCapability(PlayerStatsProvider.PLAYER_STATS).orElse(new PlayerStats()).syncPlayer(player);
             PlayerUtils.changeAttributes(player);
         });
 
