@@ -69,7 +69,7 @@ public class RpgGUI extends Screen {
         blit(poseStack, imageX, imageY, 0, 0, 70, 140, 70, 140);
 
         this.addRenderableWidget(new Button(marginX, yPos, buttonWidth, buttonHeight, new TranslatableComponent("gui.warriorClass"), button -> {
-            PlayerStats newPlayerStats = new PlayerStats(1, 14, 5, 3, 3, 3, 1, 1, 3, PlayerClass.GUERRERO);
+            PlayerStats newPlayerStats = new PlayerStats(1, 13, 5, 3, 3, 3, 1, 1, 3, PlayerClass.GUERRERO);
             selectClass(newPlayerStats);
         }));
 
@@ -81,7 +81,7 @@ public class RpgGUI extends Screen {
         blit(poseStack, imageX, imageY, 0, 0, 70, 140, 70, 140);
 
         this.addRenderableWidget(new Button(marginX + buttonWidth + spaceBetweenButtons, yPos, buttonWidth, buttonHeight, new TranslatableComponent("gui.magicianClass"), button -> {
-            PlayerStats newPlayerStats = new PlayerStats(1, 6, 1, 4, 3, 3, 5, 5, 3, PlayerClass.MAGO);
+            PlayerStats newPlayerStats = new PlayerStats(1, 7, 1, 4, 3, 3, 5, 5, 3, PlayerClass.MAGO);
             selectClass(newPlayerStats);
         }));
 
@@ -105,7 +105,7 @@ public class RpgGUI extends Screen {
         blit(poseStack, imageX, imageY, 0, 0, 70, 140, 70, 140);
 
         this.addRenderableWidget(new Button(marginX + 3 * (buttonWidth + spaceBetweenButtons), yPos, buttonWidth, buttonHeight, new TranslatableComponent("gui.priestClass"), button -> {
-            PlayerStats newPlayerStats = new PlayerStats(1, 12, 1, 3,3, 3, 4, 1, 5, PlayerClass.CLERIGO);
+            PlayerStats newPlayerStats = new PlayerStats(1, 11.5f, 1, 3,3, 3, 4, 1, 5, PlayerClass.CLERIGO);
             selectClass(newPlayerStats);
         }));
     }
@@ -150,7 +150,7 @@ public class RpgGUI extends Screen {
 
         } else {
             this.drawCenteredString(poseStack, this.font, new TranslatableComponent("gui.class").getString() + ": " + playerStats.getPlayerClass().toString(), this.width / 2, 50, 0xFFFFFF);
-            this.drawCenteredString(poseStack, this.font, new TranslatableComponent("gui.health").getString() + ": " + ((int)playerStats.getHealth() / 2), this.width / 2, 70, 0xFFFFFF);
+            this.drawCenteredString(poseStack, this.font, new TranslatableComponent("gui.health").getString() + ": " + (playerStats.getHealth()), this.width / 2, 70, 0xFFFFFF);
             this.addRenderableWidget(new Button(this.width / 2 + 50, 70 - 5, 15, 15, new TextComponent("+"), button -> {
                 if (playerStats.getAbilityPoints() > 0) {
                     playerStats.addHealth();

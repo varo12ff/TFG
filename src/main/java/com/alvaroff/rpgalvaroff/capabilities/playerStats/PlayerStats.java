@@ -7,15 +7,6 @@ public class PlayerStats {
     private int lvl;
     private int xp;
     private int nextLvl;
-
-    public int getAbilityPoints() {
-        return abilityPoints;
-    }
-
-    public void setAbilityPoints(int abilityPoints) {
-        this.abilityPoints = abilityPoints;
-    }
-
     private int abilityPoints;
     private float health;
     private int strength;
@@ -92,6 +83,14 @@ public class PlayerStats {
 
     public void setNextLvl(int nextLvl) {
         this.nextLvl = nextLvl;
+    }
+
+    public int getAbilityPoints() {
+        return abilityPoints;
+    }
+
+    public void setAbilityPoints(int abilityPoints) {
+        this.abilityPoints = abilityPoints;
     }
 
     public float getHealth() {
@@ -235,13 +234,65 @@ public class PlayerStats {
     }
 
     public void syncPlayer(Player player){
-        float agilityBase = 0.1f;
-        float cooldownBase = 4.0f;
-        player.getAttribute(Attributes.MAX_HEALTH).setBaseValue(health);
-        player.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(((float)strength) / 3);
-        player.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(agilityBase + ((float)agility) / 200);
-        player.getAttribute(Attributes.ATTACK_SPEED).setBaseValue(cooldownBase + ((float)ability) / 100);
-        player.getAttribute(Attributes.ARMOR).setBaseValue(player.getAttribute(Attributes.ARMOR).getBaseValue() + resistance * 0.5f);
+        if(playerClass == PlayerClass.GUERRERO) {
+            float agilityBase = 0.075f;
+            float cooldownBase = 4.0f;
+            float strengthBase = 1.0f;
+
+            player.getAttribute(Attributes.MAX_HEALTH).setBaseValue(health + 1);
+            //base = 1
+            player.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(strengthBase + ((float) strength) / 2.5f);
+            //base = 0.1
+            player.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(agilityBase + ((float) agility) / 250);
+            //base = 4
+            player.getAttribute(Attributes.ATTACK_SPEED).setBaseValue(cooldownBase + ((float) ability) / 100);
+            //base = 0
+            player.getAttribute(Attributes.ARMOR).setBaseValue(resistance + 0.5);
+        }
+        else if(playerClass == PlayerClass.NINJA) {
+            float agilityBase = 0.125f;
+            float cooldownBase = 5.0f;
+            float strengthBase = 1.0f;
+
+            player.getAttribute(Attributes.MAX_HEALTH).setBaseValue(health);
+            player.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(strengthBase + ((float) strength) / 3);
+            player.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(agilityBase + ((float) agility) / 150);
+            player.getAttribute(Attributes.ATTACK_SPEED).setBaseValue(cooldownBase + ((float) ability) / 80);
+            player.getAttribute(Attributes.ARMOR).setBaseValue(resistance * 0.5);
+        }
+        else if(playerClass == PlayerClass.CLERIGO) {
+            float agilityBase = 0.075f;
+            float cooldownBase = 4.0f;
+            float strengthBase = 0.8f;
+
+            player.getAttribute(Attributes.MAX_HEALTH).setBaseValue(health + 0.5);
+            player.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(strengthBase + ((float) strength) / 5);
+            player.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(agilityBase + ((float) agility) / 250);
+            player.getAttribute(Attributes.ATTACK_SPEED).setBaseValue(cooldownBase + ((float) ability) / 100);
+            player.getAttribute(Attributes.ARMOR).setBaseValue(resistance * 0.5);
+        }
+        else if(playerClass == PlayerClass.MAGO) {
+            float agilityBase = 0.1f;
+            float cooldownBase = 4.0f;
+            float strengthBase = 0.8f;
+
+            player.getAttribute(Attributes.MAX_HEALTH).setBaseValue(health - 1);
+            player.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(strengthBase + ((float) strength) / 5);
+            player.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(agilityBase + ((float) agility) / 200);
+            player.getAttribute(Attributes.ATTACK_SPEED).setBaseValue(cooldownBase + ((float) ability) / 100);
+            player.getAttribute(Attributes.ARMOR).setBaseValue(resistance * 0.5);
+        }
+        else{
+            float agilityBase = 0.1f;
+            float cooldownBase = 4.0f;
+            float strengthBase = 1.0f;
+
+            player.getAttribute(Attributes.MAX_HEALTH).setBaseValue(health);
+            player.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(strengthBase);
+            player.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(agilityBase);
+            player.getAttribute(Attributes.ATTACK_SPEED).setBaseValue(cooldownBase);
+            player.getAttribute(Attributes.ARMOR).setBaseValue(0);
+        }
     }
 
     public void saveNBTData(CompoundTag nbt){
