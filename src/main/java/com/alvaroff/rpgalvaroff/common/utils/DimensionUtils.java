@@ -15,6 +15,9 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.dimension.DimensionType;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 import static com.alvaroff.rpgalvaroff.common.world.dimension.DimensionInit.RPGDIM_KEY;
@@ -105,6 +108,8 @@ public class DimensionUtils {
         int passageWidth = 3; // Ancho del pasillo fijo
         int passageDepth = 3; // Profundidad del pasillo
 
+        BlockState lock = BlockInit.UNLOCK_NEW_ROOM_BLOCK.get().defaultBlockState();
+
         // Determina la posición base ajustada para que el bloque clickeado esté centrado en la cara de la sala
         BlockPos basePos = clickedPos.relative(facing.getOpposite(), passageDepth - 1).below(2);
 
@@ -122,24 +127,72 @@ public class DimensionUtils {
             basePos = basePos.west(width - 1); // Mover al máximo hacia atrás en el eje Oeste
         }
 
+
+
+        // Lista de direcciones posibles para colocar el bloque de obsidiana
+        List<Direction> directions = new ArrayList<>(Arrays.asList(Direction.NORTH, Direction.SOUTH, Direction.WEST, Direction.EAST));
+        directions.remove(facing); // Remover la dirección del pasillo
+
+        // Filtrar direcciones que no interferirán con otras salas futuras
+        List<Direction> validDirections = new ArrayList<>();
+        for (Direction dir : directions) {
+            if (!willInterfereWithFutureRoom(world, basePos, dir, width, height, depth)) {
+                validDirections.add(dir);
+            }
+        }
+
+        System.out.println(validDirections);
+        boolean nextRoom = true;
+        Direction obsidianFacing = null;
+
+        if (validDirections.isEmpty()) {
+            // Si no hay direcciones viables, no colocar el bloque de obsidiana
+            nextRoom = false;
+
+        }
+        else{
+
+            obsidianFacing = validDirections.get(random.nextInt(validDirections.size())); // Seleccionar una dirección aleatoria
+
+        }
+
+
+
         // Generar sala hueca con patrón procedural
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 for (int z = 0; z < depth; z++) {
                     boolean isEdge = x == 0 || x == width - 1 || y == 0 || y == height - 1 || z == 0 || z == depth - 1;
+                    boolean isCenterWall = (x == width / 2 || z == depth / 2) && y > 0 && y < height - 1;
+                    BlockPos pos = basePos.offset(x, y, z);
+
+                    // Lista de direcciones posibles para colocar el bloque de obsidiana
+
+
                     if (isEdge) {
-                        BlockPos pos = basePos.offset(x, y, z);
+
                         if (y == 0) {
                             Block block = random.nextFloat() > 0.7 ? Blocks.GLOWSTONE : Blocks.STONE;
 
                             world.setBlock(pos, block.defaultBlockState(), 3);
                         }
                         else {
-                            Block block = random.nextFloat() > 0.7 ? Blocks.COBBLESTONE : Blocks.STONE;
+                            if (nextRoom && y == 2 && isCenterWall && ((obsidianFacing == Direction.NORTH && z == 0) ||
+                                    (obsidianFacing == Direction.SOUTH && z == depth - 1) ||
+                                    (obsidianFacing == Direction.WEST && x == 0) ||
+                                    (obsidianFacing == Direction.EAST && x == width - 1))) {
 
-                            world.setBlock(pos, block.defaultBlockState(), 3);
+                                world.setBlock(pos, lock, 3);
+                            } else {
+                                Block block = random.nextFloat() > 0.7 ? Blocks.COBBLESTONE : Blocks.STONE;
+
+                                world.setBlock(pos, block.defaultBlockState(), 3);
+                            }
+
                         }
+
                     }
+
                 }
             }
         }
@@ -165,5 +218,34 @@ public class DimensionUtils {
                 }
             }
         }
+    }
+
+    private static boolean willInterfereWithFutureRoom(Level world, BlockPos basePos, Direction direction, int width, int height, int depth) {
+        // Determinar el tamaño y la posición del área de la sala futura para la dirección dada
+        int futureWidth = 8 + 11; // Ancho máximo de la sala futura
+        int futureHeight = 5 + 2; // Altura máxima de la sala futura
+        int futureDepth = 8 + 11; // Profundidad máxima de la sala futura
+
+        // Ajustar la posición base para considerar la colocación del bloque de obsidiana
+        BlockPos futureBasePos = basePos.relative(direction, direction == Direction.NORTH || direction == Direction.SOUTH ? depth : width);
+        futureBasePos = futureBasePos.offset(direction.getStepX() * (width + futureWidth / 2), 0, direction.getStepZ() * (depth + futureDepth / 2));
+        if (direction == Direction.NORTH) {
+            futureBasePos = futureBasePos.north(futureDepth);
+        } else if (direction == Direction.WEST) {
+            futureBasePos = futureBasePos.west(futureWidth);
+        }
+
+        // Comprobar si hay bloques que no sean aire en el área de la sala futura
+        for (int x = 0; x < futureWidth; x++) {
+            for (int y = 0; y < futureHeight; y++) {
+                for (int z = 0; z < futureDepth; z++) {
+                    BlockPos pos = futureBasePos.offset(x, y, z);
+                    if (!world.isEmptyBlock(pos)) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 }
