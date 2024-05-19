@@ -141,22 +141,16 @@ public class DimensionUtils {
             }
         }
 
-        System.out.println(validDirections);
         boolean nextRoom = true;
         Direction obsidianFacing = null;
 
         if (validDirections.isEmpty()) {
             // Si no hay direcciones viables, no colocar el bloque de obsidiana
             nextRoom = false;
-
         }
         else{
-
             obsidianFacing = validDirections.get(random.nextInt(validDirections.size())); // Seleccionar una dirección aleatoria
-
         }
-
-
 
         // Generar sala hueca con patrón procedural
         for (int x = 0; x < width; x++) {
@@ -165,9 +159,6 @@ public class DimensionUtils {
                     boolean isEdge = x == 0 || x == width - 1 || y == 0 || y == height - 1 || z == 0 || z == depth - 1;
                     boolean isCenterWall = (x == width / 2 || z == depth / 2) && y > 0 && y < height - 1;
                     BlockPos pos = basePos.offset(x, y, z);
-
-                    // Lista de direcciones posibles para colocar el bloque de obsidiana
-
 
                     if (isEdge) {
 
@@ -188,11 +179,8 @@ public class DimensionUtils {
 
                                 world.setBlock(pos, block.defaultBlockState(), 3);
                             }
-
                         }
-
                     }
-
                 }
             }
         }
