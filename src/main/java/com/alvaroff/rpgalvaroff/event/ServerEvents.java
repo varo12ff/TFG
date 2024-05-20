@@ -95,10 +95,12 @@ public class ServerEvents {
         if (world.dimension().equals(DimensionInit.RPGDIM_KEY)) {
             if(!dungeonState) {
 
-                boolean added = player.addItem(key);
+                if(!PlayerUtils.hasItem(player, key)) {
+                    boolean added = player.addItem(key);
 
-                if (!added) {
-                    player.drop(key, false);
+                    if (!added) {
+                        player.drop(key, false);
+                    }
                 }
 
                 DimensionUtils.clearBlocksInCubeCentered(world, 0, 0, 0, 100);
