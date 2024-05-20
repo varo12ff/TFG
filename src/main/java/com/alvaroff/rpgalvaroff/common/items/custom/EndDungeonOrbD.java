@@ -42,6 +42,7 @@ public class EndDungeonOrbD extends Item {
                 world.getCapability(DungeonStateProvider.DUNGEON_STATUS).ifPresent(active -> {
                     active.setStatus(false);
                     active.setActiveSpawners(0);
+                    active.setBossRoom(0);
                 });
 
                 itemStack.shrink(1);

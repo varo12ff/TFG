@@ -1,5 +1,6 @@
 package com.alvaroff.rpgalvaroff.common.utils;
 
+import com.alvaroff.rpgalvaroff.capabilities.dungeonState.DungeonState;
 import com.alvaroff.rpgalvaroff.capabilities.dungeonState.DungeonStateProvider;
 import com.alvaroff.rpgalvaroff.common.blocks.BlockInit;
 import com.alvaroff.rpgalvaroff.common.world.dimension.DimensionInit;
@@ -157,6 +158,17 @@ public class DimensionUtils {
             obsidianFacing = validDirections.get(random.nextInt(validDirections.size())); // Seleccionar una dirección aleatoria
         }
 
+        float bossProbabilty = world.getCapability(DungeonStateProvider.DUNGEON_STATUS).orElse(new DungeonState()).getBossRoom();
+        boolean bossRoom = false;
+
+        if(random.nextFloat() < bossProbabilty) {
+            world.getCapability(DungeonStateProvider.DUNGEON_STATUS).orElse(new DungeonState()).setBossRoom(0);
+            bossRoom = true;
+        }
+        else{
+            world.getCapability(DungeonStateProvider.DUNGEON_STATUS).orElse(new DungeonState()).addPercentageBossRoom();
+        }
+
         // Generar sala hueca con patrón procedural
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
@@ -176,7 +188,7 @@ public class DimensionUtils {
                             if (nextRoom && y == 2 && isCenterWall && ((obsidianFacing == Direction.NORTH && z == 0) ||
                                     (obsidianFacing == Direction.SOUTH && z == depth - 1) ||
                                     (obsidianFacing == Direction.WEST && x == 0) ||
-                                    (obsidianFacing == Direction.EAST && x == width - 1))) {
+                                    (obsidianFacing == Direction.EAST && x == width - 1)) && !bossRoom) {
 
                                 world.setBlock(pos, lock, 3);
                             } else {
@@ -188,7 +200,7 @@ public class DimensionUtils {
                     }
                     else{
                         // Intentar colocar un spawner en una posición aleatoria no en el borde
-                        if (y == 1 && placedSpawners < spawnerCount && random.nextFloat() < 0.1) { // Probabilidad de colocar un spawner
+                        if (y == 1 && placedSpawners < spawnerCount && random.nextFloat() < 0.1 && !bossRoom) { // Probabilidad de colocar un spawner
                             if (world.getBlockState(pos).getBlock() == Blocks.AIR) {
                                 world.setBlock(pos, Blocks.SPAWNER.defaultBlockState(), 3);
                                 SpawnerBlockEntity spawner = (SpawnerBlockEntity) world.getBlockEntity(pos);
@@ -207,6 +219,8 @@ public class DimensionUtils {
         world.getCapability(DungeonStateProvider.DUNGEON_STATUS).ifPresent(active -> {
             active.setActiveSpawners(spawnerCount);
         });
+
+
 
         // Posición inicial del pasillo centrada con el bloque clickeado
         BlockPos passageStart = clickedPos.relative(facing.getOpposite(), 2).below(2);
