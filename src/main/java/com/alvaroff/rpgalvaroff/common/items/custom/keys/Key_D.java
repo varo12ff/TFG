@@ -34,10 +34,13 @@ public class Key_D extends Item {
             BlockState blockState = world.getBlockState(pos);
             if (blockState.getBlock() == UNLOCK_NEW_ROOM_BLOCK.get()){
                 Random random = new Random();
-                if(random.nextFloat() < 0.5f)
+
+                if(random.nextFloat() < 0.33f)
                     generateProceduralLavaRoom(world, pos, random, faceClicked);
-                else
+                else if(random.nextFloat() >= 0.33f && random.nextFloat() < 0.66f)
                     generateProceduralRoom(world, pos, random, faceClicked);
+                else
+                    generateProceduralWaterRoom(world, pos, random, faceClicked);
 
                 itemStack.shrink(1);
                 return InteractionResult.SUCCESS;
