@@ -15,8 +15,10 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.entity.SpawnerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.dimension.DimensionType;
 
 import java.util.ArrayList;
@@ -225,7 +227,7 @@ public class DimensionUtils {
         // Posición inicial del pasillo centrada con el bloque clickeado
         BlockPos passageStart = clickedPos.relative(facing.getOpposite(), 2).below(2);
         passageStart = passageStart.relative(facing.getClockWise(), -(passageWidth / 2));
-        int passageHeight = height - 1;
+        int passageHeight = 4;
 
         // Generar el pasillo
         for (int x = 0; x < passageWidth; x++) {
@@ -240,6 +242,20 @@ public class DimensionUtils {
                     }
                     else {
                         world.removeBlock(pos, false);
+
+                        if (z == passageDepth - 1) {
+                            BlockPos doorPos = pos.relative(facing.getOpposite());
+                            if (y == 1) {
+                                world.setBlock(doorPos, Blocks.OAK_DOOR.defaultBlockState()
+                                        .setValue(DoorBlock.FACING, facing)
+                                        .setValue(DoorBlock.HALF, DoubleBlockHalf.LOWER), 3);
+                            }
+                            else if (y == 2) {
+                                world.setBlock(doorPos, Blocks.OAK_DOOR.defaultBlockState()
+                                        .setValue(DoorBlock.FACING, facing)
+                                        .setValue(DoorBlock.HALF, DoubleBlockHalf.UPPER), 3);
+                            }
+                        }
                     }
                 }
             }
@@ -382,7 +398,7 @@ public class DimensionUtils {
         // Posición inicial del pasillo centrada con el bloque clickeado
         BlockPos passageStart = clickedPos.relative(facing.getOpposite(), 2).below(2);
         passageStart = passageStart.relative(facing.getClockWise(), -(passageWidth / 2));
-        int passageHeight = height - 1;
+        int passageHeight = 4;
 
         // Generar el pasillo
         for (int x = 0; x < passageWidth; x++) {
@@ -397,6 +413,178 @@ public class DimensionUtils {
                     }
                     else {
                         world.removeBlock(pos, false);
+
+                        if (z == passageDepth - 1) {
+                            BlockPos doorPos = pos.relative(facing.getOpposite());
+                            if (y == 1) {
+                                world.setBlock(doorPos, Blocks.OAK_DOOR.defaultBlockState()
+                                        .setValue(DoorBlock.FACING, facing)
+                                        .setValue(DoorBlock.HALF, DoubleBlockHalf.LOWER), 3);
+                            }
+                            else if (y == 2) {
+                                world.setBlock(doorPos, Blocks.OAK_DOOR.defaultBlockState()
+                                        .setValue(DoorBlock.FACING, facing)
+                                        .setValue(DoorBlock.HALF, DoubleBlockHalf.UPPER), 3);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    public static void generateProceduralWaterRoom(Level world, BlockPos clickedPos, Random random, Direction facing) {
+        int width = 8 + random.nextInt(12); // Ancho de la sala entre 8 y 20
+        int height = 9; // Altura de la sala entre 5 y 8
+        int depth = 8 + random.nextInt(12); // Profundidad de la sala entre 8 y 20
+        int passageWidth = 3; // Ancho del pasillo fijo
+        int passageDepth = 3; // Profundidad del pasillo
+        int spawnerCount = random.nextInt(4) + 1; // Genera un número entre 1 y 4
+        int placedSpawners = 0;
+
+        BlockState lock = BlockInit.UNLOCK_NEW_ROOM_BLOCK.get().defaultBlockState();
+
+        // Determina la posición base ajustada para que el bloque clickeado esté centrado en la cara de la sala
+        BlockPos basePos = clickedPos.relative(facing.getOpposite(), passageDepth - 1).below(4);
+
+        // Ajustar basePos horizontalmente para centrar el bloque clickeado
+        if (facing.getAxis() == Direction.Axis.Z) {
+            basePos = basePos.west(width / 2);
+        } else if (facing.getAxis() == Direction.Axis.X) {
+            basePos = basePos.north(width / 2);
+        }
+
+        if (facing.getOpposite() == Direction.NORTH){
+            basePos = basePos.north(depth - 1);
+        }
+        else if (facing.getOpposite() == Direction.WEST) {
+            basePos = basePos.west(width - 1); // Mover al máximo hacia atrás en el eje Oeste
+        }
+
+
+
+        // Lista de direcciones posibles para colocar el bloque de obsidiana
+        List<Direction> directions = new ArrayList<>(Arrays.asList(Direction.NORTH, Direction.SOUTH, Direction.WEST, Direction.EAST));
+        directions.remove(facing); // Remover la dirección del pasillo
+
+        // Filtrar direcciones que no interferirán con otras salas futuras
+        List<Direction> validDirections = new ArrayList<>();
+        for (Direction dir : directions) {
+            if (!willInterfereWithFutureRoom(world, basePos, dir, width, height, depth)) {
+                validDirections.add(dir);
+            }
+        }
+
+        boolean nextRoom = true;
+        Direction obsidianFacing = null;
+
+        if (validDirections.isEmpty()) {
+            // Si no hay direcciones viables, no colocar el bloque de obsidiana
+            nextRoom = false;
+        }
+        else{
+            obsidianFacing = validDirections.get(random.nextInt(validDirections.size())); // Seleccionar una dirección aleatoria
+        }
+
+        float bossProbabilty = world.getCapability(DungeonStateProvider.DUNGEON_STATUS).orElse(new DungeonState()).getBossRoom();
+        boolean bossRoom = false;
+
+        if(random.nextFloat() < bossProbabilty) {
+            world.getCapability(DungeonStateProvider.DUNGEON_STATUS).orElse(new DungeonState()).setBossRoom(0);
+            bossRoom = true;
+        }
+        else{
+            world.getCapability(DungeonStateProvider.DUNGEON_STATUS).orElse(new DungeonState()).addPercentageBossRoom();
+        }
+
+        // Generar sala hueca con patrón procedural
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                for (int z = 0; z < depth; z++) {
+                    boolean isEdge = x == 0 || x == width - 1 || y == 0 || y == height - 1 || z == 0 || z == depth - 1;
+                    boolean isCenterWall = (x == width / 2 || z == depth / 2) && y > 0 && y < height - 1;
+                    BlockPos pos = basePos.offset(x, y, z);
+
+                    if (isEdge) {
+
+                        if (y == 0) {
+                            Block block = random.nextFloat() > 0.7 ? Blocks.SEA_LANTERN : Blocks.STONE;
+
+                            world.setBlock(pos, block.defaultBlockState(), 3);
+                        }
+                        else {
+                            if (nextRoom && y == 3 && isCenterWall && ((obsidianFacing == Direction.NORTH && z == 0) ||
+                                    (obsidianFacing == Direction.SOUTH && z == depth - 1) ||
+                                    (obsidianFacing == Direction.WEST && x == 0) ||
+                                    (obsidianFacing == Direction.EAST && x == width - 1)) && !bossRoom) {
+
+                                world.setBlock(pos, lock, 3);
+                            }
+
+                            else {
+                                Block block = random.nextFloat() > 0.7 ? Blocks.COBBLESTONE : Blocks.STONE;
+
+                                world.setBlock(pos, block.defaultBlockState(), 3);
+                            }
+                        }
+                    }
+                    else{
+                        // Intentar colocar un spawner en una posición aleatoria no en el borde
+                        if (placedSpawners < spawnerCount && random.nextFloat() < 0.1 && !bossRoom) { // Probabilidad de colocar un spawner
+                            if (world.getBlockState(pos).getBlock() == Blocks.AIR) {
+                                world.setBlock(pos, Blocks.SPAWNER.defaultBlockState(), 3);
+                                SpawnerBlockEntity spawner = (SpawnerBlockEntity) world.getBlockEntity(pos);
+                                if (spawner != null) {
+                                    spawner.getSpawner().setEntityId(EntityType.GUARDIAN);
+                                }
+                                placedSpawners++;
+                            }
+                        }
+                        else
+                            world.setBlock(pos, Blocks.WATER.defaultBlockState(), 3);
+                    }
+                }
+            }
+        }
+
+        world.getCapability(DungeonStateProvider.DUNGEON_STATUS).ifPresent(active -> {
+            active.setActiveSpawners(spawnerCount);
+        });
+
+
+
+        // Posición inicial del pasillo centrada con el bloque clickeado
+        BlockPos passageStart = clickedPos.relative(facing.getOpposite(), 2).below(2);
+        passageStart = passageStart.relative(facing.getClockWise(), -(passageWidth / 2));
+        int passageHeight = 4;
+
+        // Generar el pasillo
+        for (int x = 0; x < passageWidth; x++) {
+            for (int y = 0; y < passageHeight; y++) {
+                for (int z = 0; z < passageDepth; z++) {
+                    boolean isEdge = x == 0 || x == passageWidth - 1 || y == 0 || y == passageHeight - 1;
+                    BlockPos pos = passageStart.relative(facing.getClockWise(), x).above(y).relative(facing, z);
+
+                    if (isEdge) {
+                        Block block = random.nextFloat() > 0.7 ? Blocks.COBBLESTONE : Blocks.STONE_BRICKS;
+                        world.setBlock(pos, block.defaultBlockState(), 3);
+                    }
+                    else {
+                        world.removeBlock(pos, false);
+
+                        if (z == passageDepth - 1) {
+                            BlockPos doorPos = pos.relative(facing.getOpposite());
+                            if (y == 1) {
+                                world.setBlock(doorPos, Blocks.OAK_DOOR.defaultBlockState()
+                                        .setValue(DoorBlock.FACING, facing)
+                                        .setValue(DoorBlock.HALF, DoubleBlockHalf.LOWER), 3);
+                            }
+                            else if (y == 2) {
+                                world.setBlock(doorPos, Blocks.OAK_DOOR.defaultBlockState()
+                                        .setValue(DoorBlock.FACING, facing)
+                                        .setValue(DoorBlock.HALF, DoubleBlockHalf.UPPER), 3);
+                            }
+                        }
                     }
                 }
             }
