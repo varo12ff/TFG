@@ -86,11 +86,20 @@ public class ServerEvents {
     @SubscribeEvent
     public static void onPlayerChangedDimension(PlayerEvent.PlayerChangedDimensionEvent event) {
         Level world = event.getPlayer().level;
+        Player player = event.getPlayer();
+        ItemStack key = new ItemStack(ItemInit.KEY_D.get());
+
         boolean dungeonState = event.getPlayer().getLevel().getCapability(DungeonStateProvider.DUNGEON_STATUS).orElse(new DungeonState()).getStatus();
 
 
         if (world.dimension().equals(DimensionInit.RPGDIM_KEY)) {
             if(!dungeonState) {
+
+                boolean added = player.addItem(key);
+
+                if (!added) {
+                    player.drop(key, false);
+                }
 
                 DimensionUtils.clearBlocksInCubeCentered(world, 0, 0, 0, 100);
 
@@ -128,9 +137,8 @@ public class ServerEvents {
 
     @SubscribeEvent
     public static void onBlockBreak(BlockEvent.BreakEvent event) {
-        // Comprobar si el bloque roto es un spawner
         if (event.getState().getBlock() == Blocks.SPAWNER) {
-            // Comprobar si estamos en el Nether
+
             Level world = (Level) event.getWorld();
             if (!world.isClientSide && world.dimension().equals(DimensionInit.RPGDIM_KEY)) {
 
