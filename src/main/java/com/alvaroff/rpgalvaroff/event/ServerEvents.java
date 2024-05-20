@@ -3,6 +3,7 @@ package com.alvaroff.rpgalvaroff.event;
 import com.alvaroff.rpgalvaroff.RPGalvaroff;
 import com.alvaroff.rpgalvaroff.capabilities.playerStats.PlayerStats;
 import com.alvaroff.rpgalvaroff.capabilities.playerStats.PlayerStatsProvider;
+import com.alvaroff.rpgalvaroff.common.items.ItemInit;
 import com.alvaroff.rpgalvaroff.common.utils.DimensionUtils;
 import com.alvaroff.rpgalvaroff.common.utils.PlayerUtils;
 import com.alvaroff.rpgalvaroff.common.world.dimension.DimensionInit;
@@ -19,12 +20,15 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -120,6 +124,30 @@ public class ServerEvents {
             if(!event.getObject().getCapability(DungeonStateProvider.DUNGEON_STATUS).isPresent())
                 event.addCapability(new ResourceLocation(RPGalvaroff.MOD_ID, "properties"), new DungeonStateProvider());
 
+    }
+
+    @SubscribeEvent
+    public static void onBlockBreak(BlockEvent.BreakEvent event) {
+        // Comprobar si el bloque roto es un spawner
+        if (event.getState().getBlock() == Blocks.SPAWNER) {
+            // Comprobar si estamos en el Nether
+            Level world = (Level) event.getWorld();
+            if (!world.isClientSide && world.dimension().equals(DimensionInit.RPGDIM_KEY)) {
+
+                world.getCapability(DungeonStateProvider.DUNGEON_STATUS).orElse(new DungeonState()).subtractSpawner();
+
+                if(world.getCapability(DungeonStateProvider.DUNGEON_STATUS).orElse(new DungeonState()).getActiveSpawners() == 0){
+                    Player player = event.getPlayer();
+                    ItemStack key = new ItemStack(ItemInit.KEY_D.get());
+
+                    boolean added = player.addItem(key);
+
+                    if (!added) {
+                        player.drop(key, false);
+                    }
+                }
+            }
+        }
     }
 
 }

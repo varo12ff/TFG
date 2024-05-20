@@ -39,9 +39,12 @@ public class Escape_stone extends Item {
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level world, Player player, InteractionHand hand){
+        ItemStack itemStack = player.getItemInHand(hand);
+
         if(!world.isClientSide()){
             if(world.dimension().equals(DimensionInit.RPGDIM_KEY)) {
                 DimensionUtils.handleDimensionExit((ServerPlayer) player);
+                itemStack.shrink(1);
             }
             else {
                 player.displayClientMessage(new TranslatableComponent("msg.notuse"), true);
