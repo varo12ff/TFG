@@ -1,5 +1,6 @@
 package com.alvaroff.rpgalvaroff.common.utils;
 
+import com.alvaroff.rpgalvaroff.capabilities.dungeonState.DungeonStateProvider;
 import com.alvaroff.rpgalvaroff.common.blocks.BlockInit;
 import com.alvaroff.rpgalvaroff.common.world.dimension.DimensionInit;
 import net.minecraft.core.BlockPos;
@@ -9,9 +10,11 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.entity.SpawnerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.dimension.DimensionType;
 
@@ -107,6 +110,8 @@ public class DimensionUtils {
         int depth = 8 + random.nextInt(12); // Profundidad de la sala entre 8 y 20
         int passageWidth = 3; // Ancho del pasillo fijo
         int passageDepth = 3; // Profundidad del pasillo
+        int spawnerCount = random.nextInt(4) + 1; // Genera un número entre 1 y 4
+        int placedSpawners = 0;
 
         BlockState lock = BlockInit.UNLOCK_NEW_ROOM_BLOCK.get().defaultBlockState();
 
@@ -181,9 +186,27 @@ public class DimensionUtils {
                             }
                         }
                     }
+                    else{
+                        // Intentar colocar un spawner en una posición aleatoria no en el borde
+                        if (y == 1 && placedSpawners < spawnerCount && random.nextFloat() < 0.1) { // Probabilidad de colocar un spawner
+                            if (world.getBlockState(pos).getBlock() == Blocks.AIR) {
+                                world.setBlock(pos, Blocks.SPAWNER.defaultBlockState(), 3);
+                                SpawnerBlockEntity spawner = (SpawnerBlockEntity) world.getBlockEntity(pos);
+                                if (spawner != null) {
+                                    spawner.getSpawner().setEntityId(EntityType.ZOMBIE);
+                                }
+                                placedSpawners++;
+                            }
+                        }
+                    }
+
                 }
             }
         }
+
+        world.getCapability(DungeonStateProvider.DUNGEON_STATUS).ifPresent(active -> {
+            active.setActiveSpawners(spawnerCount);
+        });
 
         // Posición inicial del pasillo centrada con el bloque clickeado
         BlockPos passageStart = clickedPos.relative(facing.getOpposite(), 2).below(2);

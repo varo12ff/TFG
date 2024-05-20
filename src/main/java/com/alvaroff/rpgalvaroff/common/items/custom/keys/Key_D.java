@@ -6,6 +6,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -28,12 +29,14 @@ public class Key_D extends Item {
         BlockPos pos = context.getClickedPos();
         Player player = context.getPlayer();
         Direction faceClicked = context.getClickedFace();
+        ItemStack itemStack = context.getItemInHand();
 
         if(!world.isClientSide && player != null){
             BlockState blockState = world.getBlockState(pos);
             if (blockState.getBlock() == UNLOCK_NEW_ROOM_BLOCK.get()){
                 Random random = new Random();
                 generateProceduralRoom(world, pos, random, faceClicked);
+                itemStack.shrink(1);
                 return InteractionResult.SUCCESS;
             }
         }
