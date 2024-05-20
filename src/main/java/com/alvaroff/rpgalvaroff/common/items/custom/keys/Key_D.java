@@ -15,8 +15,7 @@ import java.util.Random;
 
 import static com.alvaroff.rpgalvaroff.common.blocks.BlockInit.LOCK;
 import static com.alvaroff.rpgalvaroff.common.blocks.BlockInit.UNLOCK_NEW_ROOM_BLOCK;
-import static com.alvaroff.rpgalvaroff.common.utils.DimensionUtils.generateProceduralRoom;
-import static com.alvaroff.rpgalvaroff.common.utils.DimensionUtils.handleDimensionEntry;
+import static com.alvaroff.rpgalvaroff.common.utils.DimensionUtils.*;
 
 public class Key_D extends Item {
     public Key_D(Properties p_41383_) {
@@ -35,7 +34,11 @@ public class Key_D extends Item {
             BlockState blockState = world.getBlockState(pos);
             if (blockState.getBlock() == UNLOCK_NEW_ROOM_BLOCK.get()){
                 Random random = new Random();
-                generateProceduralRoom(world, pos, random, faceClicked);
+                if(random.nextFloat() < 0.5f)
+                    generateProceduralLavaRoom(world, pos, random, faceClicked);
+                else
+                    generateProceduralRoom(world, pos, random, faceClicked);
+
                 itemStack.shrink(1);
                 return InteractionResult.SUCCESS;
             }
