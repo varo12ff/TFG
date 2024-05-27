@@ -3,6 +3,7 @@ package com.alvaroff.rpgalvaroff.common.utils;
 import com.alvaroff.rpgalvaroff.capabilities.dungeonState.DungeonState;
 import com.alvaroff.rpgalvaroff.capabilities.dungeonState.DungeonStateProvider;
 import com.alvaroff.rpgalvaroff.common.blocks.BlockInit;
+import com.alvaroff.rpgalvaroff.common.entities.EntityInit;
 import com.alvaroff.rpgalvaroff.common.world.dimension.DimensionInit;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -12,6 +13,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -36,11 +38,14 @@ public class DimensionUtils {
         CompoundTag data = playerData.getCompound("PlayerData");
         data.putLong("LastOverworldPosition", player.getOnPos().asLong());
         playerData.put("PlayerData", data);
+        player.getCommandSenderWorld().getGameRules().getRule(GameRules.RULE_DOMOBSPAWNING).set(false, player.getCommandSenderWorld().getServer());
         player.teleportTo(player.server.getLevel(RPGDIM_KEY), 0, 2, 0, player.yRotO, player.xRotO);
     }
 
     public static void handleDimensionExit(ServerPlayer player) {
         CompoundTag playerData = player.getPersistentData();
+
+        player.getCommandSenderWorld().getGameRules().getRule(GameRules.RULE_DOMOBSPAWNING).set(true, player.getCommandSenderWorld().getServer());
         if (playerData.contains("PlayerData", 10)) {
             CompoundTag data = playerData.getCompound("PlayerData");
             if (data.contains("LastOverworldPosition")) {
@@ -207,7 +212,7 @@ public class DimensionUtils {
                                 world.setBlock(pos, Blocks.SPAWNER.defaultBlockState(), 3);
                                 SpawnerBlockEntity spawner = (SpawnerBlockEntity) world.getBlockEntity(pos);
                                 if (spawner != null) {
-                                    spawner.getSpawner().setEntityId(EntityType.ZOMBIE);
+                                    spawner.getSpawner().setEntityId(EntityInit.SCARECRAFT.get());
                                 }
                                 placedSpawners++;
                             }

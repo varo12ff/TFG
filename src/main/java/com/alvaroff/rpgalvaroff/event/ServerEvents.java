@@ -9,21 +9,14 @@ import com.alvaroff.rpgalvaroff.common.utils.PlayerUtils;
 import com.alvaroff.rpgalvaroff.common.world.dimension.DimensionInit;
 import com.alvaroff.rpgalvaroff.capabilities.dungeonState.DungeonState;
 import com.alvaroff.rpgalvaroff.capabilities.dungeonState.DungeonStateProvider;
-import com.sun.jna.platform.unix.X11;
-import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.ai.attributes.Attribute;
-import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
@@ -31,11 +24,6 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-
-import java.util.Random;
-import java.util.UUID;
-
-import static com.alvaroff.rpgalvaroff.common.utils.DimensionUtils.generateProceduralRoom;
 
 @Mod.EventBusSubscriber(modid = RPGalvaroff.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class ServerEvents {
@@ -159,5 +147,7 @@ public class ServerEvents {
             }
         }
     }
+
+
 
 }
