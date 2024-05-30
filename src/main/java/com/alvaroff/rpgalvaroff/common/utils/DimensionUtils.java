@@ -4,13 +4,9 @@ import com.alvaroff.rpgalvaroff.capabilities.dungeonState.DungeonState;
 import com.alvaroff.rpgalvaroff.capabilities.dungeonState.DungeonStateProvider;
 import com.alvaroff.rpgalvaroff.common.blocks.BlockInit;
 import com.alvaroff.rpgalvaroff.common.entities.EntityInit;
-import com.alvaroff.rpgalvaroff.common.world.dimension.DimensionInit;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.GameRules;
@@ -22,7 +18,6 @@ import net.minecraft.world.level.block.entity.SpawnerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
-import net.minecraft.world.level.dimension.DimensionType;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -155,23 +150,22 @@ public class DimensionUtils {
             }
         }
 
-        boolean nextRoom = true;
         Direction obsidianFacing = null;
 
         if (validDirections.isEmpty()) {
-            // Si no hay direcciones viables, no colocar el bloque de obsidiana
-            nextRoom = false;
+            generateSphereProceduralRoom(world, clickedPos, random, facing);
+            return;
         }
         else{
             obsidianFacing = validDirections.get(random.nextInt(validDirections.size())); // Seleccionar una dirección aleatoria
         }
 
         float bossProbabilty = world.getCapability(DungeonStateProvider.DUNGEON_STATUS).orElse(new DungeonState()).getBossRoom();
-        boolean bossRoom = false;
 
         if(random.nextFloat() < bossProbabilty) {
             world.getCapability(DungeonStateProvider.DUNGEON_STATUS).orElse(new DungeonState()).setBossRoom(0);
-            bossRoom = true;
+            generateSphereProceduralRoom(world, clickedPos, random, facing);
+            return;
         }
         else{
             world.getCapability(DungeonStateProvider.DUNGEON_STATUS).orElse(new DungeonState()).addPercentageBossRoom();
@@ -193,10 +187,10 @@ public class DimensionUtils {
                             world.setBlock(pos, block.defaultBlockState(), 3);
                         }
                         else {
-                            if (nextRoom && y == 2 && isCenterWall && ((obsidianFacing == Direction.NORTH && z == 0) ||
+                            if (y == 2 && isCenterWall && ((obsidianFacing == Direction.NORTH && z == 0) ||
                                     (obsidianFacing == Direction.SOUTH && z == depth - 1) ||
                                     (obsidianFacing == Direction.WEST && x == 0) ||
-                                    (obsidianFacing == Direction.EAST && x == width - 1)) && !bossRoom) {
+                                    (obsidianFacing == Direction.EAST && x == width - 1))) {
 
                                 world.setBlock(pos, lock, 3);
                             } else {
@@ -208,7 +202,7 @@ public class DimensionUtils {
                     }
                     else{
                         // Intentar colocar un spawner en una posición aleatoria no en el borde
-                        if (y == 1 && placedSpawners < spawnerCount && random.nextFloat() < 0.1 && !bossRoom) { // Probabilidad de colocar un spawner
+                        if (y == 1 && placedSpawners < spawnerCount && random.nextFloat() < 0.1) { // Probabilidad de colocar un spawner
                             if (world.getBlockState(pos).getBlock() == Blocks.AIR) {
                                 world.setBlock(pos, Blocks.SPAWNER.defaultBlockState(), 3);
                                 SpawnerBlockEntity spawner = (SpawnerBlockEntity) world.getBlockEntity(pos);
@@ -272,10 +266,6 @@ public class DimensionUtils {
         int radius = 10 + random.nextInt(6); // Radio de la sala entre 10 y 15
         int passageWidth = 3; // Ancho del pasillo fijo
         int passageDepth = 3; // Profundidad del pasillo
-        int spawnerCount = random.nextInt(4) + 1; // Genera un número entre 1 y 4
-        int placedSpawners = 0;
-
-        BlockState lock = BlockInit.UNLOCK_NEW_ROOM_BLOCK.get().defaultBlockState();
 
         // Determina la posición base ajustada para que el bloque clickeado esté centrado en la cara de la sala
         BlockPos basePos = clickedPos.relative(facing.getOpposite(), 1).above(17 + radius);
@@ -297,42 +287,6 @@ public class DimensionUtils {
             basePos = basePos.east(-radius / 15);
         }
 
-
-
-        // Lista de direcciones posibles para colocar el bloque de obsidiana
-        List<Direction> directions = new ArrayList<>(Arrays.asList(Direction.NORTH, Direction.SOUTH, Direction.WEST, Direction.EAST));
-        directions.remove(facing); // Remover la dirección del pasillo
-
-        // Filtrar direcciones que no interferirán con otras salas futuras
-        List<Direction> validDirections = new ArrayList<>();
-        for (Direction dir : directions) {
-            if (!willInterfereWithFutureRoom(world, basePos, dir, radius * 2, radius * 2, radius * 2)) {
-                validDirections.add(dir);
-            }
-        }
-
-        boolean nextRoom = true;
-        Direction obsidianFacing = null;
-
-        if (validDirections.isEmpty()) {
-            // Si no hay direcciones viables, no colocar el bloque de obsidiana
-            nextRoom = false;
-        }
-        else{
-            obsidianFacing = validDirections.get(random.nextInt(validDirections.size())); // Seleccionar una dirección aleatoria
-        }
-
-        float bossProbabilty = world.getCapability(DungeonStateProvider.DUNGEON_STATUS).orElse(new DungeonState()).getBossRoom();
-        boolean bossRoom = false;
-
-        if(random.nextFloat() < bossProbabilty) {
-            world.getCapability(DungeonStateProvider.DUNGEON_STATUS).orElse(new DungeonState()).setBossRoom(0);
-            bossRoom = true;
-        }
-        else{
-            world.getCapability(DungeonStateProvider.DUNGEON_STATUS).orElse(new DungeonState()).addPercentageBossRoom();
-        }
-
         // Generar sala hueca con patrón procedural
         for (int x = -radius; x <= radius; x++) {
             for (int y = -radius; y <= radius; y++) {
@@ -347,41 +301,12 @@ public class DimensionUtils {
                             if (y > -radius) {
                                 Block block = random.nextFloat() > 0.7 ? Blocks.GLOWSTONE : Blocks.STONE;
                                 world.setBlock(pos, block.defaultBlockState(), 3);
-                            } else {
-                                if (nextRoom && y == 2 && ((obsidianFacing == Direction.NORTH && z == -radius) ||
-                                        (obsidianFacing == Direction.SOUTH && z == radius) ||
-                                        (obsidianFacing == Direction.WEST && x == -radius) ||
-                                        (obsidianFacing == Direction.EAST && x == radius)) && !bossRoom) {
-
-                                    world.setBlock(pos, lock, 3);
-                                } else {
-                                    Block block = random.nextFloat() > 0.7 ? Blocks.COBBLESTONE : Blocks.STONE;
-                                    world.setBlock(pos, block.defaultBlockState(), 3);
-                                }
-                            }
-                        } else {
-                            // Intentar colocar un spawner en una posición aleatoria no en el borde
-                            if (y == -radius + 1 && placedSpawners < spawnerCount && random.nextFloat() < 0.1 && !bossRoom) { // Probabilidad de colocar un spawner
-                                if (world.getBlockState(pos).getBlock() == Blocks.AIR) {
-                                    world.setBlock(pos, Blocks.SPAWNER.defaultBlockState(), 3);
-                                    SpawnerBlockEntity spawner = (SpawnerBlockEntity) world.getBlockEntity(pos);
-                                    if (spawner != null) {
-                                        spawner.getSpawner().setEntityId(EntityInit.SCARECRAFT.get());
-                                    }
-                                    placedSpawners++;
-                                }
                             }
                         }
                     }
                 }
             }
         }
-
-        world.getCapability(DungeonStateProvider.DUNGEON_STATUS).ifPresent(active -> {
-            active.setActiveSpawners(spawnerCount);
-        });
-
-
 
         // Posición inicial del pasillo centrada con el bloque clickeado
         BlockPos passageStart = clickedPos.relative(facing.getOpposite(), 2).below(2);
@@ -456,23 +381,22 @@ public class DimensionUtils {
             }
         }
 
-        boolean nextRoom = true;
         Direction obsidianFacing = null;
 
         if (validDirections.isEmpty()) {
-            // Si no hay direcciones viables, no colocar el bloque de obsidiana
-            nextRoom = false;
+            generateSphereProceduralRoom(world, clickedPos, random, facing);
+            return;
         }
         else{
             obsidianFacing = validDirections.get(random.nextInt(validDirections.size())); // Seleccionar una dirección aleatoria
         }
 
         float bossProbabilty = world.getCapability(DungeonStateProvider.DUNGEON_STATUS).orElse(new DungeonState()).getBossRoom();
-        boolean bossRoom = false;
 
         if(random.nextFloat() < bossProbabilty) {
             world.getCapability(DungeonStateProvider.DUNGEON_STATUS).orElse(new DungeonState()).setBossRoom(0);
-            bossRoom = true;
+            generateSphereProceduralRoom(world, clickedPos, random, facing);
+            return;
         }
         else{
             world.getCapability(DungeonStateProvider.DUNGEON_STATUS).orElse(new DungeonState()).addPercentageBossRoom();
@@ -494,10 +418,10 @@ public class DimensionUtils {
                             world.setBlock(pos, block.defaultBlockState(), 3);
                         }
                         else {
-                            if (nextRoom && y == 3 && isCenterWall && ((obsidianFacing == Direction.NORTH && z == 0) ||
+                            if (y == 3 && isCenterWall && ((obsidianFacing == Direction.NORTH && z == 0) ||
                                     (obsidianFacing == Direction.SOUTH && z == depth - 1) ||
                                     (obsidianFacing == Direction.WEST && x == 0) ||
-                                    (obsidianFacing == Direction.EAST && x == width - 1)) && !bossRoom) {
+                                    (obsidianFacing == Direction.EAST && x == width - 1))) {
 
                                 world.setBlock(pos, lock, 3);
                             }
@@ -524,7 +448,7 @@ public class DimensionUtils {
                     }
                     else{
                         // Intentar colocar un spawner en una posición aleatoria no en el borde
-                        if (y == 2 && placedSpawners < spawnerCount && random.nextFloat() < 0.1 && !bossRoom) { // Probabilidad de colocar un spawner
+                        if (y == 2 && placedSpawners < spawnerCount && random.nextFloat() < 0.1) { // Probabilidad de colocar un spawner
                             BlockPos belowPos = pos.below();
                             if (world.getBlockState(pos).getBlock() == Blocks.AIR && world.getBlockState(belowPos).getBlock() == Blocks.STONE) {
                                 world.setBlock(pos, Blocks.SPAWNER.defaultBlockState(), 3);
@@ -627,23 +551,23 @@ public class DimensionUtils {
             }
         }
 
-        boolean nextRoom = true;
         Direction obsidianFacing = null;
 
         if (validDirections.isEmpty()) {
             // Si no hay direcciones viables, no colocar el bloque de obsidiana
-            nextRoom = false;
+            generateSphereProceduralRoom(world, clickedPos, random, facing);
+            return;
         }
         else{
             obsidianFacing = validDirections.get(random.nextInt(validDirections.size())); // Seleccionar una dirección aleatoria
         }
 
         float bossProbabilty = world.getCapability(DungeonStateProvider.DUNGEON_STATUS).orElse(new DungeonState()).getBossRoom();
-        boolean bossRoom = false;
 
         if(random.nextFloat() < bossProbabilty) {
             world.getCapability(DungeonStateProvider.DUNGEON_STATUS).orElse(new DungeonState()).setBossRoom(0);
-            bossRoom = true;
+            generateSphereProceduralRoom(world, clickedPos, random, facing);
+            return;
         }
         else{
             world.getCapability(DungeonStateProvider.DUNGEON_STATUS).orElse(new DungeonState()).addPercentageBossRoom();
@@ -665,10 +589,10 @@ public class DimensionUtils {
                             world.setBlock(pos, block.defaultBlockState(), 3);
                         }
                         else {
-                            if (nextRoom && y == 3 && isCenterWall && ((obsidianFacing == Direction.NORTH && z == 0) ||
+                            if (y == 3 && isCenterWall && ((obsidianFacing == Direction.NORTH && z == 0) ||
                                     (obsidianFacing == Direction.SOUTH && z == depth - 1) ||
                                     (obsidianFacing == Direction.WEST && x == 0) ||
-                                    (obsidianFacing == Direction.EAST && x == width - 1)) && !bossRoom) {
+                                    (obsidianFacing == Direction.EAST && x == width - 1))) {
 
                                 world.setBlock(pos, lock, 3);
                             }
@@ -682,7 +606,7 @@ public class DimensionUtils {
                     }
                     else{
                         // Intentar colocar un spawner en una posición aleatoria no en el borde
-                        if (placedSpawners < spawnerCount && random.nextFloat() < 0.1 && !bossRoom) { // Probabilidad de colocar un spawner
+                        if (placedSpawners < spawnerCount && random.nextFloat() < 0.1) { // Probabilidad de colocar un spawner
                             if (world.getBlockState(pos).getBlock() == Blocks.AIR) {
                                 world.setBlock(pos, Blocks.SPAWNER.defaultBlockState(), 3);
                                 SpawnerBlockEntity spawner = (SpawnerBlockEntity) world.getBlockEntity(pos);
