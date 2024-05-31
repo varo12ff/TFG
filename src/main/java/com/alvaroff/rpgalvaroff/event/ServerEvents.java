@@ -3,12 +3,14 @@ package com.alvaroff.rpgalvaroff.event;
 import com.alvaroff.rpgalvaroff.RPGalvaroff;
 import com.alvaroff.rpgalvaroff.capabilities.playerStats.PlayerStats;
 import com.alvaroff.rpgalvaroff.capabilities.playerStats.PlayerStatsProvider;
+import com.alvaroff.rpgalvaroff.client.gui.ManaBarOverlay;
 import com.alvaroff.rpgalvaroff.common.items.ItemInit;
 import com.alvaroff.rpgalvaroff.common.utils.DimensionUtils;
 import com.alvaroff.rpgalvaroff.common.utils.PlayerUtils;
 import com.alvaroff.rpgalvaroff.common.world.dimension.DimensionInit;
 import com.alvaroff.rpgalvaroff.capabilities.dungeonState.DungeonState;
 import com.alvaroff.rpgalvaroff.capabilities.dungeonState.DungeonStateProvider;
+import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -48,14 +50,22 @@ public class ServerEvents {
     public static void onPlayerJoinWorld(PlayerEvent.PlayerLoggedInEvent event) {
         Player player = event.getPlayer();
         player.getCapability(PlayerStatsProvider.PLAYER_STATS).orElse(new PlayerStats()).syncPlayer(player);
+
+        int maxMana = player.getCapability(PlayerStatsProvider.PLAYER_STATS).orElse(new PlayerStats()).getMana();
+        float currentMana = player.getCapability(PlayerStatsProvider.PLAYER_STATS).orElse(new PlayerStats()).getCurrentMana();
+
+        ManaBarOverlay.updateMana(maxMana, (int)currentMana);
+        ManaBarOverlay.drawBar(player.getCapability(PlayerStatsProvider.PLAYER_STATS).orElse(new PlayerStats()).getPlayerClass());
     }
 
     @SubscribeEvent
     public static void onPlayerRespawn(PlayerEvent.PlayerRespawnEvent event) {
         Player player = event.getPlayer();
         if(!player.getLevel().isClientSide()) {
+            player.getCapability(PlayerStatsProvider.PLAYER_STATS).orElse(new PlayerStats()).setCurrentMana(player.getCapability(PlayerStatsProvider.PLAYER_STATS).orElse(new PlayerStats()).getMana());
             player.getCapability(PlayerStatsProvider.PLAYER_STATS).orElse(new PlayerStats()).syncPlayer(player);
             PlayerUtils.changeAttributes(player);
+
         }
     }
 
