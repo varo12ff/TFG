@@ -51,10 +51,10 @@ public class ServerEvents {
         Player player = event.getPlayer();
         player.getCapability(PlayerStatsProvider.PLAYER_STATS).orElse(new PlayerStats()).syncPlayer(player);
 
-        int maxMana = player.getCapability(PlayerStatsProvider.PLAYER_STATS).orElse(new PlayerStats()).getMana();
+        float maxMana = player.getCapability(PlayerStatsProvider.PLAYER_STATS).orElse(new PlayerStats()).getManaCant();
         float currentMana = player.getCapability(PlayerStatsProvider.PLAYER_STATS).orElse(new PlayerStats()).getCurrentMana();
 
-        ManaBarOverlay.updateMana(maxMana, (int)currentMana);
+        ManaBarOverlay.updateMana(maxMana, currentMana);
         ManaBarOverlay.drawBar(player.getCapability(PlayerStatsProvider.PLAYER_STATS).orElse(new PlayerStats()).getPlayerClass());
     }
 
@@ -62,7 +62,7 @@ public class ServerEvents {
     public static void onPlayerRespawn(PlayerEvent.PlayerRespawnEvent event) {
         Player player = event.getPlayer();
         if(!player.getLevel().isClientSide()) {
-            player.getCapability(PlayerStatsProvider.PLAYER_STATS).orElse(new PlayerStats()).setCurrentMana(player.getCapability(PlayerStatsProvider.PLAYER_STATS).orElse(new PlayerStats()).getMana());
+            player.getCapability(PlayerStatsProvider.PLAYER_STATS).orElse(new PlayerStats()).setCurrentMana(player.getCapability(PlayerStatsProvider.PLAYER_STATS).orElse(new PlayerStats()).getManaCant());
             player.getCapability(PlayerStatsProvider.PLAYER_STATS).orElse(new PlayerStats()).syncPlayer(player);
             PlayerUtils.changeAttributes(player);
 

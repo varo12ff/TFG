@@ -33,9 +33,10 @@ public class PlayerStatsC2SPacket {
 
             player.getCapability(PlayerStatsProvider.PLAYER_STATS).orElse(new PlayerStats()).loadNBTData(playerStats);
             player.getCapability(PlayerStatsProvider.PLAYER_STATS).orElse(new PlayerStats()).syncPlayer(player);
-            int maxMana = player.getCapability(PlayerStatsProvider.PLAYER_STATS).orElse(new PlayerStats()).getMana();
+            float maxMana = player.getCapability(PlayerStatsProvider.PLAYER_STATS).orElse(new PlayerStats()).getManaCant();
             float currentMana = player.getCapability(PlayerStatsProvider.PLAYER_STATS).orElse(new PlayerStats()).getCurrentMana();
-            ManaBarOverlay.updateMana(maxMana, (int)currentMana);
+
+            ManaBarOverlay.updateMana(maxMana, currentMana);
             ManaBarOverlay.drawBar(player.getCapability(PlayerStatsProvider.PLAYER_STATS).orElse(new PlayerStats()).getPlayerClass());
             PlayerUtils.changeAttributes(player);
         });
