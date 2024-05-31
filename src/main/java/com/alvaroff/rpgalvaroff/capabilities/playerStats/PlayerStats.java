@@ -227,6 +227,7 @@ public class PlayerStats {
         this.ability = source.ability;
         this.resistance = source.resistance;
         this.mana = source.mana;
+        this.currentMana = source.mana;
         this.magicPower = source.magicPower;
         this.agility = source.agility;
         this.sanation = source.sanation;

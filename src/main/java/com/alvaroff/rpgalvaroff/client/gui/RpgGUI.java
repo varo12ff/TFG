@@ -6,6 +6,7 @@ import com.alvaroff.rpgalvaroff.capabilities.playerStats.PlayerStats;
 import com.alvaroff.rpgalvaroff.capabilities.playerStats.PlayerStatsProvider;
 import com.alvaroff.rpgalvaroff.networking.ModMessages;
 import com.alvaroff.rpgalvaroff.networking.packet.PlayerStatsC2SPacket;
+import com.alvaroff.rpgalvaroff.networking.packet.UpdateManaC2SPacket;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.ChatFormatting;
@@ -46,6 +47,8 @@ public class RpgGUI extends Screen {
 
     private void selectClass(PlayerStats newPlayerStats){
         ModMessages.sendToServer(new PlayerStatsC2SPacket(newPlayerStats.getNBT()));
+        ModMessages.sendToServer(new UpdateManaC2SPacket(newPlayerStats.getNBT()));
+
         this.onClose();
     }
 

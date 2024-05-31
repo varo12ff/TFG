@@ -5,6 +5,7 @@ import com.alvaroff.rpgalvaroff.event.ServerEvents;
 import com.alvaroff.rpgalvaroff.networking.packet.ClientGUIS2CPacket;
 import com.alvaroff.rpgalvaroff.networking.packet.KeyBindingC2SPacket;
 import com.alvaroff.rpgalvaroff.networking.packet.PlayerStatsC2SPacket;
+import com.alvaroff.rpgalvaroff.networking.packet.UpdateManaC2SPacket;
 import com.ibm.icu.impl.SimpleCache;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
@@ -47,6 +48,12 @@ public class ModMessages {
                 .decoder(ClientGUIS2CPacket::new)
                 .encoder(ClientGUIS2CPacket::toBytes)
                 .consumer(ClientGUIS2CPacket::handle)
+                .add();
+
+        net.messageBuilder(UpdateManaC2SPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
+                .decoder(UpdateManaC2SPacket::new)
+                .encoder(UpdateManaC2SPacket::toBytes)
+                .consumer(UpdateManaC2SPacket::handle)
                 .add();
     }
 
