@@ -1,7 +1,13 @@
 package com.alvaroff.rpgalvaroff.capabilities.playerStats;
+import com.alvaroff.rpgalvaroff.capabilities.playerSkills.PlayerSkills;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class PlayerStats {
     private int lvl;
@@ -20,6 +26,8 @@ public class PlayerStats {
     private int agility;
     private int sanation;
     private PlayerClass playerClass;
+    private ArrayList<Integer> totalSkills;
+    private int[] actionSkills;
 
     public PlayerStats(){
 
@@ -38,6 +46,10 @@ public class PlayerStats {
         this.agility = 0;
         this.sanation = 0;
         this.playerClass = PlayerClass.NONE;
+
+        totalSkills = new ArrayList<>();
+        actionSkills = new int[8];
+        Arrays.fill(actionSkills, -1);
     }
 
     public PlayerStats(int lvl, float health, int strength, int ability, int resistance, int mana, int magicPower, int agility, int sanation, PlayerClass playerClass) {
@@ -56,6 +68,11 @@ public class PlayerStats {
         this.agility = agility;
         this.sanation = sanation;
         this.playerClass = playerClass;
+
+        totalSkills = new ArrayList<>();
+        actionSkills = new int[8];
+        Arrays.fill(actionSkills, -1);
+        actionSkills[0] = 0;
     }
 
     public int getLevel(){
@@ -231,6 +248,29 @@ public class PlayerStats {
         this.playerClass = playerClass;
     }
 
+    public ArrayList<Integer> getTotalSkills() {
+        return totalSkills;
+    }
+
+    public void setTotalSkills(ArrayList<Integer> totalSkills) {
+        this.totalSkills = totalSkills;
+    }
+
+    public int[] getActionSkills() {
+        return actionSkills;
+    }
+
+    public void setActionSkills(int[] actionSkills) {
+        this.actionSkills = actionSkills;
+    }
+
+    public int getActionSkill(int slot){
+        if(slot < 8)
+            return actionSkills[slot];
+        else
+            return -1;
+    }
+
     public void copyFrom(PlayerStats source){
 
         this.lvl = source.lvl;
@@ -248,6 +288,8 @@ public class PlayerStats {
         this.agility = source.agility;
         this.sanation = source.sanation;
         this.playerClass = source.playerClass;
+        this.actionSkills = source.actionSkills;
+        this.totalSkills = source.totalSkills;
     }
 
     public void syncPlayer(Player player){
@@ -344,6 +386,8 @@ public class PlayerStats {
         nbt.putInt("agility", agility);
         nbt.putInt("sanation", sanation);
         nbt.putString("playerClass", playerClass.toString());
+        nbt.putIntArray("skills", totalSkills);
+        nbt.putIntArray("actionSkills", actionSkills);
     }
 
     public void loadNBTData(CompoundTag nbt){
@@ -363,6 +407,13 @@ public class PlayerStats {
         agility = nbt.getInt("agility");
         sanation = nbt.getInt("sanation");
         playerClass = PlayerClass.valueOf(nbt.getString("playerClass"));
+        int[] auxTotalSkills = nbt.getIntArray("skills");
+
+        totalSkills = Arrays.stream(auxTotalSkills)
+                .boxed()
+                .collect(Collectors.toCollection(ArrayList::new));
+
+        actionSkills = nbt.getIntArray("actionSkills");
     }
 
     public CompoundTag getNBT(){
@@ -384,6 +435,8 @@ public class PlayerStats {
         nbt.putInt("agility", agility);
         nbt.putInt("sanation", sanation);
         nbt.putString("playerClass", playerClass.toString());
+        nbt.putIntArray("skills", totalSkills);
+        nbt.putIntArray("actionSkills", actionSkills);
 
         return nbt;
     }

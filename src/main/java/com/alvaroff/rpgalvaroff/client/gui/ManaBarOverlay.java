@@ -24,9 +24,7 @@ public class ManaBarOverlay extends GuiComponent {
 
     @SubscribeEvent
     public static void onRenderGameOverlay(RenderGameOverlayEvent.Post event) {
-        if (playerClass != PlayerClass.NONE) {
-            //return;
-        //}
+        if (playerClass != PlayerClass.NONE && event.getType() == RenderGameOverlayEvent.ElementType.ALL) {
 
             Minecraft minecraft = Minecraft.getInstance();
             int screenWidth = minecraft.getWindow().getGuiScaledWidth();

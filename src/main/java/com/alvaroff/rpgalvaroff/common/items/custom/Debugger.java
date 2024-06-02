@@ -1,4 +1,5 @@
 package com.alvaroff.rpgalvaroff.common.items.custom;
+import com.alvaroff.rpgalvaroff.capabilities.playerSkills.PlayerSkills;
 import com.alvaroff.rpgalvaroff.capabilities.playerStats.PlayerStats;
 import com.alvaroff.rpgalvaroff.capabilities.playerStats.PlayerStatsProvider;
 import com.alvaroff.rpgalvaroff.client.gui.ManaBarOverlay;
@@ -22,8 +23,10 @@ public class Debugger extends Item {
             PlayerStats newPlayerStats = new PlayerStats();
             ModMessages.sendToServer(new PlayerStatsC2SPacket(newPlayerStats.getNBT()));
 
+
             player.displayClientMessage(new TranslatableComponent("item.rpgalvaroff.debbuger.reset_notify"), true);
         }
+
         return InteractionResultHolder.pass(player.getItemInHand(hand));
     }
 }

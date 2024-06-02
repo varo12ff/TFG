@@ -3,6 +3,7 @@ package com.alvaroff.rpgalvaroff.networking.packet;
 import com.alvaroff.rpgalvaroff.capabilities.playerStats.PlayerStats;
 import com.alvaroff.rpgalvaroff.capabilities.playerStats.PlayerStatsProvider;
 import com.alvaroff.rpgalvaroff.client.gui.ManaBarOverlay;
+import com.alvaroff.rpgalvaroff.client.gui.SkillOverlay;
 import com.alvaroff.rpgalvaroff.common.utils.PlayerUtils;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -38,7 +39,9 @@ public class PlayerStatsC2SPacket {
 
             ManaBarOverlay.updateMana(maxMana, currentMana);
             ManaBarOverlay.drawBar(player.getCapability(PlayerStatsProvider.PLAYER_STATS).orElse(new PlayerStats()).getPlayerClass());
+            SkillOverlay.drawHud(player.getCapability(PlayerStatsProvider.PLAYER_STATS).orElse(new PlayerStats()).getPlayerClass());
             PlayerUtils.changeAttributes(player);
+            SkillOverlay.updateSkills(player.getCapability(PlayerStatsProvider.PLAYER_STATS).orElse(new PlayerStats()).getActionSkills());
         });
 
         return true;
