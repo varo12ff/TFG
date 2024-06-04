@@ -8,6 +8,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LightningBolt;
 import net.minecraft.world.entity.player.Player;
@@ -30,6 +31,8 @@ public class ThunderSkill extends PlayerSkills{
     private final int id = 0;
     private static final ResourceLocation icon = new ResourceLocation(RPGalvaroff.MOD_ID,"textures/gui/skill_hud/thunder_skill.png");
 
+    private final float manaCost = 5.0f;
+
     public ThunderSkill() {
         super();
     }
@@ -42,28 +45,28 @@ public class ThunderSkill extends PlayerSkills{
         return icon;
     }
 
+    @Override
+    public float getManaCost(){
+        return manaCost;
+    }
 
     @Override
-    public void launch(TickEvent.ClientTickEvent event) {
-        Minecraft mc = Minecraft.getInstance();
-        if (event.phase == TickEvent.Phase.END) {
-            Player player = mc.player;
-            if (player != null && mc.screen == null) {
-                long windowHandle = mc.getWindow().getWindow();
-                boolean isAltPressed = GLFW.glfwGetKey(windowHandle, GLFW.GLFW_KEY_LEFT_ALT) == GLFW.GLFW_PRESS;
-                boolean isLeftClickPressed = GLFW.glfwGetMouseButton(windowHandle, GLFW.GLFW_MOUSE_BUTTON_RIGHT) == GLFW.GLFW_PRESS;
+    public void launch(ServerPlayer player) {
+        HitResult result = rayTrace(player, 5);
 
-                if (isAltPressed && isLeftClickPressed) {
+        if (result.getType() == HitResult.Type.BLOCK) {
+            BlockHitResult blockResult = (BlockHitResult) result;
 
-                    HitResult result = rayTrace(player, 5);
-
-                    if (result.getType() == HitResult.Type.BLOCK) {
-                        BlockHitResult blockResult = (BlockHitResult) result;
-                        ModMessages.sendToServer(new SummonLightningC2SPacket(blockResult.getBlockPos().getX(), blockResult.getBlockPos().getY(), blockResult.getBlockPos().getZ()));
-                    }
+            if (player != null && player.level instanceof ServerLevel) {
+                ServerLevel serverLevel = (ServerLevel) player.level;
+                LightningBolt lightning = EntityType.LIGHTNING_BOLT.create(serverLevel);
+                if (lightning != null) {
+                    lightning.moveTo(blockResult.getBlockPos().getX(), blockResult.getBlockPos().getY(), blockResult.getBlockPos().getZ());
+                    serverLevel.addFreshEntity(lightning);
                 }
             }
         }
+
     }
 
     private static HitResult rayTrace(Player player, double range) {

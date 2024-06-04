@@ -71,11 +71,12 @@ public class SkillOverlay extends GuiComponent {
                     actionSkill.initSkillsVector();
 
                     RenderSystem.setShaderTexture(0, actionSkill.getSkill(skills[i]).getImage());
-                    blit(event.getMatrixStack(), x + 20, y + 22, 0, 0, 16, 16, 16, 16);
+                    if(i < 3)
+                        blit(event.getMatrixStack(), x + 20 + (i * 18), y + 22, 0, 0, 16, 16, 16, 16);
+                    else if(i < 6)
+                        blit(event.getMatrixStack(), x + (i * 18), y + 22 + 18, 0, 0, 16, 16, 16, 16);
                 }
             }
-            //RenderSystem.setShaderTexture(0, THUNDER);
-            //blit(event.getMatrixStack(), x + 20, y + 22, 0, 0, 16, 16, 16, 16);
 
             RenderSystem.setShaderTexture(0, currentTexture);
             blit(event.getMatrixStack(), x, y, 0, 0, manaBarWidth, manaBarHeight, 91, 91);

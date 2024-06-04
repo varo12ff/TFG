@@ -4,6 +4,7 @@ import com.alvaroff.rpgalvaroff.RPGalvaroff;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.event.TickEvent;
 import org.lwjgl.system.CallbackI;
 
@@ -24,8 +25,15 @@ public class PlayerSkills {
 
     public void initSkillsVector(){
         ThunderSkill thunder = new ThunderSkill();
+        HealSelfClass heal = new HealSelfClass();
+        BerserkModeSkill berserk = new BerserkModeSkill();
+        DashSkill dash = new DashSkill();
+
         SKILLS.clear();
         SKILLS.add(thunder);
+        SKILLS.add(heal);
+        SKILLS.add(berserk);
+        SKILLS.add(dash);
     }
 
     public PlayerSkills getSkill(int id){
@@ -39,7 +47,11 @@ public class PlayerSkills {
         return icon;
     }
 
-    public void launch(TickEvent.ClientTickEvent event) {
+    public float getManaCost(){
+        return -1.0f;
+    }
+
+    public void launch(ServerPlayer player) {
         Minecraft.getInstance().player.displayClientMessage(new TextComponent("No Skill"), true);
     }
 

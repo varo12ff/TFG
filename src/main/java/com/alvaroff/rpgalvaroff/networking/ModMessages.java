@@ -56,6 +56,12 @@ public class ModMessages {
                 .encoder(SummonLightningC2SPacket::toBytes)
                 .consumer(SummonLightningC2SPacket::handle)
                 .add();
+
+        net.messageBuilder(LaunchSkillC2SPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
+                .decoder(LaunchSkillC2SPacket::new)
+                .encoder(LaunchSkillC2SPacket::toBytes)
+                .consumer(LaunchSkillC2SPacket::handle)
+                .add();
     }
 
     public static <MSG> void sendToServer(MSG message){

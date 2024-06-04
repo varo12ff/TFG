@@ -6,10 +6,13 @@ import com.alvaroff.rpgalvaroff.client.KeyBinding;
 import com.alvaroff.rpgalvaroff.client.gui.SkillOverlay;
 import com.alvaroff.rpgalvaroff.networking.ModMessages;
 import com.alvaroff.rpgalvaroff.networking.packet.KeyBindingC2SPacket;
+import com.alvaroff.rpgalvaroff.networking.packet.LaunchSkillC2SPacket;
 import com.alvaroff.rpgalvaroff.networking.packet.SummonLightningC2SPacket;
 import net.minecraft.client.Minecraft;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraftforge.api.distmarker.Dist;
@@ -28,6 +31,8 @@ public class ClientEvents {
         }
     }
 
+    private static boolean wasSkillActivated = false;
+
     @SubscribeEvent
     public static void onClientTick(TickEvent.ClientTickEvent event) {
         Minecraft mc = Minecraft.getInstance();
@@ -39,14 +44,20 @@ public class ClientEvents {
                 boolean isLeftClickPressed = GLFW.glfwGetMouseButton(windowHandle, GLFW.GLFW_MOUSE_BUTTON_RIGHT) == GLFW.GLFW_PRESS;
 
                 if (isAltPressed && isLeftClickPressed) {
-                    PlayerSkills actionSkill = new PlayerSkills();
-                    actionSkill.initSkillsVector();
+                    if (!wasSkillActivated) {
+                        PlayerSkills actionSkill = new PlayerSkills();
+                        actionSkill.initSkillsVector();
 
-                    int[] skill = SkillOverlay.getSkills();
-                    if(skill[SkillOverlay.getCurrentTextureIndex()] >= 0)
-                        actionSkill.getSkill(skill[SkillOverlay.getCurrentTextureIndex()]).launch(event);
-                    else
-                        player.displayClientMessage(new TextComponent("No Skill"), true);
+                        int[] skill = SkillOverlay.getSkills();
+                        if(skill[SkillOverlay.getCurrentTextureIndex()] >= 0)
+                            ModMessages.sendToServer(new LaunchSkillC2SPacket(skill[SkillOverlay.getCurrentTextureIndex()]));
+                        else
+                            player.displayClientMessage(new TextComponent("No Skill"), true);
+
+                        wasSkillActivated = true; // Marcar como activado
+                    }
+                } else {
+                    wasSkillActivated = false; // Restablecer el estado cuando las teclas se suelten
                 }
             }
         }
