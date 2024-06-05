@@ -18,15 +18,13 @@ import java.awt.*;
 public class ManaBarOverlay extends GuiComponent {
     private static final ResourceLocation MANA_BAR_EMPTY_TEXTURE = new ResourceLocation(RPGalvaroff.MOD_ID, "textures/gui/mana_empty.png");
     private static final ResourceLocation MANA_BAR_FULL_TEXTURE = new ResourceLocation(RPGalvaroff.MOD_ID, "textures/gui/manabar_full.png");
-    static int maxMana = 0;
-    static int currentMana = 0;
+    static float maxMana = 0;
+    static float currentMana = 0;
     static PlayerClass playerClass = PlayerClass.NONE;
 
     @SubscribeEvent
     public static void onRenderGameOverlay(RenderGameOverlayEvent.Post event) {
-        if (playerClass != PlayerClass.NONE) {
-            //return;
-        //}
+        if (playerClass != PlayerClass.NONE && event.getType() == RenderGameOverlayEvent.ElementType.ALL) {
 
             Minecraft minecraft = Minecraft.getInstance();
             int screenWidth = minecraft.getWindow().getGuiScaledWidth();
@@ -47,7 +45,7 @@ public class ManaBarOverlay extends GuiComponent {
             blit(event.getMatrixStack(), x, y, 0, 0, filledBarWidth, manaBarHeight, 182, 5);
             RenderSystem.disableBlend();
 
-            String manaText = (currentMana * 10) + "/" + (maxMana * 10);
+            String manaText = currentMana + "/" + maxMana;
             int textWidth = minecraft.font.width(manaText);
             int textX = x + (manaBarWidth - textWidth) / 2;
             int textY = y - 10;
@@ -56,7 +54,7 @@ public class ManaBarOverlay extends GuiComponent {
         }
     }
 
-    public static void updateMana(int newMaxMana, int newCurrentMana){
+    public static void updateMana(float newMaxMana, float newCurrentMana){
         maxMana = newMaxMana;
         currentMana = newCurrentMana;
     }

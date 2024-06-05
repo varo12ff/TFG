@@ -1,12 +1,7 @@
 package com.alvaroff.rpgalvaroff.networking;
 
 import com.alvaroff.rpgalvaroff.RPGalvaroff;
-import com.alvaroff.rpgalvaroff.event.ServerEvents;
-import com.alvaroff.rpgalvaroff.networking.packet.ClientGUIS2CPacket;
-import com.alvaroff.rpgalvaroff.networking.packet.KeyBindingC2SPacket;
-import com.alvaroff.rpgalvaroff.networking.packet.PlayerStatsC2SPacket;
-import com.alvaroff.rpgalvaroff.networking.packet.UpdateManaC2SPacket;
-import com.ibm.icu.impl.SimpleCache;
+import com.alvaroff.rpgalvaroff.networking.packet.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.network.NetworkDirection;
@@ -54,6 +49,18 @@ public class ModMessages {
                 .decoder(UpdateManaC2SPacket::new)
                 .encoder(UpdateManaC2SPacket::toBytes)
                 .consumer(UpdateManaC2SPacket::handle)
+                .add();
+
+        net.messageBuilder(SummonLightningC2SPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
+                .decoder(SummonLightningC2SPacket::new)
+                .encoder(SummonLightningC2SPacket::toBytes)
+                .consumer(SummonLightningC2SPacket::handle)
+                .add();
+
+        net.messageBuilder(LaunchSkillC2SPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
+                .decoder(LaunchSkillC2SPacket::new)
+                .encoder(LaunchSkillC2SPacket::toBytes)
+                .consumer(LaunchSkillC2SPacket::handle)
                 .add();
     }
 

@@ -1,7 +1,13 @@
 package com.alvaroff.rpgalvaroff.capabilities.playerStats;
+import com.alvaroff.rpgalvaroff.capabilities.playerSkills.PlayerSkills;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class PlayerStats {
     private int lvl;
@@ -13,12 +19,15 @@ public class PlayerStats {
     private int ability;
     private int resistance;
     private int mana;
+    private float manaCant;
     private final float MAX_MANA = 100.0f;
     private float currentMana;
     private int magicPower;
     private int agility;
     private int sanation;
     private PlayerClass playerClass;
+    private ArrayList<Integer> totalSkills;
+    private int[] actionSkills;
 
     public PlayerStats(){
 
@@ -31,11 +40,16 @@ public class PlayerStats {
         this.ability = 0;
         this.resistance = 0;
         this.mana = 0;
-        this.currentMana = mana;
+        this.manaCant = 0;
+        this.currentMana = 0;
         this.magicPower = 0;
         this.agility = 0;
         this.sanation = 0;
         this.playerClass = PlayerClass.NONE;
+
+        totalSkills = new ArrayList<>();
+        actionSkills = new int[8];
+        Arrays.fill(actionSkills, -1);
     }
 
     public PlayerStats(int lvl, float health, int strength, int ability, int resistance, int mana, int magicPower, int agility, int sanation, PlayerClass playerClass) {
@@ -48,11 +62,20 @@ public class PlayerStats {
         this.ability = ability;
         this.resistance = resistance;
         this.mana = mana;
-        this.currentMana = mana;
+        this.manaCant = mana * 5;
+        this.currentMana = manaCant;
         this.magicPower = magicPower;
         this.agility = agility;
         this.sanation = sanation;
         this.playerClass = playerClass;
+
+        totalSkills = new ArrayList<>();
+        actionSkills = new int[8];
+        Arrays.fill(actionSkills, -1);
+        actionSkills[0] = 1;
+        actionSkills[1] = 0;
+        actionSkills[2] = 2;
+        actionSkills[3] = 3;
     }
 
     public int getLevel(){
@@ -115,6 +138,11 @@ public class PlayerStats {
     }
     public float getCurrentMana() {
         return currentMana;
+    }
+
+    public void subtractMana(float amount){
+        if((currentMana - amount) >= 0)
+            currentMana -= amount;
     }
     public float getMaxMana() {
         return MAX_MANA;
@@ -182,11 +210,23 @@ public class PlayerStats {
         this.abilityPoints--;
     }
     public void setCurrentMana(float mana) {
-        this.currentMana = currentMana;
+        if(mana > manaCant)
+            this.currentMana = this.manaCant;
+        else
+            this.currentMana = mana;
+
     }
 
     public void setMagicPower(int magicPower) {
         this.magicPower = magicPower;
+    }
+
+    public float getManaCant() {
+        return manaCant;
+    }
+
+    public void setManaCant(float manaCant) {
+        this.manaCant = manaCant;
     }
 
     public void addMagicPower() {
@@ -216,6 +256,29 @@ public class PlayerStats {
         this.playerClass = playerClass;
     }
 
+    public ArrayList<Integer> getTotalSkills() {
+        return totalSkills;
+    }
+
+    public void setTotalSkills(ArrayList<Integer> totalSkills) {
+        this.totalSkills = totalSkills;
+    }
+
+    public int[] getActionSkills() {
+        return actionSkills;
+    }
+
+    public void setActionSkills(int[] actionSkills) {
+        this.actionSkills = actionSkills;
+    }
+
+    public int getActionSkill(int slot){
+        if(slot < 8)
+            return actionSkills[slot];
+        else
+            return -1;
+    }
+
     public void copyFrom(PlayerStats source){
 
         this.lvl = source.lvl;
@@ -227,11 +290,14 @@ public class PlayerStats {
         this.ability = source.ability;
         this.resistance = source.resistance;
         this.mana = source.mana;
-        this.currentMana = source.mana;
+        this.manaCant = source.manaCant;
+        this.currentMana = source.currentMana;
         this.magicPower = source.magicPower;
         this.agility = source.agility;
         this.sanation = source.sanation;
         this.playerClass = source.playerClass;
+        this.actionSkills = source.actionSkills;
+        this.totalSkills = source.totalSkills;
     }
 
     public void syncPlayer(Player player){
@@ -249,6 +315,9 @@ public class PlayerStats {
             player.getAttribute(Attributes.ATTACK_SPEED).setBaseValue(cooldownBase + ((float) ability) / 100);
             //base = 0
             player.getAttribute(Attributes.ARMOR).setBaseValue(resistance + 0.5);
+
+            this.manaCant = mana * 2;
+            setCurrentMana(currentMana);
         }
         else if(playerClass == PlayerClass.NINJA) {
             float agilityBase = 0.125f;
@@ -260,6 +329,10 @@ public class PlayerStats {
             player.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(agilityBase + ((float) agility) / 150);
             player.getAttribute(Attributes.ATTACK_SPEED).setBaseValue(cooldownBase + ((float) ability) / 80);
             player.getAttribute(Attributes.ARMOR).setBaseValue(resistance * 0.5);
+
+
+            this.manaCant = mana * 3;
+            setCurrentMana(currentMana);
         }
         else if(playerClass == PlayerClass.CLERIGO) {
             float agilityBase = 0.075f;
@@ -271,6 +344,9 @@ public class PlayerStats {
             player.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(agilityBase + ((float) agility) / 250);
             player.getAttribute(Attributes.ATTACK_SPEED).setBaseValue(cooldownBase + ((float) ability) / 100);
             player.getAttribute(Attributes.ARMOR).setBaseValue(resistance * 0.5);
+
+            this.manaCant = mana * 4;
+            setCurrentMana(currentMana);
         }
         else if(playerClass == PlayerClass.MAGO) {
             float agilityBase = 0.1f;
@@ -282,6 +358,9 @@ public class PlayerStats {
             player.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(agilityBase + ((float) agility) / 200);
             player.getAttribute(Attributes.ATTACK_SPEED).setBaseValue(cooldownBase + ((float) ability) / 100);
             player.getAttribute(Attributes.ARMOR).setBaseValue(resistance * 0.5);
+
+            this.manaCant = mana * 5;
+            setCurrentMana(currentMana);
         }
         else{
             float agilityBase = 0.1f;
@@ -293,6 +372,8 @@ public class PlayerStats {
             player.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(agilityBase);
             player.getAttribute(Attributes.ATTACK_SPEED).setBaseValue(cooldownBase);
             player.getAttribute(Attributes.ARMOR).setBaseValue(0);
+            this.manaCant = 0;
+            setCurrentMana(currentMana);
         }
     }
 
@@ -307,11 +388,14 @@ public class PlayerStats {
         nbt.putInt("ability", ability);
         nbt.putInt("resistance", resistance);
         nbt.putInt("mana", mana);
+        nbt.putFloat("manaCant", manaCant);
         nbt.putFloat("currentMana", currentMana);
         nbt.putInt("magicPower", magicPower);
         nbt.putInt("agility", agility);
         nbt.putInt("sanation", sanation);
         nbt.putString("playerClass", playerClass.toString());
+        nbt.putIntArray("skills", totalSkills);
+        nbt.putIntArray("actionSkills", actionSkills);
     }
 
     public void loadNBTData(CompoundTag nbt){
@@ -325,11 +409,19 @@ public class PlayerStats {
         ability = nbt.getInt("ability");
         resistance = nbt.getInt("resistance");
         mana = nbt.getInt("mana");
+        manaCant = nbt.getFloat("manaCant");
         currentMana = nbt.getFloat("currentMana");
         magicPower = nbt.getInt("magicPower");
         agility = nbt.getInt("agility");
         sanation = nbt.getInt("sanation");
         playerClass = PlayerClass.valueOf(nbt.getString("playerClass"));
+        int[] auxTotalSkills = nbt.getIntArray("skills");
+
+        totalSkills = Arrays.stream(auxTotalSkills)
+                .boxed()
+                .collect(Collectors.toCollection(ArrayList::new));
+
+        actionSkills = nbt.getIntArray("actionSkills");
     }
 
     public CompoundTag getNBT(){
@@ -345,11 +437,14 @@ public class PlayerStats {
         nbt.putInt("ability", ability);
         nbt.putInt("resistance", resistance);
         nbt.putInt("mana", mana);
+        nbt.putFloat("manaCant", manaCant);
         nbt.putFloat("currentMana", currentMana);
         nbt.putInt("magicPower", magicPower);
         nbt.putInt("agility", agility);
         nbt.putInt("sanation", sanation);
         nbt.putString("playerClass", playerClass.toString());
+        nbt.putIntArray("skills", totalSkills);
+        nbt.putIntArray("actionSkills", actionSkills);
 
         return nbt;
     }

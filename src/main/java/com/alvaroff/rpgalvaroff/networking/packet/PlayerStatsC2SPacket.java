@@ -3,6 +3,7 @@ package com.alvaroff.rpgalvaroff.networking.packet;
 import com.alvaroff.rpgalvaroff.capabilities.playerStats.PlayerStats;
 import com.alvaroff.rpgalvaroff.capabilities.playerStats.PlayerStatsProvider;
 import com.alvaroff.rpgalvaroff.client.gui.ManaBarOverlay;
+import com.alvaroff.rpgalvaroff.client.gui.SkillOverlay;
 import com.alvaroff.rpgalvaroff.common.utils.PlayerUtils;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -33,11 +34,14 @@ public class PlayerStatsC2SPacket {
 
             player.getCapability(PlayerStatsProvider.PLAYER_STATS).orElse(new PlayerStats()).loadNBTData(playerStats);
             player.getCapability(PlayerStatsProvider.PLAYER_STATS).orElse(new PlayerStats()).syncPlayer(player);
-            int maxMana = player.getCapability(PlayerStatsProvider.PLAYER_STATS).orElse(new PlayerStats()).getMana();
+            float maxMana = player.getCapability(PlayerStatsProvider.PLAYER_STATS).orElse(new PlayerStats()).getManaCant();
             float currentMana = player.getCapability(PlayerStatsProvider.PLAYER_STATS).orElse(new PlayerStats()).getCurrentMana();
-            ManaBarOverlay.updateMana(maxMana, (int)currentMana);
+
+            ManaBarOverlay.updateMana(maxMana, currentMana);
             ManaBarOverlay.drawBar(player.getCapability(PlayerStatsProvider.PLAYER_STATS).orElse(new PlayerStats()).getPlayerClass());
+            SkillOverlay.drawHud(player.getCapability(PlayerStatsProvider.PLAYER_STATS).orElse(new PlayerStats()).getPlayerClass());
             PlayerUtils.changeAttributes(player);
+            SkillOverlay.updateSkills(player.getCapability(PlayerStatsProvider.PLAYER_STATS).orElse(new PlayerStats()).getActionSkills());
         });
 
         return true;
