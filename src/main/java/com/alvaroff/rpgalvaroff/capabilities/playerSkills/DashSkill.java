@@ -1,13 +1,8 @@
 package com.alvaroff.rpgalvaroff.capabilities.playerSkills;
 
 import com.alvaroff.rpgalvaroff.RPGalvaroff;
-import com.mojang.math.Vector3d;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.phys.Vec3;
 
 public class DashSkill extends PlayerSkills{
@@ -21,17 +16,14 @@ public class DashSkill extends PlayerSkills{
     public int getId() {
         return id;
     }
-
     @Override
     public ResourceLocation getImage(){
         return icon;
     }
-
     @Override
     public float getManaCost(){
         return manaCost;
     }
-
     @Override
     public void launch(ServerPlayer player) {
         Vec3 lookVec = player.getLookAngle();
