@@ -9,10 +9,16 @@ public class DashSkill extends PlayerSkills{
     private final int id = 3;
     private static final ResourceLocation icon = new ResourceLocation(RPGalvaroff.MOD_ID,"textures/gui/skill_hud/dash_skill.png");
     private final float manaCost = 2.0f;
+    private static final String name = "Dash";
 
     public DashSkill() {
         super();
     }
+    @Override
+    public String getName(){
+        return name;
+    }
+    @Override
     public int getId() {
         return id;
     }

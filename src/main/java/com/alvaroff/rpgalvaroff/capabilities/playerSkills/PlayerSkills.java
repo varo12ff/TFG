@@ -15,9 +15,14 @@ import java.util.List;
 public class PlayerSkills {
     private static final List<PlayerSkills> SKILLS = new ArrayList<>();
     private static final ResourceLocation icon = new ResourceLocation(RPGalvaroff.MOD_ID,"textures/gui/skill_hud/thunder_skill.png");
-
+    private static final String name = "";
+    private int id = -1;
     public PlayerSkills(){
 
+    }
+
+    public String getName(){
+        return name;
     }
     public void mostrar(){
         System.out.println("soy skill");
@@ -43,6 +48,9 @@ public class PlayerSkills {
             return SKILLS.get(id);
     }
 
+    public int getId(){
+        return id;
+    }
     public ResourceLocation getImage(){
         return icon;
     }

@@ -3,6 +3,7 @@ package com.alvaroff.rpgalvaroff.event;
 import com.alvaroff.rpgalvaroff.RPGalvaroff;
 import com.alvaroff.rpgalvaroff.capabilities.playerSkills.PlayerSkills;
 import com.alvaroff.rpgalvaroff.client.KeyBinding;
+import com.alvaroff.rpgalvaroff.client.gui.SkillGUI;
 import com.alvaroff.rpgalvaroff.client.gui.SkillOverlay;
 import com.alvaroff.rpgalvaroff.networking.ModMessages;
 import com.alvaroff.rpgalvaroff.networking.packet.KeyBindingC2SPacket;
@@ -11,6 +12,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -19,10 +21,12 @@ import org.lwjgl.glfw.GLFW;
 @Mod.EventBusSubscriber(modid = RPGalvaroff.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
 public class ClientEvents {
     @SubscribeEvent
-    public static void clientTick(TickEvent.ClientTickEvent event){
-        if(KeyBinding.OPEN_INITIAL_GUI.isDown()) {
-            ModMessages.sendToServer(new KeyBindingC2SPacket());
-
+    public static void onKeyInput(InputEvent.KeyInputEvent event){
+        if(KeyBinding.OPEN_INITIAL_GUI.consumeClick()) {
+            ModMessages.sendToServer(new KeyBindingC2SPacket(0));
+        }
+        else if(KeyBinding.OPEN_SKILL_GUI.consumeClick()) {
+            ModMessages.sendToServer(new KeyBindingC2SPacket(1));
         }
     }
 

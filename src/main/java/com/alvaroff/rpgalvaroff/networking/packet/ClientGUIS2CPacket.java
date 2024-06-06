@@ -4,6 +4,7 @@ import com.alvaroff.rpgalvaroff.capabilities.playerStats.PlayerClass;
 import com.alvaroff.rpgalvaroff.capabilities.playerStats.PlayerStats;
 import com.alvaroff.rpgalvaroff.capabilities.playerStats.PlayerStatsProvider;
 import com.alvaroff.rpgalvaroff.client.gui.RpgGUI;
+import com.alvaroff.rpgalvaroff.client.gui.SkillGUI;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -19,16 +20,22 @@ import java.util.function.Supplier;
 
 public class ClientGUIS2CPacket {
     private CompoundTag playerStats;
-    public ClientGUIS2CPacket(CompoundTag playerStats){
+    private int guiId;
+    public ClientGUIS2CPacket(CompoundTag playerStats, int id){
         this.playerStats = playerStats;
+        guiId = id;
 
     }
 
     public ClientGUIS2CPacket(FriendlyByteBuf buf){
+
         playerStats = buf.readAnySizeNbt();
+        guiId = buf.readInt();
     }
     public void toBytes(FriendlyByteBuf buf){
+
         buf.writeNbt(playerStats);
+        buf.writeInt(guiId);
     }
 
     public boolean handle(Supplier<NetworkEvent.Context> supplier){
@@ -37,9 +44,17 @@ public class ClientGUIS2CPacket {
             PlayerStats playerStats1 = new PlayerStats();
             playerStats1.loadNBTData(playerStats);
 
-            TranslatableComponent translationKey = new TranslatableComponent("gui.statsName");
-            RpgGUI gui = new RpgGUI(new TextComponent(translationKey.getString()), playerStats1);
-            gui.openScreen();
+            if(guiId == 0) {
+                TranslatableComponent translationKey = new TranslatableComponent("gui.statsName");
+                RpgGUI gui = new RpgGUI(new TextComponent(translationKey.getString()), playerStats1);
+                gui.openScreen();
+            }
+            else if (guiId == 1) {
+                TranslatableComponent translationKey = new TranslatableComponent("gui.skillName");
+                SkillGUI gui = new SkillGUI(new TextComponent(translationKey.getString()), playerStats1);
+                gui.openScreen();
+            }
+
         });
         context.setPacketHandled(true);
         return true;

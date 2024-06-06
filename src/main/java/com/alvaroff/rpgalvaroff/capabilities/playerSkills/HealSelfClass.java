@@ -10,10 +10,17 @@ public class HealSelfClass extends PlayerSkills{
     private final int id = 1;
     private static final ResourceLocation icon = new ResourceLocation(RPGalvaroff.MOD_ID,"textures/gui/skill_hud/heal_self_skill.png");
     private final float manaCost = 3.0f;
+    private static final String name = "Heal";
 
     public HealSelfClass() {
         super();
     }
+
+    @Override
+    public String getName(){
+        return name;
+    }
+    @Override
     public int getId() {
         return id;
     }

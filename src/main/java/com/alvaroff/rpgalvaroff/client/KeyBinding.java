@@ -10,11 +10,15 @@ import org.lwjgl.glfw.GLFW;
 public class KeyBinding {
     public static final String KEY_CATEGORY_RPGALVAROFF = "key.category.rpgalvaroff.rpgkey";
     public static final String KEY_OPEN_INITIAL_GUI = "key.rpgalvaroff.open_initial_gui";
+    public static final String KEY_OPEN_SKILL_GUI = "key.rpgalvaroff.open_skill_gui";
     public static final KeyMapping OPEN_INITIAL_GUI = new KeyMapping(KEY_OPEN_INITIAL_GUI, KeyConflictContext.IN_GAME,
             InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_K, KEY_CATEGORY_RPGALVAROFF);
+    public static final KeyMapping OPEN_SKILL_GUI = new KeyMapping(KEY_OPEN_SKILL_GUI, KeyConflictContext.IN_GAME,
+            InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_H, KEY_CATEGORY_RPGALVAROFF);
 
     public static void registerKeyBindings(){
         ClientRegistry.registerKeyBinding(OPEN_INITIAL_GUI);
+        ClientRegistry.registerKeyBinding(OPEN_SKILL_GUI);
     }
 
 }

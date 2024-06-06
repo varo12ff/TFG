@@ -14,6 +14,7 @@
 
   "item.noInfo": "Pulsa Shift para más información.",
 
+  "gui.skillName": "Habilidades",
   "gui.statsName": "Estado",
   "gui.warriorClass": "Guerrero",
   "gui.magicianClass": "Mago",
@@ -36,5 +37,6 @@
   "itemGroup.block": "Bloques",
 
   "key.category.rpgalvaroff.rpgkey": "RPG MOD",
-  "key.rpgalvaroff.open_initial_gui": "Interfaz"
+  "key.rpgalvaroff.open_initial_gui": "Interfaz",
+  "key.rpgalvaroff.open_skill_gui": "Skill Interfaz"
 }
