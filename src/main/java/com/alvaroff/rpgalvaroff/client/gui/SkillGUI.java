@@ -42,15 +42,40 @@ public class SkillGUI extends Screen {
     @Override
     public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
         this.renderBackground(poseStack);
-        // Calcula el ancho y la separación de las imágenes
+
         ArrayList<Integer> totalSkills = playerStats.getTotalSkills();
         PlayerSkills skills = new PlayerSkills();
         skills.initSkillsVector();
+
+        int screenWidth = this.width; // Ancho de la pantalla
+        int imageSize = 32; // Tamaño de la imagen de la habilidad
+        int gap = 25; // Espacio entre las imágenes
+
+        int x = gap; // Posición X inicial
+        int y = gap; // Posición Y inicial
+        int rowHeight = imageSize + 10 + (int)(Minecraft.getInstance().font.lineHeight * 0.75); // Altura de la fila, incluyendo el texto
+
         for(int i = 0; i < totalSkills.size(); i++) {
+            // Si la siguiente imagen se va a salir del ancho de la pantalla, mover a la siguiente fila
+            if (x + imageSize > screenWidth) {
+                x = gap; // Reiniciar posición X
+                y += rowHeight; // Mover hacia abajo
+            }
+
+            // Renderizar la imagen de la habilidad
             RenderSystem.setShaderTexture(0, skills.getSkill(totalSkills.get(i)).getImage());
-            blit(poseStack, 0 + (32 * i) + (i * 10), 0, 0, 0, 32, 32, 32, 32);
-            drawScaledText(poseStack, skills.getSkill(totalSkills.get(i)).getName(), 0 + (32 * i) + (i * 10), 42, 0.5f,0xFFFFFF);
+            blit(poseStack, x, y, 0, 0, imageSize, imageSize, imageSize, imageSize);
+
+            // Dibujar el nombre de la habilidad justo debajo de la imagen y centrado
+            String skillName = skills.getSkill(totalSkills.get(i)).getName();
+            float textScale = 0.75f;
+            int textWidth = (int)(Minecraft.getInstance().font.width(skillName) * textScale);
+            int textX = x + (imageSize / 2) - (textWidth / 2); // Centrar el texto con respecto a la imagen
+            drawScaledText(poseStack, skillName, textX, y + imageSize + 2, textScale, 0xFFFFFF);
+
+            x += imageSize + gap; // Mover la posición X para la siguiente imagen
         }
+
         super.render(poseStack, mouseX, mouseY, partialTicks);
     }
 
