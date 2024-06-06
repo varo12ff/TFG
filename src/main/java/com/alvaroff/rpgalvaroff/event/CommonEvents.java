@@ -11,6 +11,8 @@ import com.alvaroff.rpgalvaroff.common.utils.PlayerUtils;
 import com.alvaroff.rpgalvaroff.common.world.dimension.DimensionInit;
 import com.alvaroff.rpgalvaroff.networking.ModMessages;
 import com.alvaroff.rpgalvaroff.networking.packet.OverlayUpdateS2CPacket;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
@@ -19,6 +21,9 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.ChestBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
@@ -148,6 +153,22 @@ public class CommonEvents {
                     if (!added) {
                         player.drop(key, false);
                     }
+
+                    Direction playerFacing = player.getDirection();
+                    // Generar el cofre con loot table personalizada
+                    BlockPos pos = new BlockPos(event.getPos().getX(), event.getPos().getY() + 1,event.getPos().getZ());
+
+                    world.setBlockAndUpdate(pos, Blocks.CHEST.defaultBlockState().setValue(ChestBlock.FACING, playerFacing.getOpposite()));
+
+                    // Obtener el tile entity del cofre
+                    BlockEntity tileEntity = world.getBlockEntity(pos);
+                    if (tileEntity instanceof ChestBlockEntity) {
+                        ChestBlockEntity chest = (ChestBlockEntity) tileEntity;
+
+                        // Asignar la loot table personalizada al cofre
+                        chest.setLootTable(new ResourceLocation(RPGalvaroff.MOD_ID, "chests/dungeon/dungeon_chest"), world.random.nextLong());
+                    }
+
                 }
             }
         }
