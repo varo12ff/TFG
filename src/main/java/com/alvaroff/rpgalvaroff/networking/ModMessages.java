@@ -45,22 +45,16 @@ public class ModMessages {
                 .consumer(ClientGUIS2CPacket::handle)
                 .add();
 
-        net.messageBuilder(UpdateManaC2SPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
-                .decoder(UpdateManaC2SPacket::new)
-                .encoder(UpdateManaC2SPacket::toBytes)
-                .consumer(UpdateManaC2SPacket::handle)
-                .add();
-
-        net.messageBuilder(SummonLightningC2SPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
-                .decoder(SummonLightningC2SPacket::new)
-                .encoder(SummonLightningC2SPacket::toBytes)
-                .consumer(SummonLightningC2SPacket::handle)
-                .add();
-
         net.messageBuilder(LaunchSkillC2SPacket.class, id(), NetworkDirection.PLAY_TO_SERVER)
                 .decoder(LaunchSkillC2SPacket::new)
                 .encoder(LaunchSkillC2SPacket::toBytes)
                 .consumer(LaunchSkillC2SPacket::handle)
+                .add();
+
+        net.messageBuilder(OverlayUpdateS2CPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .decoder(OverlayUpdateS2CPacket::new)
+                .encoder(OverlayUpdateS2CPacket::toBytes)
+                .consumer(OverlayUpdateS2CPacket::handle)
                 .add();
     }
 

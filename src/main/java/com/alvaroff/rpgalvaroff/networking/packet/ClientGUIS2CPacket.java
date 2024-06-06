@@ -11,6 +11,8 @@ import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.network.NetworkEvent;
 
 import java.util.function.Supplier;
@@ -31,16 +33,15 @@ public class ClientGUIS2CPacket {
 
     public boolean handle(Supplier<NetworkEvent.Context> supplier){
         NetworkEvent.Context context = supplier.get();
-
+        context.enqueueWork(() -> {
             PlayerStats playerStats1 = new PlayerStats();
             playerStats1.loadNBTData(playerStats);
 
-            //playerStats1.setXp(playerStats.getInt("xp"));
-            //layerStats1.setNextLvl(playerStats.getInt("nextLvl"));
-
             TranslatableComponent translationKey = new TranslatableComponent("gui.statsName");
-            Minecraft.getInstance().setScreen(new RpgGUI(new TextComponent(translationKey.getString()), playerStats1));
-
+            RpgGUI gui = new RpgGUI(new TextComponent(translationKey.getString()), playerStats1);
+            gui.openScreen();
+        });
+        context.setPacketHandled(true);
         return true;
     }
 }

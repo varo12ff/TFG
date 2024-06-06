@@ -5,6 +5,7 @@ import com.alvaroff.rpgalvaroff.capabilities.playerStats.PlayerStats;
 import com.alvaroff.rpgalvaroff.capabilities.playerStats.PlayerStatsProvider;
 import com.alvaroff.rpgalvaroff.client.gui.ManaBarOverlay;
 import com.alvaroff.rpgalvaroff.client.gui.SkillOverlay;
+import com.alvaroff.rpgalvaroff.networking.ModMessages;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.server.level.ServerLevel;
@@ -47,7 +48,8 @@ public class LaunchSkillC2SPacket {
                     actionSkill.getSkill(id).launch(player);
                     player.getCapability(PlayerStatsProvider.PLAYER_STATS).orElse(new PlayerStats()).subtractMana(actionSkill.getSkill(id).getManaCost());
                     currentMana -= actionSkill.getSkill(id).getManaCost();
-                    ManaBarOverlay.updateMana(maxMana, currentMana);
+                    //ManaBarOverlay.updateMana(maxMana, currentMana);
+                    ModMessages.sendToPlayer(new OverlayUpdateS2CPacket(player.getCapability(PlayerStatsProvider.PLAYER_STATS).orElse(new PlayerStats()).getNBT()), player);
                 }
             }
 

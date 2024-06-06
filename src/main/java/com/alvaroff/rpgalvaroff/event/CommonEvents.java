@@ -1,19 +1,18 @@
 package com.alvaroff.rpgalvaroff.event;
 
 import com.alvaroff.rpgalvaroff.RPGalvaroff;
+import com.alvaroff.rpgalvaroff.capabilities.dungeonState.DungeonState;
+import com.alvaroff.rpgalvaroff.capabilities.dungeonState.DungeonStateProvider;
 import com.alvaroff.rpgalvaroff.capabilities.playerStats.PlayerStats;
 import com.alvaroff.rpgalvaroff.capabilities.playerStats.PlayerStatsProvider;
-import com.alvaroff.rpgalvaroff.client.gui.ManaBarOverlay;
-import com.alvaroff.rpgalvaroff.client.gui.SkillOverlay;
 import com.alvaroff.rpgalvaroff.common.items.ItemInit;
 import com.alvaroff.rpgalvaroff.common.utils.DimensionUtils;
 import com.alvaroff.rpgalvaroff.common.utils.PlayerUtils;
 import com.alvaroff.rpgalvaroff.common.world.dimension.DimensionInit;
-import com.alvaroff.rpgalvaroff.capabilities.dungeonState.DungeonState;
-import com.alvaroff.rpgalvaroff.capabilities.dungeonState.DungeonStateProvider;
-import net.minecraft.network.chat.TextComponent;
-import net.minecraft.network.chat.TranslatableComponent;
+import com.alvaroff.rpgalvaroff.networking.ModMessages;
+import com.alvaroff.rpgalvaroff.networking.packet.OverlayUpdateS2CPacket;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -27,8 +26,6 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-
-import static com.alvaroff.rpgalvaroff.client.gui.SkillOverlay.*;
 
 @Mod.EventBusSubscriber(modid = RPGalvaroff.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class CommonEvents {
@@ -53,14 +50,7 @@ public class CommonEvents {
     public static void onPlayerJoinWorld(PlayerEvent.PlayerLoggedInEvent event) {
         Player player = event.getPlayer();
         player.getCapability(PlayerStatsProvider.PLAYER_STATS).orElse(new PlayerStats()).syncPlayer(player);
-
-        float maxMana = player.getCapability(PlayerStatsProvider.PLAYER_STATS).orElse(new PlayerStats()).getManaCant();
-        float currentMana = player.getCapability(PlayerStatsProvider.PLAYER_STATS).orElse(new PlayerStats()).getCurrentMana();
-
-        ManaBarOverlay.updateMana(maxMana, currentMana);
-        ManaBarOverlay.drawBar(player.getCapability(PlayerStatsProvider.PLAYER_STATS).orElse(new PlayerStats()).getPlayerClass());
-        drawHud(player.getCapability(PlayerStatsProvider.PLAYER_STATS).orElse(new PlayerStats()).getPlayerClass());
-        SkillOverlay.updateSkills(player.getCapability(PlayerStatsProvider.PLAYER_STATS).orElse(new PlayerStats()).getActionSkills());
+        ModMessages.sendToPlayer(new OverlayUpdateS2CPacket(player.getCapability(PlayerStatsProvider.PLAYER_STATS).orElse(new PlayerStats()).getNBT()), (ServerPlayer) player);
     }
 
     @SubscribeEvent
@@ -70,7 +60,7 @@ public class CommonEvents {
             player.getCapability(PlayerStatsProvider.PLAYER_STATS).orElse(new PlayerStats()).setCurrentMana(player.getCapability(PlayerStatsProvider.PLAYER_STATS).orElse(new PlayerStats()).getManaCant());
             player.getCapability(PlayerStatsProvider.PLAYER_STATS).orElse(new PlayerStats()).syncPlayer(player);
             PlayerUtils.changeAttributes(player);
-            SkillOverlay.updateSkills(player.getCapability(PlayerStatsProvider.PLAYER_STATS).orElse(new PlayerStats()).getActionSkills());
+            ModMessages.sendToPlayer(new OverlayUpdateS2CPacket(player.getCapability(PlayerStatsProvider.PLAYER_STATS).orElse(new PlayerStats()).getNBT()), (ServerPlayer) player);
         }
     }
 

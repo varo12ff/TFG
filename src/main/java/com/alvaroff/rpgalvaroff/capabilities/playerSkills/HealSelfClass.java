@@ -1,9 +1,6 @@
 package com.alvaroff.rpgalvaroff.capabilities.playerSkills;
 
 import com.alvaroff.rpgalvaroff.RPGalvaroff;
-import com.alvaroff.rpgalvaroff.networking.ModMessages;
-import com.alvaroff.rpgalvaroff.networking.packet.SummonLightningC2SPacket;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;

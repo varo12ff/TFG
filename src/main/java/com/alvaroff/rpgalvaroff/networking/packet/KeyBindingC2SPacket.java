@@ -32,6 +32,7 @@ public class KeyBindingC2SPacket {
             ModMessages.sendToPlayer(new ClientGUIS2CPacket(player.getCapability(PlayerStatsProvider.PLAYER_STATS).orElse(new PlayerStats()).getNBT()), player);
         });
 
+        context.setPacketHandled(true);
         return true;
     }
 }
