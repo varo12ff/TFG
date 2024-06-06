@@ -38,6 +38,8 @@ public class RPGalvaroff
         ItemInit.register(eventBus);
         BlockInit.register(eventBus);
         EntityInit.register(eventBus);
+        ModMessages.register();
+
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
     }
@@ -48,7 +50,8 @@ public class RPGalvaroff
         LOGGER.info("HELLO FROM PREINIT");
         LOGGER.info("DIRT BLOCK >> {}", Blocks.DIRT.getRegistryName());
 
-        ModMessages.register();
+
+
 
     }
 

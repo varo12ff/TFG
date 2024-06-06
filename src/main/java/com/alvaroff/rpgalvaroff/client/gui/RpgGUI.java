@@ -3,14 +3,10 @@ package com.alvaroff.rpgalvaroff.client.gui;
 import com.alvaroff.rpgalvaroff.RPGalvaroff;
 import com.alvaroff.rpgalvaroff.capabilities.playerStats.PlayerClass;
 import com.alvaroff.rpgalvaroff.capabilities.playerStats.PlayerStats;
-import com.alvaroff.rpgalvaroff.capabilities.playerStats.PlayerStatsProvider;
 import com.alvaroff.rpgalvaroff.networking.ModMessages;
 import com.alvaroff.rpgalvaroff.networking.packet.PlayerStatsC2SPacket;
-import com.alvaroff.rpgalvaroff.networking.packet.UpdateManaC2SPacket;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.ChatFormatting;
-import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
@@ -19,8 +15,10 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
+@OnlyIn(Dist.CLIENT)
 public class RpgGUI extends Screen {
 
     PlayerStats playerStats;
@@ -45,9 +43,21 @@ public class RpgGUI extends Screen {
 
     }
 
+    public void openScreen() {
+        Minecraft.getInstance().setScreen(this);
+    }
+
     private void selectClass(PlayerStats newPlayerStats){
         ModMessages.sendToServer(new PlayerStatsC2SPacket(newPlayerStats.getNBT()));
-        ModMessages.sendToServer(new UpdateManaC2SPacket(newPlayerStats.getNBT()));
+        //ModMessages.sendToServer(new UpdateManaC2SPacket(newPlayerStats.getNBT()));
+        newPlayerStats.syncPlayer(Minecraft.getInstance().player);
+        float maxMana = newPlayerStats.getManaCant();
+        float currentMana = newPlayerStats.getCurrentMana();
+
+        ManaBarOverlay.updateMana(maxMana, currentMana);
+        ManaBarOverlay.drawBar(newPlayerStats.getPlayerClass());
+        SkillOverlay.drawHud(newPlayerStats.getPlayerClass());
+        SkillOverlay.updateSkills(newPlayerStats.getActionSkills());
 
         this.onClose();
     }
