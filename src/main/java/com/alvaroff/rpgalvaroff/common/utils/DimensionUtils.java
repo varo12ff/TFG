@@ -271,6 +271,7 @@ public class DimensionUtils {
         BlockPos basePos = clickedPos.relative(facing.getOpposite(), 1).above(17 + radius);
 
         // Ajustar basePos horizontalmente para centrar el bloque clickeado
+        System.out.println(radius);
         if (facing.getAxis() == Direction.Axis.Z) {
             basePos = basePos.west(radius / 15);
         } else if (facing.getAxis() == Direction.Axis.X) {
@@ -465,8 +466,12 @@ public class DimensionUtils {
             }
         }
 
+        if(placedSpawners < spawnerCount)
+            spawnerCount = placedSpawners;
+
+        int finalSpawnerCount = spawnerCount;
         world.getCapability(DungeonStateProvider.DUNGEON_STATUS).ifPresent(active -> {
-            active.setActiveSpawners(spawnerCount);
+            active.setActiveSpawners(finalSpawnerCount);
         });
 
 
