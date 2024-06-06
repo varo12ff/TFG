@@ -12,24 +12,23 @@ import org.lwjgl.system.CallbackI;
 import java.util.function.Supplier;
 
 public class KeyBindingC2SPacket {
-
-    public KeyBindingC2SPacket(){
-
-
+    private int guiID;
+    public KeyBindingC2SPacket(int id){
+        this.guiID = id;
     }
 
     public KeyBindingC2SPacket(FriendlyByteBuf buf){
-
+        guiID = buf.readInt();
     }
     public void toBytes(FriendlyByteBuf buf){
-
+        buf.writeInt(guiID);
     }
 
     public boolean handle(Supplier<NetworkEvent.Context> supplier){
         NetworkEvent.Context context = supplier.get();
         context.enqueueWork(() -> {
             ServerPlayer player = context.getSender();
-            ModMessages.sendToPlayer(new ClientGUIS2CPacket(player.getCapability(PlayerStatsProvider.PLAYER_STATS).orElse(new PlayerStats()).getNBT()), player);
+            ModMessages.sendToPlayer(new ClientGUIS2CPacket(player.getCapability(PlayerStatsProvider.PLAYER_STATS).orElse(new PlayerStats()).getNBT(), guiID), player);
         });
 
         context.setPacketHandled(true);

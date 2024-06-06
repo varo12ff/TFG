@@ -49,7 +49,7 @@ public class RpgGUI extends Screen {
 
     private void selectClass(PlayerStats newPlayerStats){
         ModMessages.sendToServer(new PlayerStatsC2SPacket(newPlayerStats.getNBT()));
-        //ModMessages.sendToServer(new UpdateManaC2SPacket(newPlayerStats.getNBT()));
+
         newPlayerStats.syncPlayer(Minecraft.getInstance().player);
         float maxMana = newPlayerStats.getManaCant();
         float currentMana = newPlayerStats.getCurrentMana();
@@ -121,35 +121,6 @@ public class RpgGUI extends Screen {
             PlayerStats newPlayerStats = new PlayerStats(1, 11.5f, 1, 3,3, 3, 4, 1, 5, PlayerClass.CLERIGO);
             selectClass(newPlayerStats);
         }));
-    }
-
-    private void drawAddButton(String stat){
-        if(stat.equals("health")) {
-            this.addRenderableWidget(new Button(this.width / 2 + 50, 70 - 5, 15, 15, new TextComponent("+"), button -> {
-                if (playerStats.getAbilityPoints() > 0) {
-                    playerStats.addHealth();
-                    CompoundTag newPlayerStats = new CompoundTag();
-
-                    playerStats.saveNBTData(newPlayerStats);
-                    ModMessages.sendToServer(new PlayerStatsC2SPacket(newPlayerStats));
-                } else {
-                    Minecraft.getInstance().player.sendMessage(new TextComponent("No tienes suficientes puntos de abilidad."), Minecraft.getInstance().player.getUUID());
-                }
-            }));
-        }
-        else if(stat.equals("strenght")){
-            this.addRenderableWidget(new Button(this.width / 2 + 50, 90 - 5, 15, 15, new TextComponent("+"), button -> {
-                if (playerStats.getAbilityPoints() > 0) {
-                    playerStats.addStrength();
-                    CompoundTag newPlayerStats = new CompoundTag();
-
-                    playerStats.saveNBTData(newPlayerStats);
-                    ModMessages.sendToServer(new PlayerStatsC2SPacket(newPlayerStats));
-                } else {
-                    Minecraft.getInstance().player.sendMessage(new TextComponent("No tienes suficientes puntos de abilidad."), Minecraft.getInstance().player.getUUID());
-                }
-            }));
-        }
     }
 
     @Override

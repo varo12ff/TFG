@@ -20,7 +20,7 @@ public class ThunderSkill extends PlayerSkills{
 
     private final int id = 0;
     private static final ResourceLocation icon = new ResourceLocation(RPGalvaroff.MOD_ID,"textures/gui/skill_hud/thunder_skill.png");
-
+    private static final String name = "Thunder";
     private final float manaCost = 5.0f;
 
     public ThunderSkill() {
@@ -30,6 +30,10 @@ public class ThunderSkill extends PlayerSkills{
         return id;
     }
 
+    @Override
+    public String getName(){
+        return name;
+    }
     @Override
     public ResourceLocation getImage(){
         return icon;
