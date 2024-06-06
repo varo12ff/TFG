@@ -38,5 +38,8 @@
 
   "key.category.rpgalvaroff.rpgkey": "RPG MOD",
   "key.rpgalvaroff.open_initial_gui": "Interfaz",
-  "key.rpgalvaroff.open_skill_gui": "Skill Interfaz"
+  "key.rpgalvaroff.open_skill_gui": "Skill Interfaz",
+
+  "entity.rpgalvaroff.warbler": "Warbler",
+  "entity.rpgalvaroff.scarecraft": "Scarecraft"
 }

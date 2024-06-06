@@ -9,6 +9,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.level.GameRules;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -338,15 +339,24 @@ public class DimensionUtils {
                 }
             }
         }
+
+        BlockPos entityPos = basePos;
+        EntityType<?> entityType = EntityInit.WARBLER.get();
+        Mob entity = (Mob) entityType.create(world);
+
+        if (entity != null) {
+            entity.setPos(entityPos.getX(), entityPos.getY(), entityPos.getZ());
+            world.addFreshEntity(entity);
+        }
     }
 
     public static void generateProceduralLavaRoom(Level world, BlockPos clickedPos, Random random, Direction facing) {
-        int width = 8 + random.nextInt(12); // Ancho de la sala entre 8 y 20
-        int height = 7; // Altura de la sala entre 5 y 8
-        int depth = 8 + random.nextInt(12); // Profundidad de la sala entre 8 y 20
-        int passageWidth = 3; // Ancho del pasillo fijo
-        int passageDepth = 3; // Profundidad del pasillo
-        int spawnerCount = random.nextInt(4) + 1; // Genera un número entre 1 y 4
+        int width = 8 + random.nextInt(12);
+        int height = 7;
+        int depth = 8 + random.nextInt(12);
+        int passageWidth = 3;
+        int passageDepth = 3;
+        int spawnerCount = random.nextInt(4) + 1;
         int placedSpawners = 0;
 
         BlockState lock = BlockInit.UNLOCK_NEW_ROOM_BLOCK.get().defaultBlockState();
