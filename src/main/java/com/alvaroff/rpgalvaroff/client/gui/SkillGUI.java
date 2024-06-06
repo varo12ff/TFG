@@ -36,7 +36,8 @@ public class SkillGUI extends Screen {
 
 
     public void openScreen() {
-        Minecraft.getInstance().setScreen(this);
+        if(!playerStats.getPlayerClass().equals(PlayerClass.NONE))
+            Minecraft.getInstance().setScreen(this);
     }
 
     @Override

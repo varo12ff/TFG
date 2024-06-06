@@ -66,8 +66,12 @@ public class SkillOverlay extends GuiComponent {
                     RenderSystem.setShaderTexture(0, actionSkill.getSkill(skills[i]).getImage());
                     if(i < 3)
                         blit(event.getMatrixStack(), x + 20 + (i * 18), y + 22, 0, 0, 16, 16, 16, 16);
-                    else if(i < 6)
-                        blit(event.getMatrixStack(), x + (i * 18), y + 22 + 18, 0, 0, 16, 16, 16, 16);
+                    else if(i < 5)
+                        blit(event.getMatrixStack(), x + 18 * 3, y + 22 + ((i - 2) * 18), 0, 0, 16, 16, 16, 16);
+                    else if(i < 7)
+                        blit(event.getMatrixStack(), (x + 18 * 3) - ((i - 4) * 18), y + 22 + (2 * 18), 0, 0, 16, 16, 16, 16);
+                    else
+                        blit(event.getMatrixStack(), x + 20, y + 40, 0, 0, 16, 16, 16, 16);
                 }
             }
 
