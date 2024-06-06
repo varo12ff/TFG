@@ -18,6 +18,7 @@ public class DashSkill extends PlayerSkills{
     public String getName(){
         return name;
     }
+    @Override
     public int getId() {
         return id;
     }

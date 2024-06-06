@@ -20,6 +20,7 @@ public class HealSelfClass extends PlayerSkills{
     public String getName(){
         return name;
     }
+    @Override
     public int getId() {
         return id;
     }

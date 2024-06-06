@@ -17,6 +17,7 @@ public class BerserkModeSkill extends PlayerSkills{
     public BerserkModeSkill() {
         super();
     }
+    @Override
     public int getId() {
         return id;
     }

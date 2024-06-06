@@ -71,14 +71,18 @@ public class SkillGUI extends Screen {
 
     private void handleButtonClick(int index) {
         long currentTime = System.currentTimeMillis();
+        int[] skillAction = playerStats.getActionSkills();
 
         // Manejar doble clic
         if (currentTime - buttonClickTimes[index] < 250) {
             // Restaurar el nombre original del botón
             buttons[index].setMessage(new TextComponent("slot " + (index + 1)));
+            skillAction[index] = -1;
+            playerStats.setActionSkills(skillAction);
         } else {
             // Manejar clic simple
             selectedButtonIndex = index; // Al hacer clic en un botón, se selecciona
+
         }
 
         buttonClickTimes[index] = currentTime;
@@ -88,6 +92,7 @@ public class SkillGUI extends Screen {
     public void render(PoseStack poseStack, int mouseX, int mouseY, float partialTicks) {
         this.renderBackground(poseStack);
 
+        int[] skillAction = playerStats.getActionSkills();
         ArrayList<Integer> totalSkills = playerStats.getTotalSkills();
         PlayerSkills skills = new PlayerSkills();
         skills.initSkillsVector();
@@ -132,6 +137,9 @@ public class SkillGUI extends Screen {
                     if (!alreadyExists) {
                         // Cambiar el nombre del botón previamente seleccionado al nombre de la habilidad
                         buttons[selectedButtonIndex].setMessage(new TextComponent(skillName));
+                        skillAction[selectedButtonIndex] = skills.getSkill(totalSkills.get(i)).getId();
+
+                        playerStats.setActionSkills(skillAction);
 
                         // Renombrar el botón previamente seleccionado a su nombre original
                         for (int j = 0; j < buttons.length; j++) {
@@ -146,6 +154,10 @@ public class SkillGUI extends Screen {
                             if (buttons[j].getMessage().getString().equals(skillName)) {
                                 buttons[j].setMessage(new TextComponent("slot " + (j + 1)));
                                 buttons[selectedButtonIndex].setMessage(new TextComponent(skillName));
+                                skillAction[j] = -1;
+                                skillAction[selectedButtonIndex] = skills.getSkill(totalSkills.get(i)).getId();
+
+                                playerStats.setActionSkills(skillAction);
                                 break;
                             }
                         }
@@ -184,7 +196,14 @@ public class SkillGUI extends Screen {
         return super.mouseReleased(mouseX, mouseY, button);
     }
 
+    @Override
+    public void onClose() {
 
+        super.onClose();
+        ModMessages.sendToServer(new PlayerStatsC2SPacket(playerStats.getNBT()));
+
+        SkillOverlay.updateSkills(playerStats.getActionSkills());
+    }
 
     @Override
     public boolean isPauseScreen(){

@@ -26,6 +26,7 @@ public class ThunderSkill extends PlayerSkills{
     public ThunderSkill() {
         super();
     }
+    @Override
     public int getId() {
         return id;
     }
