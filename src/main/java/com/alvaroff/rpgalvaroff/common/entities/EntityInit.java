@@ -19,7 +19,7 @@ public class EntityInit {
             .build(new ResourceLocation(RPGalvaroff.MOD_ID, "scarecraft").toString()));
 
     public static final RegistryObject<EntityType<Warbler>> WARBLER = ENTITIES.register("warbler", () -> EntityType.Builder.of(Warbler::new, MobCategory.MONSTER)
-            .sized(1f, 1f)
+            .sized(1f, 2f)
             .build(new ResourceLocation(RPGalvaroff.MOD_ID, "warbler").toString()));
 
     public static void register(IEventBus eventBus){
