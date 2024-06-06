@@ -76,8 +76,8 @@ public class PlayerStats {
         totalSkills.add(1);
         totalSkills.add(2);
         totalSkills.add(3);
-        /*actionSkills[0] = 1;
-        actionSkills[1] = 0;
+        actionSkills[0] = 1;
+        /*actionSkills[1] = 0;
         actionSkills[2] = 2;
         actionSkills[3] = 3;*/
     }
