@@ -264,30 +264,12 @@ public class DimensionUtils {
     }
 
     public static void generateSphereProceduralRoom(Level world, BlockPos clickedPos, Random random, Direction facing) {
-        int radius = 10 + random.nextInt(6); // Radio de la sala entre 10 y 15
+        int radius = 10 + random.nextInt(5); // Radio de la sala entre 10 y 15
         int passageWidth = 3; // Ancho del pasillo fijo
         int passageDepth = 3; // Profundidad del pasillo
 
         // Determina la posición base ajustada para que el bloque clickeado esté centrado en la cara de la sala
         BlockPos basePos = clickedPos.relative(facing.getOpposite(), 1).above(17 + radius);
-
-        // Ajustar basePos horizontalmente para centrar el bloque clickeado
-        System.out.println(radius);
-        if (facing.getAxis() == Direction.Axis.Z) {
-            basePos = basePos.west(radius / 15);
-        } else if (facing.getAxis() == Direction.Axis.X) {
-            basePos = basePos.north(radius / 15);
-        }
-
-        if (facing.getOpposite() == Direction.NORTH) {
-            basePos = basePos.north(radius / 15);
-        } else if (facing.getOpposite() == Direction.WEST) {
-            basePos = basePos.west(radius / 15);
-        } else if (facing.getOpposite() == Direction.SOUTH) {
-            basePos = basePos.south(-radius / 15);
-        } else if (facing.getOpposite() == Direction.EAST) {
-            basePos = basePos.east(-radius / 15);
-        }
 
         // Generar sala hueca con patrón procedural
         for (int x = -radius; x <= radius; x++) {

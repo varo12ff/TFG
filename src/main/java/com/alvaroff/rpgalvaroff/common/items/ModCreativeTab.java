@@ -25,4 +25,11 @@ public class ModCreativeTab {
             return new ItemStack(BlockInit.LOCK.get());
         }
     };
+
+    public static final CreativeModeTab MDD_SCROLL_TAB = new CreativeModeTab("scroll") {
+        @Override
+        public ItemStack makeIcon(){
+            return new ItemStack(ItemInit.HEAL_SCROLL.get());
+        }
+    };
 }

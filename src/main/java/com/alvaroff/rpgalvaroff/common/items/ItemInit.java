@@ -6,6 +6,10 @@ import com.alvaroff.rpgalvaroff.common.items.custom.EndDungeonOrbD;
 import com.alvaroff.rpgalvaroff.common.items.custom.Escape_stone;
 import com.alvaroff.rpgalvaroff.common.items.custom.keys.Key;
 import com.alvaroff.rpgalvaroff.common.items.custom.keys.Key_D;
+import com.alvaroff.rpgalvaroff.common.items.custom.scrolls.BerserkScroll;
+import com.alvaroff.rpgalvaroff.common.items.custom.scrolls.DashScroll;
+import com.alvaroff.rpgalvaroff.common.items.custom.scrolls.HealScroll;
+import com.alvaroff.rpgalvaroff.common.items.custom.scrolls.ThunderScroll;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -47,6 +51,34 @@ public class ItemInit {
     public static final RegistryObject<Item> DEBUGGER = ITEMS.register("debugger", () -> new Debugger(
             new Item.Properties()
                     .tab(ModCreativeTab.MDD_MISC_TAB)
+                    .rarity(Rarity.EPIC)
+                    .stacksTo(1)
+    ));
+
+    public static final RegistryObject<Item> BERSERK_SCROLL = ITEMS.register("berserk_scroll", () -> new BerserkScroll(
+            new Item.Properties()
+                    .tab(ModCreativeTab.MDD_SCROLL_TAB)
+                    .rarity(Rarity.EPIC)
+                    .stacksTo(1)
+    ));
+
+    public static final RegistryObject<Item> DASH_SCROLL = ITEMS.register("dash_scroll", () -> new DashScroll(
+            new Item.Properties()
+                    .tab(ModCreativeTab.MDD_SCROLL_TAB)
+                    .rarity(Rarity.EPIC)
+                    .stacksTo(1)
+    ));
+
+    public static final RegistryObject<Item> THUNDER_SCROLL = ITEMS.register("thunder_scroll", () -> new ThunderScroll(
+            new Item.Properties()
+                    .tab(ModCreativeTab.MDD_SCROLL_TAB)
+                    .rarity(Rarity.EPIC)
+                    .stacksTo(1)
+    ));
+
+    public static final RegistryObject<Item> HEAL_SCROLL = ITEMS.register("heal_scroll", () -> new HealScroll(
+            new Item.Properties()
+                    .tab(ModCreativeTab.MDD_SCROLL_TAB)
                     .rarity(Rarity.EPIC)
                     .stacksTo(1)
     ));

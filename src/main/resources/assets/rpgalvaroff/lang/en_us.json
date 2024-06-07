@@ -4,12 +4,21 @@
   "item.rpgalvaroff.escape_stone": "Escape Stone",
   "item.rpgalvaroff.end_dungeon_orb_d": "Dimension Tier D Eliminator",
   "item.rpgalvaroff.debugger": "Debugger",
+  "item.rpgalvaroff.berserk_scroll": "Berserk Scroll",
+  "item.rpgalvaroff.thunder_scroll": "Thunder Scroll",
+  "item.rpgalvaroff.dash_scroll": "Dash Scroll",
+  "item.rpgalvaroff.heal_scroll": "Heal Scroll",
+
 
   "block.rpgalvaroff.lock": "Lock",
   "block.rpgalvaroff.unlock_new_room": "New room block",
 
   "item.rpgalvaroff.escape_stone.info": "This stone allows you to exit the dungeon dimension",
   "item.rpgalvaroff.end_dungeon_orb_d.info": "This stone allows you to exit the dungeon dimension and conclude it.",
+  "item.rpgalvaroff.berserk_scroll.info": "This scroll allows you to learn the Berserk skill.",
+  "item.rpgalvaroff.thunder_scroll.info": "This scroll allows you to learn the Thunder skill.",
+  "item.rpgalvaroff.dash_scroll.info": "This scroll allows you to learn the Dash skill.",
+  "item.rpgalvaroff.heal_scroll.info": "This scroll allows you to learn the Heal skill.",
   "item.rpgalvaroff.debbuger.reset_notify": "Stats have been reset.",
 
   "item.noInfo": "Press Shift for more information.",
@@ -32,9 +41,12 @@
 
   "msg.notuse": "You cannot use this here.",
   "msg.deleteDungeon": "The Dungeon is going to be removed.",
+  "msg.skillLearned": "You have already learned this skill.",
+  "msg.learnSkill": "You have learned the",
 
   "itemGroup.keys": "Keys",
   "itemGroup.block": "Blocks",
+  "itemGroup.scroll": "Scrolls",
 
   "key.category.rpgalvaroff.rpgkey": "RPG MOD",
   "key.rpgalvaroff.open_initial_gui": "Interfaz",

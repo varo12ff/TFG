@@ -4,12 +4,20 @@
   "item.rpgalvaroff.escape_stone": "Piedra de escape",
   "item.rpgalvaroff.end_dungeon_orb_d": "Eliminador de Dimension Tier D",
   "item.rpgalvaroff.debugger": "Debugger",
+  "item.rpgalvaroff.berserk_scroll": "Pergamino del Berserk",
+  "item.rpgalvaroff.thunder_scroll": "Pergamino del Trueno",
+  "item.rpgalvaroff.dash_scroll": "Pergamino de Dash",
+  "item.rpgalvaroff.heal_scroll": "Pergamino de Curación",
 
   "block.rpgalvaroff.lock": "Bloque Cerradura",
   "block.rpgalvaroff.unlock_new_room": "Bloque de nueva sala",
 
   "item.rpgalvaroff.escape_stone.info": "Esta piedra te permite salir de la dimensión mazmorra.",
   "item.rpgalvaroff.end_dungeon_orb_d.info": "Esta piedra te permite salir de la dimensión mazmorra y darla por finalizada.",
+  "item.rpgalvaroff.berserk_scroll.info": "Este pergamino permite aprender la habiliad de Berserk.",
+  "item.rpgalvaroff.thunder_scroll.info": "Este pergamino permite aprender la habiliad de Trueno.",
+  "item.rpgalvaroff.dash_scroll.info": "Este pergamino permite aprender la habiliad de Dash.",
+  "item.rpgalvaroff.heal_scroll.info": "Este pergamino permite aprender la habiliad de Curación.",
   "item.rpgalvaroff.debbuger.reset_notify": "Las stats se han reestablecido.",
 
   "item.noInfo": "Pulsa Shift para más información.",
@@ -32,9 +40,12 @@
 
   "msg.notuse": "No puedes usar esto aquí.",
   "msg.deleteDungeon": "Se va a eliminar la Mazmorra.",
+  "msg.skillLearned": "Ya has aprendido esta habilidad.",
+  "msg.learnSkill": "Has aprendido ",
 
   "itemGroup.keys": "Llaves",
   "itemGroup.block": "Bloques",
+  "itemGroup.scroll": "Pergaminos",
 
   "key.category.rpgalvaroff.rpgkey": "RPG MOD",
   "key.rpgalvaroff.open_initial_gui": "Interfaz",

@@ -45,6 +45,33 @@
           ]
         }
       ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "rpgalvaroff:heal_scroll"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "rpgalvaroff:thunder_scroll"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "rpgalvaroff:berserk_scroll"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "rpgalvaroff:dash_scroll"
+        }
+      ],
+      "conditions": [
+        {
+          "condition": "minecraft:random_chance",
+          "chance": 0.3
+        }
+      ]
     }
   ]
 }
