@@ -318,6 +318,7 @@ public class PlayerStats {
             player.getAttribute(Attributes.MAX_HEALTH).setBaseValue(health + 1);
             //base = 1
             player.getAttribute(Attributes.ATTACK_DAMAGE).setBaseValue(strengthBase + ((float) strength) / 2.5f);
+            System.out.println(player.getAttribute(Attributes.ATTACK_DAMAGE).getBaseValue());
             //base = 0.1
             player.getAttribute(Attributes.MOVEMENT_SPEED).setBaseValue(agilityBase + ((float) agility) / 250);
             //base = 4
