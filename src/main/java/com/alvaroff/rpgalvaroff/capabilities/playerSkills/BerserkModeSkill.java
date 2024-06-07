@@ -12,7 +12,7 @@ public class BerserkModeSkill extends PlayerSkills{
     private final int id = 2;
     private static final ResourceLocation icon = new ResourceLocation(RPGalvaroff.MOD_ID,"textures/gui/skill_hud/berserk_skill.png");
     private final float manaCost = 10.0f;
-    private static final String name = "Berserk Unlock";
+    private static final String name = "Berserk";
 
     public BerserkModeSkill() {
         super();

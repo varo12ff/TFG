@@ -45,7 +45,7 @@ public class SkillGUI extends Screen {
         // Crear botones numerados del 1 al 8 en la parte inferior de la pantalla
         int buttonWidth = 60;
         int buttonHeight = 20;
-        int gap = 10;
+        int gap = 20;
         int startX = (this.width - (buttonWidth * 8 + gap * 7)) / 2;
         int startY = this.height - 30;
         int[] skillAction = playerStats.getActionSkills();

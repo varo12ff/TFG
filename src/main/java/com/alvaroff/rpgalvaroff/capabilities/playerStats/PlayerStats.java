@@ -72,11 +72,11 @@ public class PlayerStats {
         totalSkills = new ArrayList<>();
         actionSkills = new int[8];
         Arrays.fill(actionSkills, -1);
-        totalSkills.add(0);
+        /*totalSkills.add(0);
         totalSkills.add(1);
         totalSkills.add(2);
         totalSkills.add(3);
-        /*actionSkills[0] = 1;
+        actionSkills[0] = 1;
         actionSkills[1] = 0;
         actionSkills[2] = 2;
         actionSkills[3] = 3;*/
@@ -266,6 +266,11 @@ public class PlayerStats {
 
     public void setTotalSkills(ArrayList<Integer> totalSkills) {
         this.totalSkills = totalSkills;
+    }
+
+    public void addTotalSkills(int id) {
+
+        this.totalSkills.add(id);
     }
 
     public int[] getActionSkills() {

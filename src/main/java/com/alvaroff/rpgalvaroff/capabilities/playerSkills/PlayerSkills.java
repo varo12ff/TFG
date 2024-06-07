@@ -5,11 +5,8 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraftforge.event.TickEvent;
-import org.lwjgl.system.CallbackI;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 public class PlayerSkills {
@@ -30,7 +27,7 @@ public class PlayerSkills {
 
     public void initSkillsVector(){
         ThunderSkill thunder = new ThunderSkill();
-        HealSelfClass heal = new HealSelfClass();
+        HealSelfSkill heal = new HealSelfSkill();
         BerserkModeSkill berserk = new BerserkModeSkill();
         DashSkill dash = new DashSkill();
 
