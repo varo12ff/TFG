@@ -17,8 +17,13 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.attributes.AttributeInstance;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.monster.*;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.ChestBlock;
@@ -27,21 +32,35 @@ import net.minecraft.world.level.block.entity.ChestBlockEntity;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.event.entity.living.LivingSpawnEvent;
+
+import java.awt.*;
 
 @Mod.EventBusSubscriber(modid = RPGalvaroff.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
-public class CommonEvents {
+public class CommonEvents{
+    @SubscribeEvent
+    public static void onMobSpawn(LivingSpawnEvent.SpecialSpawn event) {
+        if (event.getEntity() instanceof Monster) { // Solo afecta a mobs agresivos
+            Mob mob = (Mob) event.getEntity();
+            int currentDay = (int) (mob.level.getDayTime() / 24000L);
+            int healthIncrease = currentDay * 10; // Incremento de vida basado en el número de días
+
+            double currentMaxHealth = mob.getAttribute(Attributes.MAX_HEALTH).getBaseValue();
+            mob.getAttribute(Attributes.MAX_HEALTH).setBaseValue(currentMaxHealth + healthIncrease);
+            mob.setHealth(mob.getHealth() + healthIncrease);
+        }
+    }
 
     @SubscribeEvent
     public static void onAttachCapabilitiesPlayer(AttachCapabilitiesEvent<Entity> event){
         if(event.getObject() instanceof Player)
             if(!event.getObject().getCapability(PlayerStatsProvider.PLAYER_STATS).isPresent())
                 event.addCapability(new ResourceLocation(RPGalvaroff.MOD_ID, "stats"), new PlayerStatsProvider());
-
-
     }
 
     @SubscribeEvent
