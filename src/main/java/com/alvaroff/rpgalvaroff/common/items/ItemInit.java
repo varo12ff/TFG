@@ -4,6 +4,7 @@ import com.alvaroff.rpgalvaroff.RPGalvaroff;
 import com.alvaroff.rpgalvaroff.common.items.custom.Debugger;
 import com.alvaroff.rpgalvaroff.common.items.custom.EndDungeonOrbD;
 import com.alvaroff.rpgalvaroff.common.items.custom.Escape_stone;
+import com.alvaroff.rpgalvaroff.common.items.custom.food.MagicBerries;
 import com.alvaroff.rpgalvaroff.common.items.custom.keys.Key;
 import com.alvaroff.rpgalvaroff.common.items.custom.keys.Key_D;
 import com.alvaroff.rpgalvaroff.common.items.custom.scrolls.BerserkScroll;
@@ -82,6 +83,16 @@ public class ItemInit {
                     .rarity(Rarity.EPIC)
                     .stacksTo(1)
     ));
+
+    public static final RegistryObject<Item> MAGIC_BERRIES = ITEMS.register("magic_berries", () -> new MagicBerries(
+            new Item.Properties()
+                    .tab(ModCreativeTab.MDD_FOOD_TAB)
+                    .rarity(Rarity.COMMON)
+                    .stacksTo(64)
+                    .food(ModFoodsInit.MAGIC_BERRIES)
+    ));
+
+
     public static void register(IEventBus eventBus){
         ITEMS.register((eventBus));
     }

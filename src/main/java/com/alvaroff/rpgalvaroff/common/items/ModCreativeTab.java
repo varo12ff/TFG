@@ -32,4 +32,11 @@ public class ModCreativeTab {
             return new ItemStack(ItemInit.HEAL_SCROLL.get());
         }
     };
+
+    public static final CreativeModeTab MDD_FOOD_TAB = new CreativeModeTab("food") {
+        @Override
+        public ItemStack makeIcon(){
+            return new ItemStack(ItemInit.MAGIC_BERRIES.get());
+        }
+    };
 }

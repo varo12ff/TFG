@@ -8,6 +8,7 @@
   "item.rpgalvaroff.thunder_scroll": "Thunder Scroll",
   "item.rpgalvaroff.dash_scroll": "Dash Scroll",
   "item.rpgalvaroff.heal_scroll": "Heal Scroll",
+  "item.rpgalvaroff.magic_berries": "Magic Berries",
 
 
   "block.rpgalvaroff.lock": "Lock",
@@ -47,6 +48,7 @@
   "itemGroup.keys": "Keys",
   "itemGroup.block": "Blocks",
   "itemGroup.scroll": "Scrolls",
+  "itemGroup.food": "Foods",
 
   "key.category.rpgalvaroff.rpgkey": "RPG MOD",
   "key.rpgalvaroff.open_initial_gui": "Interfaz",
