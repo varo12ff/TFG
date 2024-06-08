@@ -48,8 +48,8 @@ public class LaunchSkillC2SPacket {
                     actionSkill.getSkill(id).launch(player);
                     player.getCapability(PlayerStatsProvider.PLAYER_STATS).orElse(new PlayerStats()).subtractMana(actionSkill.getSkill(id).getManaCost());
                     currentMana -= actionSkill.getSkill(id).getManaCost();
-                    //ManaBarOverlay.updateMana(maxMana, currentMana);
-                    ModMessages.sendToPlayer(new OverlayUpdateS2CPacket(player.getCapability(PlayerStatsProvider.PLAYER_STATS).orElse(new PlayerStats()).getNBT()), player);
+
+                    ModMessages.sendToPlayer(new UpdateManaOverlayS2CPacket(maxMana, currentMana), player);
                 }
             }
 

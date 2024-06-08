@@ -56,6 +56,18 @@ public class ModMessages {
                 .encoder(OverlayUpdateS2CPacket::toBytes)
                 .consumer(OverlayUpdateS2CPacket::handle)
                 .add();
+
+        net.messageBuilder(UpdateManaOverlayS2CPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .decoder(UpdateManaOverlayS2CPacket::new)
+                .encoder(UpdateManaOverlayS2CPacket::toBytes)
+                .consumer(UpdateManaOverlayS2CPacket::handle)
+                .add();
+
+        net.messageBuilder(UpdateSkillOverlayS2CPacket.class, id(), NetworkDirection.PLAY_TO_CLIENT)
+                .decoder(UpdateSkillOverlayS2CPacket::new)
+                .encoder(UpdateSkillOverlayS2CPacket::toBytes)
+                .consumer(UpdateSkillOverlayS2CPacket::handle)
+                .add();
     }
 
     public static <MSG> void sendToServer(MSG message){
