@@ -218,7 +218,13 @@ public class PlayerStats {
             this.currentMana = this.manaCant;
         else
             this.currentMana = mana;
+    }
 
+    public void addCurrentMana(float addMana){
+        if(currentMana + addMana > manaCant)
+            this.currentMana = this.manaCant;
+        else
+            this.currentMana += addMana;
     }
 
     public void setMagicPower(int magicPower) {

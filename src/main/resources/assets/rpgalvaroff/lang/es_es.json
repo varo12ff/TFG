@@ -8,6 +8,7 @@
   "item.rpgalvaroff.thunder_scroll": "Pergamino del Trueno",
   "item.rpgalvaroff.dash_scroll": "Pergamino de Dash",
   "item.rpgalvaroff.heal_scroll": "Pergamino de Curación",
+  "item.rpgalvaroff.magic_berries": "Bayas Mágicas",
 
   "block.rpgalvaroff.lock": "Bloque Cerradura",
   "block.rpgalvaroff.unlock_new_room": "Bloque de nueva sala",
@@ -46,6 +47,7 @@
   "itemGroup.keys": "Llaves",
   "itemGroup.block": "Bloques",
   "itemGroup.scroll": "Pergaminos",
+  "itemGroup.food": "Comidas",
 
   "key.category.rpgalvaroff.rpgkey": "RPG MOD",
   "key.rpgalvaroff.open_initial_gui": "Interfaz",
