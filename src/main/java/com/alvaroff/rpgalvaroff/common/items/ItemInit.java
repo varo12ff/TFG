@@ -11,9 +11,12 @@ import com.alvaroff.rpgalvaroff.common.items.custom.scrolls.BerserkScroll;
 import com.alvaroff.rpgalvaroff.common.items.custom.scrolls.DashScroll;
 import com.alvaroff.rpgalvaroff.common.items.custom.scrolls.HealScroll;
 import com.alvaroff.rpgalvaroff.common.items.custom.scrolls.ThunderScroll;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Rarity;
+import com.alvaroff.rpgalvaroff.common.items.custom.swords.Greatsword;
+import com.alvaroff.rpgalvaroff.common.items.custom.swords.Katana;
+import com.alvaroff.rpgalvaroff.common.items.custom.swords.MagicSword;
+import net.minecraft.world.item.*;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -90,6 +93,36 @@ public class ItemInit {
                     .rarity(Rarity.COMMON)
                     .stacksTo(64)
                     .food(ModFoodsInit.MAGIC_BERRIES)
+    ));
+
+    public static final RegistryObject<Item> GREATSWORD = ITEMS.register("greatsword", () -> new Greatsword(
+            Tiers.NETHERITE,
+            1,
+            -2.4F,
+            new Item.Properties()
+                    .tab(ModCreativeTab.MDD_WEAPON_TAB)
+                    .rarity(Rarity.COMMON)
+                    .stacksTo(1)
+    ));
+
+    public static final RegistryObject<Item> KATANA = ITEMS.register("katana", () -> new Katana(
+            Tiers.NETHERITE,
+            1,
+            -2.4F,
+            new Item.Properties()
+                    .tab(ModCreativeTab.MDD_WEAPON_TAB)
+                    .rarity(Rarity.COMMON)
+                    .stacksTo(1)
+    ));
+
+    public static final RegistryObject<Item> MAGIC_SWORD = ITEMS.register("magic_sword", () -> new MagicSword(
+            Tiers.NETHERITE,
+            1,
+            -2.4F,
+            new Item.Properties()
+                    .tab(ModCreativeTab.MDD_WEAPON_TAB)
+                    .rarity(Rarity.COMMON)
+                    .stacksTo(1)
     ));
 
 

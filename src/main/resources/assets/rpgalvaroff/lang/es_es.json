@@ -9,6 +9,9 @@
   "item.rpgalvaroff.dash_scroll": "Pergamino de Dash",
   "item.rpgalvaroff.heal_scroll": "Pergamino de Curación",
   "item.rpgalvaroff.magic_berries": "Bayas Mágicas",
+  "item.rpgalvaroff.katana": "Katana",
+  "item.rpgalvaroff.greatsword": "Espadón",
+  "item.rpgalvaroff.magic_sword": "Espada Mágica",
 
   "block.rpgalvaroff.lock": "Bloque Cerradura",
   "block.rpgalvaroff.unlock_new_room": "Bloque de nueva sala",
@@ -48,6 +51,7 @@
   "itemGroup.block": "Bloques",
   "itemGroup.scroll": "Pergaminos",
   "itemGroup.food": "Comidas",
+  "itemGroup.weapon": "Armas",
 
   "key.category.rpgalvaroff.rpgkey": "RPG MOD",
   "key.rpgalvaroff.open_initial_gui": "Interfaz",

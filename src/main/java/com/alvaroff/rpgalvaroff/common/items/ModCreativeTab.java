@@ -39,4 +39,11 @@ public class ModCreativeTab {
             return new ItemStack(ItemInit.MAGIC_BERRIES.get());
         }
     };
+
+    public static final CreativeModeTab MDD_WEAPON_TAB = new CreativeModeTab("weapon") {
+        @Override
+        public ItemStack makeIcon(){
+            return new ItemStack(ItemInit.GREATSWORD.get());
+        }
+    };
 }
