@@ -72,14 +72,6 @@ public class PlayerStats {
         totalSkills = new ArrayList<>();
         actionSkills = new int[8];
         Arrays.fill(actionSkills, -1);
-        /*totalSkills.add(0);
-        totalSkills.add(1);
-        totalSkills.add(2);
-        totalSkills.add(3);
-        actionSkills[0] = 1;
-        actionSkills[1] = 0;
-        actionSkills[2] = 2;
-        actionSkills[3] = 3;*/
     }
 
     public int getLevel(){
@@ -95,9 +87,9 @@ public class PlayerStats {
     public void addXp(int xp) {
         if(playerClass != PlayerClass.NONE) {
             this.xp += xp;
-            if (this.xp >= this.nextLvl) {
+            while (this.xp >= this.nextLvl) {
                 this.lvl++;
-                this.xp = this.xp % this.nextLvl;
+                this.xp = this.xp - this.nextLvl;
                 this.nextLvl *= 2;
                 this.abilityPoints++;
             }
