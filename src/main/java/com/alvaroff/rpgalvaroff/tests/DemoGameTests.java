@@ -6,6 +6,8 @@ import com.alvaroff.rpgalvaroff.capabilities.playerStats.PlayerStats;
 import com.alvaroff.rpgalvaroff.client.KeyBinding;
 import com.alvaroff.rpgalvaroff.client.gui.ManaBarOverlay;
 import com.alvaroff.rpgalvaroff.client.gui.RpgGUI;
+import com.alvaroff.rpgalvaroff.client.gui.SkillGUI;
+import com.alvaroff.rpgalvaroff.client.gui.SkillOverlay;
 import com.alvaroff.rpgalvaroff.common.utils.DimensionUtils;
 import com.alvaroff.rpgalvaroff.networking.ModMessages;
 import com.alvaroff.rpgalvaroff.networking.packet.KeyBindingC2SPacket;
@@ -36,6 +38,8 @@ import org.lwjgl.glfw.GLFW;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.util.Arrays;
+import java.util.Random;
 
 @GameTestHolder(RPGalvaroff.MOD_ID)
 public class DemoGameTests {
@@ -46,7 +50,20 @@ public class DemoGameTests {
             ModMessages.sendToServer(new KeyBindingC2SPacket(0));
             Screen currentScreen = Minecraft.getInstance().screen;
             if(!(currentScreen instanceof RpgGUI))
-                throw new GameTestAssertException("La interfaz no se ha abierto correctamente");
+                throw new GameTestAssertException("La interfaz RPG no se ha abierto correctamente");
+
+        });
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    @GameTest
+    public static void openSkillGUI(GameTestHelper helper) {
+        helper.succeedWhen(() ->{
+            ModMessages.sendToServer(new KeyBindingC2SPacket(1));
+            Screen currentScreen = Minecraft.getInstance().screen;
+
+            if(!(currentScreen instanceof SkillGUI))
+                throw new GameTestAssertException("La interfaz RPG no se ha abierto correctamente");
         });
     }
 
@@ -87,4 +104,39 @@ public class DemoGameTests {
                 throw new GameTestAssertException("El Overlay de Maná no se ha actualizado");
         });
     }
+
+    public static boolean equalsArrays(int[] vec1, int[] vec2){
+        boolean equal = true;
+        if(vec1.length != vec2.length)
+            equal = false;
+
+        for(int i = 0; i < vec1.length && equal; i++)
+            if(vec1[i] != vec2[i])
+                equal = false;
+
+        return equal;
+    }
+    @OnlyIn(Dist.CLIENT)
+    @GameTest
+    public static void changeSkills(GameTestHelper helper) {
+        helper.succeedWhen(() ->{
+            PlayerStats magician = new PlayerStats(1, 7, 1, 4, 3, 3, 5, 5, 3, PlayerClass.MAGO);
+            magician.addTotalSkills(0);
+
+            int[] actionSkills = new int[8];
+            Arrays.fill(actionSkills, -1);
+            actionSkills[2] = 0;
+
+            magician.setActionSkills(actionSkills);
+            ModMessages.sendToServer(new PlayerStatsC2SPacket(magician.getNBT()));
+            SkillOverlay.updateSkills(magician.getActionSkills());
+
+            if(!equalsArrays(magician.getActionSkills(), SkillOverlay.getSkills()))
+                throw new GameTestAssertException("El Overlay de habilidades no se ha actualizado");
+        });
+    }
+
+
 }
+
+
