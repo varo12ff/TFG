@@ -1,0 +1,77 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:golden_pickaxe"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:iron_sword",
+          "functions": [
+            {
+              "function": "minecraft:enchant_randomly"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": {
+        "min": 0,
+        "max": 3
+      },
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:diamond"
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "rpgalvaroff:escape_stone",
+          "conditions": [
+            {
+              "condition": "minecraft:random_chance",
+              "chance": 0.2
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "rpgalvaroff:heal_scroll"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "rpgalvaroff:thunder_scroll"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "rpgalvaroff:berserk_scroll"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "rpgalvaroff:dash_scroll"
+        }
+      ],
+      "conditions": [
+        {
+          "condition": "minecraft:random_chance",
+          "chance": 0.3
+        }
+      ]
+    }
+  ]
+}
