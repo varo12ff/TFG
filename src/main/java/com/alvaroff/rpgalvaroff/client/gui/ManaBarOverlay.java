@@ -18,8 +18,8 @@ import java.awt.*;
 public class ManaBarOverlay extends GuiComponent {
     private static final ResourceLocation MANA_BAR_EMPTY_TEXTURE = new ResourceLocation(RPGalvaroff.MOD_ID, "textures/gui/mana_empty.png");
     private static final ResourceLocation MANA_BAR_FULL_TEXTURE = new ResourceLocation(RPGalvaroff.MOD_ID, "textures/gui/manabar_full.png");
-    static float maxMana = 0;
-    static float currentMana = 0;
+    private static float maxMana = 0;
+    private static float currentMana = 0;
     static PlayerClass playerClass = PlayerClass.NONE;
 
     @SubscribeEvent
@@ -61,5 +61,17 @@ public class ManaBarOverlay extends GuiComponent {
 
     public static void drawBar(PlayerClass newPlayerClass){
         playerClass = newPlayerClass;
+    }
+
+    public static float getCurrentMana(){
+        return currentMana;
+    }
+
+    public static float getMaxMana(){
+        return maxMana;
+    }
+
+    public static boolean isDraw(){
+        return playerClass != PlayerClass.NONE;
     }
 }
