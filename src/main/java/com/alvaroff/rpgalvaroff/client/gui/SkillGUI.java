@@ -19,7 +19,7 @@ public class SkillGUI extends Screen {
     PlayerStats playerStats;
     private boolean isMouseClicked = false;
     private final Button[] buttons = new Button[8];
-    private int selectedButtonIndex = -1; // Índice del botón seleccionado
+    private int selectedButtonIndex = -1;
     private long[] buttonClickTimes = new long[8];
 
     protected SkillGUI(Component component) {
@@ -42,7 +42,6 @@ public class SkillGUI extends Screen {
     protected void init() {
         super.init();
 
-        // Crear botones numerados del 1 al 8 en la parte inferior de la pantalla
         int buttonWidth = 60;
         int buttonHeight = 20;
         int gap = 20;
@@ -74,13 +73,11 @@ public class SkillGUI extends Screen {
 
         // Manejar doble clic
         if (currentTime - buttonClickTimes[index] < 250) {
-            // Restaurar el nombre original del botón
             buttons[index].setMessage(new TextComponent("slot " + (index + 1)));
             skillAction[index] = -1;
             playerStats.setActionSkills(skillAction);
         } else {
-            // Manejar clic simple
-            selectedButtonIndex = index; // Al hacer clic en un botón, se selecciona
+            selectedButtonIndex = index;
 
         }
 
@@ -96,36 +93,31 @@ public class SkillGUI extends Screen {
         PlayerSkills skills = new PlayerSkills();
         skills.initSkillsVector();
 
-        int screenWidth = this.width; // Ancho de la pantalla
-        int imageSize = 32; // Tamaño de la imagen de la habilidad
-        int gap = 10; // Espacio entre las imágenes
+        int screenWidth = this.width;
+        int imageSize = 32;
+        int gap = 10;
 
-        int x = gap; // Posición X inicial
-        int y = gap; // Posición Y inicial
-        int rowHeight = imageSize + 10 + (int)(Minecraft.getInstance().font.lineHeight * 0.75); // Altura de la fila, incluyendo el texto
+        int x = gap;
+        int y = gap;
+        int rowHeight = imageSize + 10 + (int)(Minecraft.getInstance().font.lineHeight * 0.75);
 
         for (int i = 0; i < totalSkills.size(); i++) {
-            // Si la siguiente imagen se va a salir del ancho de la pantalla, mover a la siguiente fila
             if (x + imageSize > screenWidth) {
-                x = gap; // Reiniciar posición X
-                y += rowHeight; // Mover hacia abajo
+                x = gap;
+                y += rowHeight;
             }
 
-            // Renderizar la imagen de la habilidad
             RenderSystem.setShaderTexture(0, skills.getSkill(totalSkills.get(i)).getImage());
             blit(poseStack, x, y, 0, 0, imageSize, imageSize, imageSize, imageSize);
 
-            // Dibujar el nombre de la habilidad justo debajo de la imagen y centrado
             String skillName = skills.getSkill(totalSkills.get(i)).getName();
             float textScale = 0.75f;
             int textWidth = (int) (Minecraft.getInstance().font.width(skillName) * textScale);
-            int textX = x + (imageSize / 2) - (textWidth / 2); // Centrar el texto con respecto a la imagen
+            int textX = x + (imageSize / 2) - (textWidth / 2);
             drawScaledText(poseStack, skillName, textX, y + imageSize + 2, textScale, 0xFFFFFF);
 
-            // Verificar si se hizo clic en la imagen de la habilidad
             if (isMouseOver(mouseX, mouseY, x, y, imageSize, imageSize) && this.isMouseClicked) {
                 if (selectedButtonIndex != -1) {
-                    // Verificar si la habilidad ya está en uno de los botones
                     boolean alreadyExists = false;
                     for (Button button : buttons) {
                         if (button.getMessage().getString().equals(skillName)) {
@@ -134,13 +126,11 @@ public class SkillGUI extends Screen {
                         }
                     }
                     if (!alreadyExists) {
-                        // Cambiar el nombre del botón previamente seleccionado al nombre de la habilidad
                         buttons[selectedButtonIndex].setMessage(new TextComponent(skillName));
                         skillAction[selectedButtonIndex] = skills.getSkill(totalSkills.get(i)).getId();
 
                         playerStats.setActionSkills(skillAction);
 
-                        // Renombrar el botón previamente seleccionado a su nombre original
                         for (int j = 0; j < buttons.length; j++) {
                             if (j != selectedButtonIndex && buttons[j].getMessage().getString().equals(skillName)) {
                                 buttons[j].setMessage(new TextComponent("slot " + (j + 1)));
@@ -148,7 +138,6 @@ public class SkillGUI extends Screen {
                             }
                         }
                     } else {
-                        // Encontrar y renombrar el botón que tiene la habilidad a su nombre original
                         for (int j = 0; j < buttons.length; j++) {
                             if (buttons[j].getMessage().getString().equals(skillName)) {
                                 buttons[j].setMessage(new TextComponent("slot " + (j + 1)));
@@ -161,11 +150,11 @@ public class SkillGUI extends Screen {
                             }
                         }
                     }
-                    selectedButtonIndex = -1; // Deseleccionar el botón después de actualizar el texto
+                    selectedButtonIndex = -1;
                 }
             }
 
-            x += imageSize + gap; // Mover la posición X para la siguiente imagen
+            x += imageSize + gap;
         }
 
         super.render(poseStack, mouseX, mouseY, partialTicks);

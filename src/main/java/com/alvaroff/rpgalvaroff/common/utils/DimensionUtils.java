@@ -110,20 +110,18 @@ public class DimensionUtils {
     }
 
     public static void generateProceduralRoom(Level world, BlockPos clickedPos, Random random, Direction facing) {
-        int width = 8 + random.nextInt(12); // Ancho de la sala entre 8 y 20
-        int height = 5; // Altura de la sala entre 5 y 8
-        int depth = 8 + random.nextInt(12); // Profundidad de la sala entre 8 y 20
-        int passageWidth = 3; // Ancho del pasillo fijo
-        int passageDepth = 3; // Profundidad del pasillo
-        int spawnerCount = random.nextInt(4) + 1; // Genera un número entre 1 y 4
+        int width = 8 + random.nextInt(12);
+        int height = 5;
+        int depth = 8 + random.nextInt(12);
+        int passageWidth = 3;
+        int passageDepth = 3;
+        int spawnerCount = random.nextInt(4) + 1;
         int placedSpawners = 0;
 
         BlockState lock = BlockInit.UNLOCK_NEW_ROOM_BLOCK.get().defaultBlockState();
 
-        // Determina la posición base ajustada para que el bloque clickeado esté centrado en la cara de la sala
         BlockPos basePos = clickedPos.relative(facing.getOpposite(), passageDepth - 1).below(2);
 
-        // Ajustar basePos horizontalmente para centrar el bloque clickeado
         if (facing.getAxis() == Direction.Axis.Z) {
             basePos = basePos.west(width / 2);
         } else if (facing.getAxis() == Direction.Axis.X) {
@@ -134,16 +132,12 @@ public class DimensionUtils {
             basePos = basePos.north(depth - 1);
         }
         else if (facing.getOpposite() == Direction.WEST) {
-            basePos = basePos.west(width - 1); // Mover al máximo hacia atrás en el eje Oeste
+            basePos = basePos.west(width - 1);
         }
 
-
-
-        // Lista de direcciones posibles para colocar el bloque de obsidiana
         List<Direction> directions = new ArrayList<>(Arrays.asList(Direction.NORTH, Direction.SOUTH, Direction.WEST, Direction.EAST));
-        directions.remove(facing); // Remover la dirección del pasillo
+        directions.remove(facing);
 
-        // Filtrar direcciones que no interferirán con otras salas futuras
         List<Direction> validDirections = new ArrayList<>();
         for (Direction dir : directions) {
             if (!willInterfereWithFutureRoom(world, basePos, dir, width, height, depth)) {
@@ -172,7 +166,6 @@ public class DimensionUtils {
             world.getCapability(DungeonStateProvider.DUNGEON_STATUS).orElse(new DungeonState()).addPercentageBossRoom();
         }
 
-        // Generar sala hueca con patrón procedural
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 for (int z = 0; z < depth; z++) {
@@ -202,8 +195,7 @@ public class DimensionUtils {
                         }
                     }
                     else{
-                        // Intentar colocar un spawner en una posición aleatoria no en el borde
-                        if (y == 1 && placedSpawners < spawnerCount && random.nextFloat() < 0.1) { // Probabilidad de colocar un spawner
+                        if (y == 1 && placedSpawners < spawnerCount && random.nextFloat() < 0.1) {
                             if (world.getBlockState(pos).getBlock() == Blocks.AIR) {
                                 world.setBlock(pos, Blocks.SPAWNER.defaultBlockState(), 3);
                                 SpawnerBlockEntity spawner = (SpawnerBlockEntity) world.getBlockEntity(pos);
@@ -224,13 +216,10 @@ public class DimensionUtils {
         });
 
 
-
-        // Posición inicial del pasillo centrada con el bloque clickeado
         BlockPos passageStart = clickedPos.relative(facing.getOpposite(), 2).below(2);
         passageStart = passageStart.relative(facing.getClockWise(), -(passageWidth / 2));
         int passageHeight = 4;
 
-        // Generar el pasillo
         for (int x = 0; x < passageWidth; x++) {
             for (int y = 0; y < passageHeight; y++) {
                 for (int z = 0; z < passageDepth; z++) {
@@ -264,14 +253,12 @@ public class DimensionUtils {
     }
 
     public static void generateSphereProceduralRoom(Level world, BlockPos clickedPos, Random random, Direction facing) {
-        int radius = 10 + random.nextInt(5); // Radio de la sala entre 10 y 15
-        int passageWidth = 3; // Ancho del pasillo fijo
-        int passageDepth = 3; // Profundidad del pasillo
+        int radius = 10 + random.nextInt(5);
+        int passageWidth = 3;
+        int passageDepth = 3;
 
-        // Determina la posición base ajustada para que el bloque clickeado esté centrado en la cara de la sala
         BlockPos basePos = clickedPos.relative(facing.getOpposite(), 1).above(17 + radius);
 
-        // Generar sala hueca con patrón procedural
         for (int x = -radius; x <= radius; x++) {
             for (int y = -radius; y <= radius; y++) {
                 for (int z = -radius; z <= radius; z++) {
@@ -292,12 +279,10 @@ public class DimensionUtils {
             }
         }
 
-        // Posición inicial del pasillo centrada con el bloque clickeado
         BlockPos passageStart = clickedPos.relative(facing.getOpposite(), 2).below(2);
         passageStart = passageStart.relative(facing.getClockWise(), -(passageWidth / 2));
         int passageHeight = 20;
 
-        // Generar el pasillo
         for (int x = 0; x < passageWidth; x++) {
             for (int y = 0; y < passageHeight; y++) {
                 for (int z = 0; z < passageDepth; z++) {
@@ -343,10 +328,8 @@ public class DimensionUtils {
 
         BlockState lock = BlockInit.UNLOCK_NEW_ROOM_BLOCK.get().defaultBlockState();
 
-        // Determina la posición base ajustada para que el bloque clickeado esté centrado en la cara de la sala
         BlockPos basePos = clickedPos.relative(facing.getOpposite(), passageDepth - 1).below(3);
 
-        // Ajustar basePos horizontalmente para centrar el bloque clickeado
         if (facing.getAxis() == Direction.Axis.Z) {
             basePos = basePos.west(width / 2);
         } else if (facing.getAxis() == Direction.Axis.X) {
@@ -357,16 +340,14 @@ public class DimensionUtils {
             basePos = basePos.north(depth - 1);
         }
         else if (facing.getOpposite() == Direction.WEST) {
-            basePos = basePos.west(width - 1); // Mover al máximo hacia atrás en el eje Oeste
+            basePos = basePos.west(width - 1);
         }
 
 
 
-        // Lista de direcciones posibles para colocar el bloque de obsidiana
         List<Direction> directions = new ArrayList<>(Arrays.asList(Direction.NORTH, Direction.SOUTH, Direction.WEST, Direction.EAST));
-        directions.remove(facing); // Remover la dirección del pasillo
+        directions.remove(facing);
 
-        // Filtrar direcciones que no interferirán con otras salas futuras
         List<Direction> validDirections = new ArrayList<>();
         for (Direction dir : directions) {
             if (!willInterfereWithFutureRoom(world, basePos, dir, width, height, depth)) {
@@ -395,7 +376,6 @@ public class DimensionUtils {
             world.getCapability(DungeonStateProvider.DUNGEON_STATUS).orElse(new DungeonState()).addPercentageBossRoom();
         }
 
-        // Generar sala hueca con patrón procedural
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 for (int z = 0; z < depth; z++) {
@@ -440,8 +420,7 @@ public class DimensionUtils {
                         world.setBlock(pos, block.defaultBlockState(), 3);
                     }
                     else{
-                        // Intentar colocar un spawner en una posición aleatoria no en el borde
-                        if (y == 2 && placedSpawners < spawnerCount && random.nextFloat() < 0.1) { // Probabilidad de colocar un spawner
+                        if (y == 2 && placedSpawners < spawnerCount && random.nextFloat() < 0.1) {
                             BlockPos belowPos = pos.below();
                             if (world.getBlockState(pos).getBlock() == Blocks.AIR && world.getBlockState(belowPos).getBlock() == Blocks.STONE) {
                                 world.setBlock(pos, Blocks.SPAWNER.defaultBlockState(), 3);
@@ -468,12 +447,10 @@ public class DimensionUtils {
 
 
 
-        // Posición inicial del pasillo centrada con el bloque clickeado
         BlockPos passageStart = clickedPos.relative(facing.getOpposite(), 2).below(2);
         passageStart = passageStart.relative(facing.getClockWise(), -(passageWidth / 2));
         int passageHeight = 4;
 
-        // Generar el pasillo
         for (int x = 0; x < passageWidth; x++) {
             for (int y = 0; y < passageHeight; y++) {
                 for (int z = 0; z < passageDepth; z++) {
@@ -507,20 +484,18 @@ public class DimensionUtils {
     }
 
     public static void generateProceduralWaterRoom(Level world, BlockPos clickedPos, Random random, Direction facing) {
-        int width = 8 + random.nextInt(12); // Ancho de la sala entre 8 y 20
-        int height = 9; // Altura de la sala entre 5 y 8
-        int depth = 8 + random.nextInt(12); // Profundidad de la sala entre 8 y 20
-        int passageWidth = 3; // Ancho del pasillo fijo
-        int passageDepth = 3; // Profundidad del pasillo
-        int spawnerCount = random.nextInt(4) + 1; // Genera un número entre 1 y 4
+        int width = 8 + random.nextInt(12);
+        int height = 9;
+        int depth = 8 + random.nextInt(12);
+        int passageWidth = 3;
+        int passageDepth = 3;
+        int spawnerCount = random.nextInt(4) + 1;
         int placedSpawners = 0;
 
         BlockState lock = BlockInit.UNLOCK_NEW_ROOM_BLOCK.get().defaultBlockState();
 
-        // Determina la posición base ajustada para que el bloque clickeado esté centrado en la cara de la sala
         BlockPos basePos = clickedPos.relative(facing.getOpposite(), passageDepth - 1).below(4);
 
-        // Ajustar basePos horizontalmente para centrar el bloque clickeado
         if (facing.getAxis() == Direction.Axis.Z) {
             basePos = basePos.west(width / 2);
         } else if (facing.getAxis() == Direction.Axis.X) {
@@ -531,16 +506,12 @@ public class DimensionUtils {
             basePos = basePos.north(depth - 1);
         }
         else if (facing.getOpposite() == Direction.WEST) {
-            basePos = basePos.west(width - 1); // Mover al máximo hacia atrás en el eje Oeste
+            basePos = basePos.west(width - 1);
         }
 
-
-
-        // Lista de direcciones posibles para colocar el bloque de obsidiana
         List<Direction> directions = new ArrayList<>(Arrays.asList(Direction.NORTH, Direction.SOUTH, Direction.WEST, Direction.EAST));
-        directions.remove(facing); // Remover la dirección del pasillo
+        directions.remove(facing);
 
-        // Filtrar direcciones que no interferirán con otras salas futuras
         List<Direction> validDirections = new ArrayList<>();
         for (Direction dir : directions) {
             if (!willInterfereWithFutureRoom(world, basePos, dir, width, height, depth)) {
@@ -551,12 +522,11 @@ public class DimensionUtils {
         Direction obsidianFacing = null;
 
         if (validDirections.isEmpty()) {
-            // Si no hay direcciones viables, no colocar el bloque de obsidiana
             generateSphereProceduralRoom(world, clickedPos, random, facing);
             return;
         }
         else{
-            obsidianFacing = validDirections.get(random.nextInt(validDirections.size())); // Seleccionar una dirección aleatoria
+            obsidianFacing = validDirections.get(random.nextInt(validDirections.size()));
         }
 
         float bossProbabilty = world.getCapability(DungeonStateProvider.DUNGEON_STATUS).orElse(new DungeonState()).getBossRoom();
@@ -570,7 +540,6 @@ public class DimensionUtils {
             world.getCapability(DungeonStateProvider.DUNGEON_STATUS).orElse(new DungeonState()).addPercentageBossRoom();
         }
 
-        // Generar sala hueca con patrón procedural
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
                 for (int z = 0; z < depth; z++) {
@@ -602,8 +571,7 @@ public class DimensionUtils {
                         }
                     }
                     else{
-                        // Intentar colocar un spawner en una posición aleatoria no en el borde
-                        if (placedSpawners < spawnerCount && random.nextFloat() < 0.1) { // Probabilidad de colocar un spawner
+                        if (placedSpawners < spawnerCount && random.nextFloat() < 0.1) {
                             if (world.getBlockState(pos).getBlock() == Blocks.AIR) {
                                 world.setBlock(pos, Blocks.SPAWNER.defaultBlockState(), 3);
                                 SpawnerBlockEntity spawner = (SpawnerBlockEntity) world.getBlockEntity(pos);
@@ -624,14 +592,10 @@ public class DimensionUtils {
             active.setActiveSpawners(spawnerCount);
         });
 
-
-
-        // Posición inicial del pasillo centrada con el bloque clickeado
         BlockPos passageStart = clickedPos.relative(facing.getOpposite(), 2).below(2);
         passageStart = passageStart.relative(facing.getClockWise(), -(passageWidth / 2));
         int passageHeight = 4;
 
-        // Generar el pasillo
         for (int x = 0; x < passageWidth; x++) {
             for (int y = 0; y < passageHeight; y++) {
                 for (int z = 0; z < passageDepth; z++) {
@@ -665,12 +629,10 @@ public class DimensionUtils {
     }
 
     private static boolean willInterfereWithFutureRoom(Level world, BlockPos basePos, Direction direction, int width, int height, int depth) {
-        // Determinar el tamaño y la posición del área de la sala futura para la dirección dada
-        int futureWidth = 8 + 11; // Ancho máximo de la sala futura
-        int futureHeight = 5 + 2; // Altura máxima de la sala futura
-        int futureDepth = 8 + 11; // Profundidad máxima de la sala futura
+        int futureWidth = 8 + 11;
+        int futureHeight = 5 + 2;
+        int futureDepth = 8 + 11;
 
-        // Ajustar la posición base para considerar la colocación del bloque de obsidiana
         BlockPos futureBasePos = basePos.relative(direction, direction == Direction.NORTH || direction == Direction.SOUTH ? depth : width);
         futureBasePos = futureBasePos.offset(direction.getStepX() * (width + futureWidth / 2), 0, direction.getStepZ() * (depth + futureDepth / 2));
         if (direction == Direction.NORTH) {
@@ -679,7 +641,6 @@ public class DimensionUtils {
             futureBasePos = futureBasePos.west(futureWidth);
         }
 
-        // Comprobar si hay bloques que no sean aire en el área de la sala futura
         for (int x = 0; x < futureWidth; x++) {
             for (int y = 0; y < futureHeight; y++) {
                 for (int z = 0; z < futureDepth; z++) {

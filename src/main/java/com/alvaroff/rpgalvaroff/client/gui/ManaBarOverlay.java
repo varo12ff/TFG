@@ -29,8 +29,8 @@ public class ManaBarOverlay extends GuiComponent {
             Minecraft minecraft = Minecraft.getInstance();
             int screenWidth = minecraft.getWindow().getGuiScaledWidth();
             int screenHeight = minecraft.getWindow().getGuiScaledHeight();
-            int manaBarWidth = 182; // Ajusta esto según el ancho de tu textura
-            int manaBarHeight = 5;  // Ajusta esto según el alto de tu textura
+            int manaBarWidth = 182;
+            int manaBarHeight = 5;
 
             int x = screenWidth - manaBarWidth - 10;
             int y = screenHeight - manaBarHeight - 10;

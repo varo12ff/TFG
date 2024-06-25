@@ -15,7 +15,6 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 
 public class WarblerEntityModel<Type extends Warbler> extends EntityModel<Type> {
-    // This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(new ResourceLocation(RPGalvaroff.MOD_ID, "warbler"), "main");
     private final ModelPart head;
     private final ModelPart wings;

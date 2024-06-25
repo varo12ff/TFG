@@ -45,7 +45,6 @@ public class PlayerUtils {
         AttributeInstance attackAttribute = player.getAttribute(Attributes.ATTACK_DAMAGE);
         double baseAttackDamage = attackAttribute != null ? attackAttribute.getValue() : 0.0;
 
-        // Añadir el efecto de pociones
         if (player.hasEffect(MobEffects.DAMAGE_BOOST)) {
             MobEffectInstance effect = player.getEffect(MobEffects.DAMAGE_BOOST);
             baseAttackDamage += (1.5 * (effect.getAmplifier() + 1));

@@ -53,10 +53,10 @@ public class ClientEvents {
                         else
                             player.displayClientMessage(new TextComponent("No Skill"), true);
 
-                        wasSkillActivated = true; // Marcar como activado
+                        wasSkillActivated = true;
                     }
                 } else {
-                    wasSkillActivated = false; // Restablecer el estado cuando las teclas se suelten
+                    wasSkillActivated = false;
                 }
             }
         }

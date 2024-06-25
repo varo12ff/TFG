@@ -45,10 +45,10 @@ import java.awt.*;
 public class CommonEvents{
     @SubscribeEvent
     public static void onMobSpawn(LivingSpawnEvent.SpecialSpawn event) {
-        if (event.getEntity() instanceof Monster) { // Solo afecta a mobs agresivos
+        if (event.getEntity() instanceof Monster) {
             Mob mob = (Mob) event.getEntity();
             int currentDay = (int) (mob.level.getDayTime() / 24000L);
-            int healthIncrease = currentDay * 10; // Incremento de vida basado en el número de días
+            int healthIncrease = currentDay * 10;
 
             double currentMaxHealth = mob.getAttribute(Attributes.MAX_HEALTH).getBaseValue();
             mob.getAttribute(Attributes.MAX_HEALTH).setBaseValue(currentMaxHealth + healthIncrease);
@@ -174,17 +174,14 @@ public class CommonEvents{
                     }
 
                     Direction playerFacing = player.getDirection();
-                    // Generar el cofre con loot table personalizada
                     BlockPos pos = new BlockPos(event.getPos().getX(), event.getPos().getY() + 1,event.getPos().getZ());
 
                     world.setBlockAndUpdate(pos, Blocks.CHEST.defaultBlockState().setValue(ChestBlock.FACING, playerFacing.getOpposite()));
 
-                    // Obtener el tile entity del cofre
                     BlockEntity tileEntity = world.getBlockEntity(pos);
                     if (tileEntity instanceof ChestBlockEntity) {
                         ChestBlockEntity chest = (ChestBlockEntity) tileEntity;
 
-                        // Asignar la loot table personalizada al cofre
                         chest.setLootTable(new ResourceLocation(RPGalvaroff.MOD_ID, "chests/dungeon/dungeon_chest"), world.random.nextLong());
                     }
 

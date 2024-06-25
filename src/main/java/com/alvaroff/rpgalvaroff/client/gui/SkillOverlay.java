@@ -85,7 +85,7 @@ public class SkillOverlay extends GuiComponent {
 
     @SubscribeEvent
     public static void onMouseClick(InputEvent.MouseInputEvent event) {
-        if (event.getButton() == 2 && event.getAction() == 1) { // Button 2 is the middle mouse button, action 1 is press
+        if (event.getButton() == 2 && event.getAction() == 1) {
             changeHUDTexture();
         }
     }

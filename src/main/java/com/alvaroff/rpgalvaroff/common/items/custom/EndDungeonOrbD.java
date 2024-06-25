@@ -60,13 +60,11 @@ public class EndDungeonOrbD extends Item {
         ItemStack stack = event.getItemStack();
         List<Component> tooltip = event.getToolTip();
 
-        // Verificar si el jugador está presionando la tecla Mayúsculas
         boolean isShiftKeyDown = GLFW.glfwGetKey(Minecraft.getInstance().getWindow().getWindow(), GLFW.GLFW_KEY_LEFT_SHIFT) == GLFW.GLFW_PRESS
                 || GLFW.glfwGetKey(Minecraft.getInstance().getWindow().getWindow(), GLFW.GLFW_KEY_RIGHT_SHIFT) == GLFW.GLFW_PRESS;
 
         if (stack.getItem() == this) {
             if (isShiftKeyDown) {
-                // Agregar la descripción detallada solo cuando se mantiene presionada la tecla Mayúsculas
                 String translationKey = this.getDescriptionId(stack) + ".info";
                 tooltip.add(new TranslatableComponent(translationKey).withStyle(ChatFormatting.BLUE));
 
